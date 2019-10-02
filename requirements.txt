@@ -1,1 +1,6 @@
 # List required packages in this file, one per line.
+numpy
+pyserial
+pyusb
+matplotlib
+circular_buffer_numpy
