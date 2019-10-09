@@ -16,7 +16,6 @@ and 3 files
 - experiment_parameters.log - a dump of all variable from all modules mostly for debugging purposes.
 """
 
-__version__ = '0.0.2'
 from matplotlib import pyplot as plt
 from numpy import gradient, transpose, genfromtxt, nanmean, argwhere, where, nan, isnan, asarray
 import os
@@ -24,6 +23,9 @@ import pickle
 
 class Dataset():
     def __init__(self):
+        """
+        initializes Dataset class
+        """
         ### Log folder related
         self.folder = None #the pointer at the log folder
 
@@ -73,13 +75,46 @@ class Dataset():
         dt = t2-t1
         print('Init of Dataset from folder = {} has status {}. It took {} seconds.'.format(self.folder,self.is_init_done,dt))
 
-    def dump_to_picle_file(data = None):
+    def dump_to_pickle_file(self.data = None):
+        """
+        pickles data and puts it on the drive. the default name is experiment.pickle (similar to original experiment.log)
+        Parameters
+        ----------
+        data : numpy array
+            data to append
+        Returns
+        -------
+        Examples
+        --------
+        >>> dataset.dump_to_pickle_file(data)
+        """
         from pickle import dump, HIGHEST_PROTOCOL
         if data is not None:
             with open(self.folder + 'experiment.pickle', 'wb') as handle:
                 dump(self.log_data, handle, protocol=HIGHEST_PROTOCOL)
 
     def log_read_header(self, folder):
+        """
+        looks for experiment.log file in the specified folder. Reads it and returns header.
+
+        The typical folder name is /YEAR-MM-DD-hh-mm-ss, where MM - month, DD - day, hh - hours(24 hours), mm-minutes, ss-seconds
+        Parameters
+        ----------
+        folder: string
+            folder name
+
+        Returns
+        -------
+        data : numpy array
+            data to append
+        -------
+        Examples
+        --------
+        >>> folder = '/2019-05-31-13-13-52/'
+        >>> header = dataset.log_read_header(folder = folder)
+        >>> header
+
+        """
         with open(folder + 'experiment.log', "r") as f:
             a = f.readline()
             a = f.readline().replace('b','').replace('\n','').replace(' ','').replace("'","")
@@ -88,8 +123,24 @@ class Dataset():
 
     def log_read_raw_data(self, folder):
         """
-        read log folder:
-        create
+        looks for experiment.log file in the specified folder. Reads it and returns data as numpy array. The typical folder name is /YEAR-MM-DD-hh-mm-ss, where MM - month, DD - day, hh - hours(24 hours), mm-minutes, ss-seconds
+        Parameters
+        ----------
+        folder: string
+            folder name
+
+        Returns
+        -------
+        data : numpy array
+            data to append
+        -------
+        Examples
+        --------
+        >>> folder = '/2019-05-31-13-13-52/'
+        >>> data = dataset.log_read_raw_data(folder = folder)
+        >>> data.shape
+
+
         """
         raw_data = genfromtxt(folder + 'experiment.log', delimiter = ',', skip_header = 2)
         data = self.combine_log_entries(data)
@@ -97,7 +148,26 @@ class Dataset():
 
     def load_pickled_log(self, folder):
         """
-        reads pickled file from the folder and
+        checks if the pickle file exist and loads it
+
+        Parameters
+        ----------
+        folder: string
+            folder name
+
+        Returns
+        -------
+        data : numpy array
+            data to append
+
+        -------
+        Examples
+        --------
+        >>> folder = '/2019-05-31-13-13-52/'
+        >>> data = dataset.log_read_raw_data(folder = folder)
+        >>> data.shape
+
+
         """
         with open(self.folder + 'experiment.pickle', 'rb') as file:
             log_data = pickle.load(file)
