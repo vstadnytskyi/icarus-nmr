@@ -3,6 +3,7 @@ Usage
 =====
 
 Start by importing Icarus Pressure Jump for NMR.
+
 .. code-block:: python
 
   from icarus_nmr import analysis
