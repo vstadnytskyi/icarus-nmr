@@ -78,16 +78,21 @@ class Dataset():
     def dump_to_pickle_file(self, data = None):
         """
         pickles data and puts it on the drive. the default name is experiment.pickle (similar to original experiment.log)
+
+
         Parameters
         ----------
-        data : numpy array
+        data: numpy array
             data to append
+
         Returns
         -------
+
         Examples
         --------
         >>> dataset = Dataset()
         >>> dataset.dump_to_pickle_file(data)
+
         """
         from pickle import dump, HIGHEST_PROTOCOL
         if data is not None:
@@ -96,9 +101,8 @@ class Dataset():
 
     def log_read_header(self, folder):
         """
-        looks for experiment.log file in the specified folder. Reads it and returns header.
+        looks for experiment.log file in the specified folder. Reads it and returns header. The typical folder name is /YEAR-MM-DD-hh-mm-ss, where MM - month, DD - day, hh - hours(24 hours), mm-minutes, ss-seconds
 
-        The typical folder name is /YEAR-MM-DD-hh-mm-ss, where MM - month, DD - day, hh - hours(24 hours), mm-minutes, ss-seconds
         Parameters
         ----------
         folder: string
@@ -106,9 +110,9 @@ class Dataset():
 
         Returns
         -------
-        data : numpy array
+        data: numpy array
             data to append
-        -------
+
         Examples
         --------
         >>> dataset = Dataset()
@@ -127,6 +131,7 @@ class Dataset():
     def log_read_raw_data(self, folder):
         """
         looks for experiment.log file in the specified folder. Reads it and returns data as numpy array. The typical folder name is /YEAR-MM-DD-hh-mm-ss, where MM - month, DD - day, hh - hours(24 hours), mm-minutes, ss-seconds
+
         Parameters
         ----------
         folder: string
@@ -134,9 +139,9 @@ class Dataset():
 
         Returns
         -------
-        data : numpy array
+        data: numpy array
             data to append
-        -------
+
         Examples
         --------
         >>> folder = '/2019-05-31-13-13-52/'
@@ -160,15 +165,15 @@ class Dataset():
 
         Returns
         -------
-        data : numpy array
+        data: numpy array
             data to append
 
-        -------
         Examples
         --------
         >>> folder = '/2019-05-31-13-13-52/'
         >>> data = dataset.log_read_raw_data(folder = folder)
         >>> data.shape
+
         """
         with open(self.folder + 'experiment.pickle', 'rb') as file:
             log_data = pickle.load(file)
