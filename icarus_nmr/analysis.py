@@ -75,7 +75,7 @@ class Dataset():
         dt = t2-t1
         print('Init of Dataset from folder = {} has status {}. It took {} seconds.'.format(self.folder,self.is_init_done,dt))
 
-    def dump_to_pickle_file(self.data = None):
+    def dump_to_pickle_file(self, data = None):
         """
         pickles data and puts it on the drive. the default name is experiment.pickle (similar to original experiment.log)
         Parameters
@@ -86,6 +86,7 @@ class Dataset():
         -------
         Examples
         --------
+        >>> dataset = Dataset()
         >>> dataset.dump_to_pickle_file(data)
         """
         from pickle import dump, HIGHEST_PROTOCOL
@@ -110,11 +111,13 @@ class Dataset():
         -------
         Examples
         --------
+        >>> dataset = Dataset()
         >>> folder = '/2019-05-31-13-13-52/'
         >>> header = dataset.log_read_header(folder = folder)
         >>> header
 
         """
+        header = ""
         with open(folder + 'experiment.log', "r") as f:
             a = f.readline()
             a = f.readline().replace('b','').replace('\n','').replace(' ','').replace("'","")
@@ -166,8 +169,6 @@ class Dataset():
         >>> folder = '/2019-05-31-13-13-52/'
         >>> data = dataset.log_read_raw_data(folder = folder)
         >>> data.shape
-
-
         """
         with open(self.folder + 'experiment.pickle', 'rb') as file:
             log_data = pickle.load(file)
