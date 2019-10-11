@@ -33,7 +33,6 @@ class Dataset():
         """
         ### Log folder related
         self.folder = folder #the pointer at the log folder
-
         ###Log file related
         self.log_header = None #the header retrieved from experiment.log
         self.log_data = None
@@ -44,7 +43,6 @@ class Dataset():
         self.trace_length = {'pre':None, 'depre':None, 'period': None, 'pump':None, 'meanbit3': None, 'cooling': None}
         #a dictionary of lists of different trace types.
         self.trace_lists = {'pre':None, 'depre':None, 'period': None, 'pump':None, 'meanbit3': None, 'cooling': None}
-
         #auxiliary variables
         self.i = 0
         if folder is not None:
