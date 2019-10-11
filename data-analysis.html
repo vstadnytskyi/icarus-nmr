@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Data Analysis &mdash; Icarus Pressure Jump for NMR 0.0.2 documentation</title>
+  <title>Data Analysis &mdash; Icarus Pressure Jump for NMR 0.0.2.post3+g77dbc53 documentation</title>
   
 
   
@@ -63,7 +63,7 @@
             
             
               <div class="version">
-                0.0.2
+                0.0.2.post3+g77dbc53
               </div>
             
           
@@ -200,6 +200,33 @@
 <p class="rubric">Examples</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span><span class="o">.</span><span class="n">dump_to_pickle_file</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="icarus_nmr.analysis.Dataset.get_trace">
+<code class="sig-name descname">get_trace</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">period=0</em>, <em class="sig-param">type=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/analysis.html#Dataset.get_trace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#icarus_nmr.analysis.Dataset.get_trace" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns the trace numpy array from /buffer_files/</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>period: integer</strong></dt><dd><p>period index number</p>
+</dd>
+<dt><strong>type: string</strong></dt><dd><p>type of buffer file (pre,depre,pump,cooling, etc)</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>data: numpy array</dt><dd><p>data to append</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">get_trace</span><span class="p">(</span><span class="n">period</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="nb">type</span> <span class="o">=</span> <span class="s1">&#39;pump&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">shape</span>
 </pre></div>
 </div>
 </dd></dl>
