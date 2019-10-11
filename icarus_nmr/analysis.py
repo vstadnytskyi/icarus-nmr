@@ -22,12 +22,12 @@ import os
 import pickle
 
 class Dataset():
-    def __init__(self):
+    def __init__(self, folder = None):
         """
         initializes Dataset class
         """
         ### Log folder related
-        self.folder = None #the pointer at the log folder
+        self.folder = folder #the pointer at the log folder
 
         ###Log file related
         self.log_header = None #the header retrieved from experiment.log
@@ -42,6 +42,8 @@ class Dataset():
 
         #auxiliry variables
         self.i = 0
+        if folder is not None:
+            self.init()
 
     def init(self):
         from time import time
