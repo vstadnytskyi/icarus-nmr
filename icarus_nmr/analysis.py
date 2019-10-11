@@ -24,7 +24,12 @@ import pickle
 class Dataset():
     def __init__(self, folder = None):
         """
-        initializes Dataset class
+
+        :param folder: folder, defaults to None
+        :type folder: str
+        :param log_header: log_header, defaults to None
+        :type log_header: list
+
         """
         ### Log folder related
         self.folder = folder #the pointer at the log folder
@@ -40,7 +45,7 @@ class Dataset():
         #a dictionary of lists of different trace types.
         self.trace_lists = {'pre':None, 'depre':None, 'period': None, 'pump':None, 'meanbit3': None, 'cooling': None}
 
-        #auxiliry variables
+        #auxiliary variables
         self.i = 0
         if folder is not None:
             self.init()
@@ -238,6 +243,26 @@ class Dataset():
         return vector
 
     def get_trace(self,period = 0, type = ''):
+        """
+        returns the trace numpy array from /buffer_files/
+
+        Parameters
+        ----------
+        period: integer
+            period index number
+        type: string
+            type of buffer file (pre,depre,pump,cooling, etc)
+
+        Returns
+        -------
+        data: numpy array
+            data to append
+
+        Examples
+        --------
+        >>> data = dataset.get_trace(period = 2, type = 'pump')
+        >>> data.shape
+        """
         import os
         from numpy import genfromtxt, transpose
         filename = 'some_nonexisting_file.x'
