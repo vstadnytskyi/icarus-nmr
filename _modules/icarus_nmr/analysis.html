@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>icarus_nmr.analysis &mdash; Icarus Pressure Jump for NMR 0.0.1.post8+gc2a9956 documentation</title>
+  <title>icarus_nmr.analysis &mdash; Icarus Pressure Jump for NMR 0.0.1.post9+g8c7f6fd documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.0.1.post8+gc2a9956
+                0.0.1.post9+g8c7f6fd
               </div>
             
           
@@ -179,12 +179,12 @@
 <span class="kn">import</span> <span class="nn">pickle</span>
 
 <div class="viewcode-block" id="Dataset"><a class="viewcode-back" href="../../data-analysis.html#icarus_nmr.analysis.Dataset">[docs]</a><span class="k">class</span> <span class="nc">Dataset</span><span class="p">():</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">folder</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        initializes Dataset class</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1">### Log folder related</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">folder</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1">#the pointer at the log folder</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">folder</span> <span class="o">=</span> <span class="n">folder</span> <span class="c1">#the pointer at the log folder</span>
 
         <span class="c1">###Log file related</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">log_header</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1">#the header retrieved from experiment.log</span>
@@ -199,6 +199,8 @@
 
         <span class="c1">#auxiliry variables</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="n">folder</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="kn">from</span> <span class="nn">time</span> <span class="k">import</span> <span class="n">time</span>
