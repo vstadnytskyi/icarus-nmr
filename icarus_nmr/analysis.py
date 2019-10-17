@@ -20,6 +20,7 @@ from matplotlib import pyplot as plt
 from numpy import gradient, transpose, genfromtxt, nanmean, argwhere, where, nan, isnan, asarray
 import os
 import pickle
+from logging import debug, info, warn, error
 
 class Dataset():
     def __init__(self, folder = None):
@@ -36,6 +37,7 @@ class Dataset():
         ###Log file related
         self.log_header = None #the header retrieved from experiment.log
         self.log_data = None
+        self.log_raw_data = None
         self.log_length = 0
         self.description = ''
         #Traces
@@ -66,11 +68,11 @@ class Dataset():
             #check if pickle file exist and load it
             if os.path.exists(self.folder + 'experiment.pickle'):
                 print('the experiment.pickle file in the folder {} was detected and will be uploaded'.format(self.folder))
-                self.log_data = self.load_pickled_log(self.folder)
+                self.log_data,self.log_raw_data = self.load_pickled_log(self.folder)
             else:
                 info('the pickle file in the folder {} was NOT detected and the processing of the raw .log file is initiated'.format(self.folder))
-                self.log_data = self.log_read_raw_data(self.folder)
-                self.dump_to_picle_file(self.log_data)
+                self.log_data, self.log_raw_data = self.log_read_raw_data(self.folder)
+                self.dump_to_pickle_file((self.log_data,self.log_raw_data))
             self.log_length = self.log_data.shape[0]
             self.is_init_done = True
         else:
@@ -96,13 +98,13 @@ class Dataset():
         Examples
         --------
         >>> dataset = Dataset()
-        >>> dataset.dump_to_pickle_file(data)
+        >>> dataset.dump_to_pickle_file(data = data)
 
         """
         from pickle import dump, HIGHEST_PROTOCOL
         if data is not None:
-            with open(self.folder + 'experiment.pickle', 'wb') as handle:
-                dump(self.log_data, handle, protocol=HIGHEST_PROTOCOL)
+            with open(self.folder + 'experiment.pickle', 'wb') as file:
+                dump(obj = data, file = file, protocol=HIGHEST_PROTOCOL)
 
     def log_read_header(self, folder):
         """
@@ -135,6 +137,8 @@ class Dataset():
 
     def log_read_raw_data(self, folder):
         """
+        converts raw log file data to collapsed 2D numpy array where every entry corresponds to one period. The time stamp on the period will be taken from the period event, which is defined elsewhere.
+
         looks for experiment.log file in the specified folder. Reads it and returns data as numpy array. The typical folder name is /YEAR-MM-DD-hh-mm-ss, where MM - month, DD - day, hh - hours(24 hours), mm-minutes, ss-seconds
 
         Parameters
@@ -152,12 +156,10 @@ class Dataset():
         >>> folder = '/2019-05-31-13-13-52/'
         >>> data = dataset.log_read_raw_data(folder = folder)
         >>> data.shape
-
-
         """
         raw_data = genfromtxt(folder + 'experiment.log', delimiter = ',', skip_header = 2)
-        data = self.combine_log_entries(data)
-        return data
+        data = self.combine_log_entries(raw_data)
+        return data, raw_data
 
     def load_pickled_log(self, folder):
         """
@@ -209,17 +211,38 @@ class Dataset():
                 i+=1
         return dic
 
-    def combine_log_entries(self,data):
+    def combine_log_entries(self,raw_data):
         """
-        combines all entries associated with one period in one entry.
+        combines all entries associated with one period in one entry.       converts raw log file data to collapsed 2D numpy array where every entry corresponds to one period. The time stamp on the period will be taken from the period event, which is defined elsewhere.
+
+        Parameters
+        ----------
+        raw_data: numpy array
+            raw data from original log file
+
+        Returns
+        -------
+        data: numpy array
+            compressed data
+
+        Examples
+        --------
+        >>> folder = '/2019-05-31-13-13-52/'
+        >>> raw_data = genfromtxt(folder + 'experiment.log', delimiter = ',', skip_header = 2)
+        >>> data = dataset.combine_log_entries(raw_data)
+        >>> data.shape
+
         """
-        max_period = int(max(history_log[:,2]))
+        #find the max period
+        max_period = int(max(raw_data[:,2]))
         data = []
+        #step thpought every period index and every entry in the header
         for i in list(range(max_period+1)):
             self.i = i
             temp = []
             for j in range(len(self.log_header)):
-                value = data[where(raw_data[:,2] == i),:][:,:,j][~isnan(raw_data[where(raw_data[:,2] == i),:][:,:,j])]
+                #col = 2 is period index
+                value = raw_data[where(raw_data[:,2] == i),:][:,:,j][~isnan(raw_data[where(raw_data[:,2] == i),:][:,:,j])]
                 if len(value) == 1:
                     temp.append(float(raw_data[where(raw_data[:,2] == i),:][:,:,j][~isnan(raw_data[where(raw_data[:,2] == i),:][:,:,j])]))
                 elif len(value) == 0:
@@ -274,6 +297,39 @@ class Dataset():
         else:
             data = None
         return data
+
+
+    def plot_trace(self,type = None, period = None, show = False):
+        """
+        returns matplotlib figure object of a trace of selected type and period. Returns None if tracefile doesn't exist.
+
+        Parameters
+        ----------
+        type: string
+            type of buffer file (pre,depre,pump,cooling, etc)
+        period: integer
+            period index number
+        show: boolean
+            optional plot show flag
+
+
+        Returns
+        -------
+        object: matplotlib object
+            matplotlib object
+
+        Examples
+        --------
+        >>> data = dataset.get_trace(period = 2, type = 'pump')
+        >>> data.shape
+        """
+        from matplotlib import pyplot as plt
+        if period is not None and type is not None:
+            data = self.get_trace(type = type, period = period)
+            
+        else:
+            return None
+
 
 if __name__ == '__main__':
     import unittest
