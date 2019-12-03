@@ -51,9 +51,32 @@ class MockTest(unittest.TestCase):
         self.assertEqual(data[9].mean(),127.0)
         self.assertEqual(data[9].std(), 0.0)
 
+    def test_set_digital(self):
+        from ..mock_driver import Driver
+        driver = Driver()
+        driver.init()
+        driver.start_scan()
+        data, flag = driver.get_readings(512)
+        self.assertEqual(data[9].mean(),127.0)
+
+        driver.set_digital(126)
+        data, flag = driver.get_readings(512)
+        self.assertEqual(data[9].mean(),126.0)
+
+        driver.set_digital(122)
+        data, flag = driver.get_readings(512)
+        self.assertEqual(data[9].mean(),122.0)
 
 
-
+    def test_get_pre_trace(self):
+        from ..mock_driver import Driver
+        driver = Driver()
+        driver.init()
+        driver.start_scan()
+        trace = driver.get_pre_trace()
+        self.assertEqual(trace.shape,(10, 333))
+        self.assertEqual(trace[5,0] < 6000.0,True)
+        self.assertEqual(trace[5,-1] < 6000.0,False)
 
 
     # def test_1(self):

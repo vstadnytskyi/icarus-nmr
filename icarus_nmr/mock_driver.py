@@ -34,20 +34,6 @@ mock_commands['led 4 \r'] = 'led 4 \r'
 mock_commands['led 5 \r'] = 'led 5 \r'
 
 
-lst_pre = []
-lst_depre = []
-lst_pump = []
-
-for item in os.listdir('icarus_nmr/mock_driver/'):
-    if '_pre.' in item:
-        lst_pre.append('icarus_nmr/mock_driver/' + item)
-for item in os.listdir('icarus_nmr/mock_driver/'):
-    if '_depre.' in item:
-        lst_depre.append('icarus_nmr/mock_driver/'+item)
-for item in os.listdir('icarus_nmr/mock_driver/'):
-    if '_pump.' in item:
-        lst_pump.append('icarus_nmr/mock_driver/'+item)
-
 class Driver(object):
     def __init__(self):
         self.available_ports = []
@@ -57,7 +43,7 @@ class Driver(object):
         self.sim_digital = 127
         self.sim_last_read = time()
         self.sim_pressure_state = 1
-        self.pump_freq = 0.99995
+        self.pump_freq = 1#0.99995
         self.sim_slow_leak_start_time = time()
         self.sim_slow_leak_tau = 60000
 
@@ -356,6 +342,7 @@ class Driver(object):
         to_read = (int(to_read_analog)+int(to_read_digital)*2)
         res = zeros((to_read,points_to_read),dtype = 'int16')
         t1 = time()
+        k=0
         for j in range(points_to_read):
             ###pump event handler
             if self.sim_pump_event_flag:
@@ -401,13 +388,12 @@ class Driver(object):
             for i in [5,6]:
                 res[i,j] = random.normal(self.sim_analog[i]*self.slow_leak(),self.sim_analog_std[i],1)[0]
             res[9,j] = self.sim_digital
-        t2 = time()
-        dt = points_to_read/4000.0
-        if t2-t1 <dt:
-            sleep(dt - (t2-t1))
 
-
-
+            # this section simulates continous data generation. It will sleep for ~16 ms every 64 points.
+            k+=1
+            if k >= 64:
+                sleep(64/4000.0)
+                k = 0
         flag = True
         return res, flag #(analog_data,digital_data)
 
@@ -416,11 +402,11 @@ class Driver(object):
 
 # Supporting
     def get_pre_trace(self):
-        from numpy import genfromtxt, arange, zeros
+        from numpy import arange, zeros
         import random
         from ubcs_auxiliary.save_load_object import load_from_file as load
-        N = int(random.uniform(0,len(lst_pre)-1))
-        spl_list = load(lst_pre[N])
+        N = int(random.uniform(0,len(self.lst_pre)-1))
+        spl_list = load(self.lst_pre[N])
         x = arange(0,333,1)*0.25
         data = zeros((10,333))
 
