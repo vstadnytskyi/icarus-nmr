@@ -16,7 +16,6 @@ and 3 files
 - experiment_parameters.log - a dump of all variable from all modules mostly for debugging purposes.
 """
 
-from matplotlib import pyplot as plt
 from numpy import gradient, transpose, genfromtxt, nanmean, argwhere, where, nan, isnan, asarray
 import os
 import pickle
@@ -66,13 +65,8 @@ class Dataset():
             #get log_header
             self.log_header = self.log_read_header(self.folder)
             #check if pickle file exist and load it
-            if os.path.exists(self.folder + 'experiment.pickle'):
-                print('the experiment.pickle file in the folder {} was detected and will be uploaded'.format(self.folder))
-                self.log_data,self.log_raw_data = self.load_pickled_log(self.folder)
-            else:
-                info('the pickle file in the folder {} was NOT detected and the processing of the raw .log file is initiated'.format(self.folder))
-                self.log_data, self.log_raw_data = self.log_read_raw_data(self.folder)
-                self.dump_to_pickle_file((self.log_data,self.log_raw_data))
+            self.log_rawdata,self.log_data = self.log_read_file(self.folder)
+
             self.log_length = self.log_data.shape[0]
             self.is_init_done = True
         else:
@@ -82,29 +76,29 @@ class Dataset():
         dt = t2-t1
         print('Init of Dataset from folder = {} has status {}. It took {} seconds.'.format(self.folder,self.is_init_done,dt))
 
-    def dump_to_pickle_file(self, data = None):
-        """
-        pickles data and puts it on the drive. the default name is experiment.pickle (similar to original experiment.log)
-
-
-        Parameters
-        ----------
-        data: numpy array
-            data to append
-
-        Returns
-        -------
-
-        Examples
-        --------
-        >>> dataset = Dataset()
-        >>> dataset.dump_to_pickle_file(data = data)
-
-        """
-        from pickle import dump, HIGHEST_PROTOCOL
-        if data is not None:
-            with open(self.folder + 'experiment.pickle', 'wb') as file:
-                dump(obj = data, file = file, protocol=HIGHEST_PROTOCOL)
+    # def dump_to_pickle_file(self, data = None):
+    #     """
+    #     pickles data and puts it on the drive. the default name is experiment.pickle (similar to original experiment.log)
+    #
+    #
+    #     Parameters
+    #     ----------
+    #     data: numpy array
+    #         data to append
+    #
+    #     Returns
+    #     -------
+    #
+    #     Examples
+    #     --------
+    #     >>> dataset = Dataset()
+    #     >>> dataset.dump_to_pickle_file(data = data)
+    #
+    #     """
+    #     from pickle import dump, HIGHEST_PROTOCOL
+    #     if data is not None:
+    #         with open(self.folder + 'experiment.pickle', 'wb') as file:
+    #             dump(obj = data, file = file, protocol=HIGHEST_PROTOCOL)
 
     def log_read_header(self, folder):
         """
@@ -131,11 +125,12 @@ class Dataset():
         header = ""
         with open(folder + 'experiment.log', "r") as f:
             a = f.readline()
-            a = f.readline().replace('b','').replace('\n','').replace(' ','').replace("'","")
-            header = a.split(',')
+            a = f.readline()
+        header = a.replace("b'","").replace("'","").replace("\n","").replace(" ","").split(',')
+
         return header
 
-    def log_read_raw_data(self, folder):
+    def log_read_file(self, folder):
         """
         converts raw log file data to collapsed 2D numpy array where every entry corresponds to one period. The time stamp on the period will be taken from the period event, which is defined elsewhere.
 
@@ -154,14 +149,28 @@ class Dataset():
         Examples
         --------
         >>> folder = '/2019-05-31-13-13-52/'
-        >>> data = dataset.log_read_raw_data(folder = folder)
+        >>> raw_data, data = dataset.log_read_file(folder = folder)
+        >>> raw_data.shape
+        (980, 37)
         >>> data.shape
-        """
-        raw_data = genfromtxt(folder + 'experiment.log', delimiter = ',', skip_header = 2)
-        data = self.combine_log_entries(raw_data)
-        return data, raw_data
+        (403, 37)
 
-    def load_pickled_log(self, folder):
+        """
+        from os.path import exists
+        raw_data = genfromtxt(folder + 'experiment.log', delimiter = ',', skip_header = 2)
+        if exists(folder + 'experiment.pickle'):
+            print('the experiment.pickle file in the folder {} was detected and will be uploaded'.format(folder))
+            # read processed data from .pickle file
+            data = self.log_load_pickle_file(folder)
+
+        else:
+            info('the pickle file in the folder {} was NOT detected and the processing of the raw .log file is initiated'.format(folder))
+            data =  self.combine_log_entries(raw_data)
+            self.dump_to_pickle_file(data)
+
+        return raw_data, data
+
+    def log_load_pickle_file(self, folder):
         """
         checks if the pickle file exist and loads it
 
@@ -174,6 +183,8 @@ class Dataset():
         -------
         data: numpy array
             data to append
+        rawdata: numpy array
+            data to append
 
         Examples
         --------
@@ -182,9 +193,34 @@ class Dataset():
         >>> data.shape
 
         """
+        from pickle import load
         with open(self.folder + 'experiment.pickle', 'rb') as file:
-            log_data = pickle.load(file)
-        return log_data
+            data = load(file)
+        return data
+
+    def dump_to_pickle_file(self, obj = None):
+        """
+        pickles data and puts it on the drive. the default name is experiment.pickle (similar to original experiment.log)
+
+
+        Parameters
+        ----------
+        data: numpy array
+            data to append
+
+        Returns
+        -------
+
+        Examples
+        --------
+        >>> dataset = Dataset()
+        >>> dataset.dump_to_pickle_file(data = data)
+
+        """
+        from pickle import dump, HIGHEST_PROTOCOL
+        if obj is not None:
+            with open(self.folder + 'experiment.pickle', 'wb') as file:
+                dump(obj = obj, file = file, protocol=HIGHEST_PROTOCOL)
 
     def get_lst(self,folder = '', type = 'cooling'):
         from numpy import genfromtxt
@@ -198,18 +234,6 @@ class Dataset():
                 temp_lst.append(t_lst)
         lst2 = sorted(temp_lst, key=lambda x: int(x[1]))
         return lst2
-
-
-
-    def get_history_log(self):
-        history_log= genfromtxt(self.folder + 'experiment.log', delimiter = ',', skip_header = 2)
-        dic = {} #create dictionary
-        i = 0
-        for key in self.log_header:
-            if key != "":
-                dic[key] = history_log[:,i]
-                i+=1
-        return dic
 
     def combine_log_entries(self,raw_data):
         """
@@ -257,7 +281,7 @@ class Dataset():
         try:
             idx = self.log_header.index(param)
         except:
-            print("param %r doesn't exist" %param)
+            print(f"param {param} doesn't exist")
             idx = None
         if not None:
             vector = self.period[:,idx]
@@ -324,22 +348,53 @@ class Dataset():
         >>> data.shape
         """
         from matplotlib import pyplot as plt
+
+        # fetch the data from the /buffers/ folder.
         if period is not None and type is not None:
             data = self.get_trace(type = type, period = period)
-            
+            if data is not None:
+                pass
+            else:
+                pass
         else:
             return None
 
+    def plot_log(self, type = None):
+        """
+        returns matplotlib figure object of a trace of selected type and period. Returns None if tracefile doesn't exist.
+
+        Parameters
+        ----------
+        type: string
+            type of buffer file (pre,depre,pump,cooling, etc)
+        period: integer
+            period index number
+        show: boolean
+            optional plot show flag
+
+
+        Returns
+        -------
+        object: matplotlib object
+            matplotlib object
+
+        Examples
+        --------
+        >>> data = dataset.plot_log(type = 'all')
+        >>> data.shape
+        """
+
+def get_test_folder():
+    from os.path import exists
+    folder = 'icarus_nmr/tests/test_dataset/'
+    if exists(folder):
+        return folder
+    else:
+        return None
+
 
 if __name__ == '__main__':
-    import unittest
     from pdb import pm
     import os
-    ##Examples of commands
-    ## to get a trace: dataset_1.get_trace(i,'pre') -> return a pressurization trace of all 10 channels at period i
-    ## to get a vector from log file for given parameter: dataset_1.get_log_vector(param = 'tSwitchDepressure_1')
-    main_folder = '/Volumes/C/Pressure-Jump-NMR/icarus-ii-50/'
-    folder = 'test_dataset/'
-    dataset = Dataset()
-    dataset.folder = folder
-    dataset.init()
+    folder = get_test_folder()
+    dataset = Dataset(folder)
