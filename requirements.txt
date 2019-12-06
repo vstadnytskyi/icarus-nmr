@@ -5,3 +5,4 @@ pyusb
 matplotlib
 circular_buffer_numpy
 ubcs-auxiliary
+scipy
