@@ -447,24 +447,24 @@ class Controls(ControlsTemplate):
 
 class DI4108_DL(XLevelTemplate):
     db = DataBase(root = 'TEMP', name = 'DI4108_DL')
-    pr_serial_number = SavedProperty('Serial Number', '00000').init()
-    pr_AI_channels = SavedProperty('Number of AI',8).init()
-    pr_DI_channels = SavedProperty('Number of DI',1).init()
-    pr_buffer_size = SavedProperty('circular buffer size',(10,2400000)).init()
-    pr_rate = SavedProperty('rate(Hz)', 4000).init()
-    pr_baserate = SavedProperty('baserate(Hz)', 20000).init()
-    pr_dec = SavedProperty('dec', 5).init()
-    pr_DOI_config = SavedProperty('DIO config', '1111111').init()
-    pr_DOI_set = SavedProperty('DIO set', '1111111').init()
-    pr_packet_size = SavedProperty('packet size', 64).init()
-    pr_packet_buffer_size = SavedProperty('pr_paket_buffer_size', 1000).init()
-    pr_os_buffer = SavedProperty('os_buffer', 12800).init()
-    pressure_sensor_offset = SavedProperty('pressure_sensor_offset',
+    pr_serial_number = SavedProperty(db,'Serial Number', '00000').init()
+    pr_AI_channels = SavedProperty(db,'Number of AI',8).init()
+    pr_DI_channels = SavedProperty(db,'Number of DI',1).init()
+    pr_buffer_size = SavedProperty(db,'circular buffer size',(10,2400000)).init()
+    pr_rate = SavedProperty(db,'rate(Hz)', 4000).init()
+    pr_baserate = SavedProperty(db,'baserate(Hz)', 20000).init()
+    pr_dec = SavedProperty(db,'dec', 5).init()
+    pr_DOI_config = SavedProperty(db,'DIO config', '1111111').init()
+    pr_DOI_set = SavedProperty(db,'DIO set', '1111111').init()
+    pr_packet_size = SavedProperty(db,'packet size', 64).init()
+    pr_packet_buffer_size = SavedProperty(db,'pr_paket_buffer_size', 1000).init()
+    pr_os_buffer = SavedProperty(db,'os_buffer', 12800).init()
+    pressure_sensor_offset = SavedProperty(db,'pressure_sensor_offset',
                                                [69.5595, 65.562, 68.881375, 84.2195, 86.96075, 17.248, 17.322, 0]).init() # value read at atmoshperic pressure
-    pg_period = SavedProperty('pg_period', 5.0).init()
-    pg_pre_pulse_width = SavedProperty('pg_pre_pulse_width', 0.1).init()
-    pg_depre_pulse_width = SavedProperty('pg_depre_pulse_width', 0.1).init()
-    pg_delay_width = SavedProperty('pg_delay_width', 0.5).init()
+    pg_period = SavedProperty(db,'pg_period', 5.0).init()
+    pg_pre_pulse_width = SavedProperty(db,'pg_pre_pulse_width', 0.1).init()
+    pg_depre_pulse_width = SavedProperty(db,'pg_depre_pulse_width', 0.1).init()
+    pg_delay_width = SavedProperty(db,'pg_delay_width', 0.5).init()
     trigger_mode = 0
     DIO_default = 126
 
@@ -1274,9 +1274,9 @@ except:
     first_arg = 'simulator'
 
 if first_arg == 'device':
-    from XLI.drivers.DI4108.DI4108_BULK_driver import driver
+    from icarus_nmr.usb_buld_driver import driver
 elif first_arg == 'simulator':
-    from XLI.drivers.DI4108.DI4108_SIMULATOR_driver import driver
+    from icarus_nmr.mock_driver import driver
 
 
 
@@ -1299,7 +1299,7 @@ if __name__ == "__main__": #for testing
     pulse_generator = Pulse_Generator()
     pulse_generator.start()
 
-    from XLI.server_LL import Server_LL
+    from ubcs_auxiliary.XLI.server import Server_LL
     server = Server_LL()
     server.init_server(name = 'icarus-DL')
     server.commands[b'init'] = icarus_dl.init
