@@ -52,16 +52,16 @@ class Driver(object):
         self.lst_pre = []
         self.lst_depre = []
         self.lst_pump = []
-
-        for item in os.listdir('icarus_nmr/mock_driver/'):
+        test_data_root = './icarus_nmr/test_data/'
+        for item in os.listdir(test_data_root+'mock_driver/'):
             if '_pre.' in item:
-                self.lst_pre.append('icarus_nmr/mock_driver/' + item)
-        for item in os.listdir('icarus_nmr/mock_driver/'):
+                self.lst_pre.append(test_data_root+'mock_driver/' + item)
+        for item in os.listdir(test_data_root+'mock_driver/'):
             if '_depre.' in item:
-                self.lst_depre.append('icarus_nmr/mock_driver/'+item)
-        for item in os.listdir('icarus_nmr/mock_driver/'):
+                self.lst_depre.append(test_data_root+'mock_driver/'+item)
+        for item in os.listdir(test_data_root+'mock_driver/'):
             if '_pump.' in item:
-                self.lst_pump.append('icarus_nmr/mock_driver/'+item)
+                self.lst_pump.append(test_data_root+'mock_driver/'+item)
 
     def init(self):
         self.discover()
@@ -491,117 +491,117 @@ class Driver(object):
         return exp(t = time()-self.sim_slow_leak_start_time, amp = 1, tau = self.sim_slow_leak_tau)
 
 
-    """Test functions"""
-    def self_test(self):
-        self.inquire('led 7\r')
-        self.tau = 0.001
-        #dictionary with device parameters such as S\N, device name, ect
-        self.dict = {}
-        self.dict['Device name'] = self.inquire('info 1 \r').split('info 1 ')[1][:-2]
-        self.dict['Firmware version'] = self.inquire('info 2 \r').split('info 2 ')[1][:-2]
-        self.dict['Serial Number'] = self.inquire('info 6 \r').split('info 6 ')[1][:-2]
-        self.dict['Sample Rate Divisor'] = self.inquire('info 9 \r').split('info 9 ')[1][:-2]
-        #Useful variables
-        #wait time after write (before) read. This seems to be not necessary.
-        for i in self.dict.keys():
-            print('%r, %r' % (i, self.dict[i]))
-        print('information request complete: the DI-4108 with SN %r' %self.dict['Serial Number'])
-        print('%r' % self.inquire('led 2\r'))
-
-    def test1(self):
-        self.self_test()
-        self.config_channels()
-
-        self.start_scan()
-        while self._waiting()[0] <1:
-            sleep(0.001)
-        start_t = time()
-        while time()-start_t<2:
-            print("%0.5f %r %r" % (time()-start_t,self._waiting()[0],self.get_readings()))
-        self.stop_scan()
-        print('test 1 is Done. IN buffer has all data')
-        print('data = dev.get_readings()')
-        print('buffer waiting %r' % self._waiting()[0])
-
-    def test2(self):
-        self.self_test()
-        self.config_channels()
-        self.start_scan()
-        sleep(6)
-        self.stop_scan()
-        sleep(1)
-        while self._waiting()[0]>5:
-            print('time %r and value %r'% (time(),self.get_readings()))
-        print('test 2 is Done')
-
-    def test3(self):
-        self.self_test()
-        self.config_channels()
-        self.start_scan()
-        sleep(6)
-        self.stop_scan()
-        print(self.waiting())
-        sleep(1)
-        while self.waiting()[0]>5:
-            print(self.waiting()[0])
-            print(self.get_readings())
-        print('test 2 is Done')
-
-
-    def echo_test1(self):
-        self.config_channels()
-        self.start_scan()
-        while self.waiting()[0] <1:
-            sleep(0.001)
-        start_t = time()
-        while time()- start_t <1:
-            self.write('dout 0\r')
-            self.write('dout 127 \r')
-            sleep(0.06)
-        self.stop_scan()
-        print("%r" % self._waiting()[0])
-        data = self.readall()
-        print('%r' % data)
-
-    def performance_test1(self):
-        self.self_test()
-        self.config_channels()
-
-        self.start_scan()
-        while self.waiting()[0] <10000:
-            sleep(0.001)
-        start_t = time()
-        self.stop_scan()
-
-        print('test 1 is Done. IN buffer has all data')
-        print('data = dev.get_readings(10)')
-        print('buffer waiting %r' % self._waiting()[0])
-        print('t = Timer(lambda: dev.get_readings(N))')
-        print('print t.timeit(number = M)')
-
-    def performance_test2(self):
-        self.self_test()
-        self.config_channels()
-
-        self.start_scan()
-        start_t = time()
-        self.lst = []
-        time_st = time()
-        while time()-start_t<10:
-            if self._waiting()[0]> 512*16:
-                data = self.get_readings(512)
-                self.lst.append([time()-start_t,self._waiting()[0],(time() - time_st)*1000])
-                print("%r %0.10f" % (self._waiting()[0], (time() - time_st)*1000))
-            sleep(24/1000) #wait for 12.8 ms
-        start_t = time()
-        self.stop_scan()
-        print('time between 4 kS = %0.5f' % mean(10.0/len(self.lst)))
-        print('Sampling rate: %0.1f' % (512/mean(10.0/len(self.lst))))
-        print('test 1 is Done. IN buffer has all data')
-        print('data = dev.get_readings(10)')
-        print('buffer waiting %r' % self._waiting()[0])
-        print('t = Timer(lambda: dev.get_readings(N))')
-        print('print t.timeit(number = M)')
+    # """Test functions"""
+    # def self_test(self):
+    #     self.inquire('led 7\r')
+    #     self.tau = 0.001
+    #     #dictionary with device parameters such as S\N, device name, ect
+    #     self.dict = {}
+    #     self.dict['Device name'] = self.inquire('info 1 \r').split('info 1 ')[1][:-2]
+    #     self.dict['Firmware version'] = self.inquire('info 2 \r').split('info 2 ')[1][:-2]
+    #     self.dict['Serial Number'] = self.inquire('info 6 \r').split('info 6 ')[1][:-2]
+    #     self.dict['Sample Rate Divisor'] = self.inquire('info 9 \r').split('info 9 ')[1][:-2]
+    #     #Useful variables
+    #     #wait time after write (before) read. This seems to be not necessary.
+    #     for i in self.dict.keys():
+    #         print('%r, %r' % (i, self.dict[i]))
+    #     print('information request complete: the DI-4108 with SN %r' %self.dict['Serial Number'])
+    #     print('%r' % self.inquire('led 2\r'))
+    #
+    # def test1(self):
+    #     self.self_test()
+    #     self.config_channels()
+    #
+    #     self.start_scan()
+    #     while self._waiting()[0] <1:
+    #         sleep(0.001)
+    #     start_t = time()
+    #     while time()-start_t<2:
+    #         print("%0.5f %r %r" % (time()-start_t,self._waiting()[0],self.get_readings()))
+    #     self.stop_scan()
+    #     print('test 1 is Done. IN buffer has all data')
+    #     print('data = dev.get_readings()')
+    #     print('buffer waiting %r' % self._waiting()[0])
+    #
+    # def test2(self):
+    #     self.self_test()
+    #     self.config_channels()
+    #     self.start_scan()
+    #     sleep(6)
+    #     self.stop_scan()
+    #     sleep(1)
+    #     while self._waiting()[0]>5:
+    #         print('time %r and value %r'% (time(),self.get_readings()))
+    #     print('test 2 is Done')
+    #
+    # def test3(self):
+    #     self.self_test()
+    #     self.config_channels()
+    #     self.start_scan()
+    #     sleep(6)
+    #     self.stop_scan()
+    #     print(self.waiting())
+    #     sleep(1)
+    #     while self.waiting()[0]>5:
+    #         print(self.waiting()[0])
+    #         print(self.get_readings())
+    #     print('test 2 is Done')
+    #
+    #
+    # def echo_test1(self):
+    #     self.config_channels()
+    #     self.start_scan()
+    #     while self.waiting()[0] <1:
+    #         sleep(0.001)
+    #     start_t = time()
+    #     while time()- start_t <1:
+    #         self.write('dout 0\r')
+    #         self.write('dout 127 \r')
+    #         sleep(0.06)
+    #     self.stop_scan()
+    #     print("%r" % self._waiting()[0])
+    #     data = self.readall()
+    #     print('%r' % data)
+    #
+    # def performance_test1(self):
+    #     self.self_test()
+    #     self.config_channels()
+    #
+    #     self.start_scan()
+    #     while self.waiting()[0] <10000:
+    #         sleep(0.001)
+    #     start_t = time()
+    #     self.stop_scan()
+    #
+    #     print('test 1 is Done. IN buffer has all data')
+    #     print('data = dev.get_readings(10)')
+    #     print('buffer waiting %r' % self._waiting()[0])
+    #     print('t = Timer(lambda: dev.get_readings(N))')
+    #     print('print t.timeit(number = M)')
+    #
+    # def performance_test2(self):
+    #     self.self_test()
+    #     self.config_channels()
+    #
+    #     self.start_scan()
+    #     start_t = time()
+    #     self.lst = []
+    #     time_st = time()
+    #     while time()-start_t<10:
+    #         if self._waiting()[0]> 512*16:
+    #             data = self.get_readings(512)
+    #             self.lst.append([time()-start_t,self._waiting()[0],(time() - time_st)*1000])
+    #             print("%r %0.10f" % (self._waiting()[0], (time() - time_st)*1000))
+    #         sleep(24/1000) #wait for 12.8 ms
+    #     start_t = time()
+    #     self.stop_scan()
+    #     print('time between 4 kS = %0.5f' % mean(10.0/len(self.lst)))
+    #     print('Sampling rate: %0.1f' % (512/mean(10.0/len(self.lst))))
+    #     print('test 1 is Done. IN buffer has all data')
+    #     print('data = dev.get_readings(10)')
+    #     print('buffer waiting %r' % self._waiting()[0])
+    #     print('t = Timer(lambda: dev.get_readings(N))')
+    #     print('print t.timeit(number = M)')
 
 
 driver = Driver()

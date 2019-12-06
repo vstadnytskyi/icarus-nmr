@@ -74,9 +74,9 @@ class MockTest(unittest.TestCase):
         driver.init()
         driver.start_scan()
         trace = driver.get_pre_trace()
-        self.assertEqual(trace.shape,(10, 333))
-        self.assertEqual(trace[5,0] < 6000.0,True)
-        self.assertEqual(trace[5,-1] < 6000.0,False)
+        self.assertEqual(trace.shape, (10, 333))
+        self.assertEqual(trace[5,0]<6000.0, True)
+        self.assertEqual(trace[5,-1]<6000.0, False)
 
 
     # def test_1(self):

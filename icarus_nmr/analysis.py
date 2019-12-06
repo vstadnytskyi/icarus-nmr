@@ -386,7 +386,7 @@ class Dataset():
 
 def get_test_folder():
     from os.path import exists
-    folder = 'icarus_nmr/tests/test_dataset/'
+    folder = 'icarus_nmr/test_data/test_dataset/'
     if exists(folder):
         return folder
     else:

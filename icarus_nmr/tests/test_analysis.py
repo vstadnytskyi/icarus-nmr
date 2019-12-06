@@ -13,7 +13,7 @@ class QueueTest(unittest.TestCase):
     def test_get_test_folder(self):
         from icarus_nmr import analysis
         folder = analysis.get_test_folder()
-        self.assertEqual(folder, 'icarus_nmr/tests/test_dataset/')
+        self.assertEqual(folder, 'icarus_nmr/test_data/test_dataset/')
 
     def test_log_read_header(self):
         from icarus_nmr import analysis
