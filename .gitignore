@@ -53,7 +53,10 @@ coverage.xml
 
 # Django stuff:
 *.log
+
+#Data
 !experiment.log
+*.csv
 
 # Sphinx documentation
 docs/build/
