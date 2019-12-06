@@ -5,13 +5,12 @@ author: Valentyn Stadnytskyi
 
 from numpy import nan, mean, std, asarray, array, concatenate, \
      delete, round, vstack, hstack, zeros, transpose, split
-from time import time, sleep, clock
+from time import time, sleep
 import sys
 if sys.version_info[0] < 3:
     from time import clock
 else:
     from time import perf_counter as clock
-import sys
 import os.path
 import struct
 from pdb import pm

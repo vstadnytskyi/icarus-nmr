@@ -1,5 +1,10 @@
 import unittest
 from numpy.testing import assert_array_equal
+import sys
+if sys.version_info[0] < 3:
+    from time import clock
+else:
+    from time import perf_counter as clock
 
 class MockTest(unittest.TestCase):
     def test_get_hardware_information(self):
