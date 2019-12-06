@@ -1,4 +1,8 @@
 import unittest
+import os
+
+thisdir, thisfile = os.path.split(__file__)
+root = os.path.join(thisdir, 'test_data','test_dataset/')
 
 class QueueTest(unittest.TestCase):
 
@@ -10,20 +14,15 @@ class QueueTest(unittest.TestCase):
     def test_log_read_file(self):
         "Check that one and one are indeed two."
         from icarus_nmr import analysis
-        folder = analysis.get_test_folder()
+        folder = root
         dataset = analysis.Dataset(folder)
         raw_data, data = dataset.log_read_file(folder = folder)
         self.assertEqual(raw_data.shape, (980, 37))
         self.assertEqual(data.shape, (403, 37))
 
-    def test_get_test_folder(self):
-        from icarus_nmr import analysis
-        folder = analysis.get_test_folder()
-        self.assertEqual(folder, 'icarus_nmr/test_data/test_dataset/')
-
     def test_log_read_header(self):
         from icarus_nmr import analysis
-        folder = analysis.get_test_folder()
+        folder = root
         dataset = analysis.Dataset(folder)
         header = dataset.log_read_header(folder)
         lst = ['time',

@@ -384,13 +384,6 @@ class Dataset():
         >>> data.shape
         """
 
-def get_test_folder():
-    from os.path import exists
-    folder = 'icarus_nmr/test_data/test_dataset/'
-    if exists(folder):
-        return folder
-    else:
-        return None
 
 
 if __name__ == '__main__':

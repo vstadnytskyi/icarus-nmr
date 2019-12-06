@@ -7,6 +7,11 @@ from numpy import nan, mean, std, asarray, array, concatenate, \
      delete, round, vstack, hstack, zeros, transpose, split
 from time import time, sleep, clock
 import sys
+if sys.version_info[0] < 3:
+    from time import clock
+else:
+    from time import perf_counter as clock
+import sys
 import os.path
 import struct
 from pdb import pm
@@ -52,7 +57,7 @@ class Driver(object):
         self.lst_pre = []
         self.lst_depre = []
         self.lst_pump = []
-        test_data_root = './icarus_nmr/test_data/'
+        test_data_root = './icarus_nmr/tests/test_data/'
         for item in os.listdir(test_data_root+'mock_driver/'):
             if '_pre.' in item:
                 self.lst_pre.append(test_data_root+'mock_driver/' + item)
