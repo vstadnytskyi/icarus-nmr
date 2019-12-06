@@ -1,6 +1,12 @@
 import unittest
 
 class QueueTest(unittest.TestCase):
+
+    def test_log_read_file(self):
+        "Check that one and one are indeed two."
+        from os import getcwd
+        print(getcwd())
+
     def test_log_read_file(self):
         "Check that one and one are indeed two."
         from icarus_nmr import analysis
