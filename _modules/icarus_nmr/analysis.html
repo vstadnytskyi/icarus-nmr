@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>icarus_nmr.analysis &mdash; Icarus Pressure Jump for NMR 0.0.2.post7+g56fbac3 documentation</title>
+  <title>icarus_nmr.analysis &mdash; Icarus Pressure Jump for NMR 0.0.2.post21+gaface94 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.0.2.post7+g56fbac3
+                0.0.2.post21+gaface94
               </div>
             
           
@@ -173,14 +173,13 @@
 <span class="sd">- experiment_parameters.log - a dump of all variable from all modules mostly for debugging purposes.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="k">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
-<span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="n">gradient</span><span class="p">,</span> <span class="n">transpose</span><span class="p">,</span> <span class="n">genfromtxt</span><span class="p">,</span> <span class="n">nanmean</span><span class="p">,</span> <span class="n">argwhere</span><span class="p">,</span> <span class="n">where</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">isnan</span><span class="p">,</span> <span class="n">asarray</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">gradient</span><span class="p">,</span> <span class="n">transpose</span><span class="p">,</span> <span class="n">genfromtxt</span><span class="p">,</span> <span class="n">nanmean</span><span class="p">,</span> <span class="n">argwhere</span><span class="p">,</span> <span class="n">where</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">isnan</span><span class="p">,</span> <span class="n">asarray</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">pickle</span>
-<span class="kn">from</span> <span class="nn">logging</span> <span class="k">import</span> <span class="n">debug</span><span class="p">,</span> <span class="n">info</span><span class="p">,</span> <span class="n">warn</span><span class="p">,</span> <span class="n">error</span>
+<span class="kn">from</span> <span class="nn">logging</span> <span class="kn">import</span> <span class="n">debug</span><span class="p">,</span> <span class="n">info</span><span class="p">,</span> <span class="n">warn</span><span class="p">,</span> <span class="n">error</span>
 
 <div class="viewcode-block" id="Dataset"><a class="viewcode-back" href="../../data-analysis.html#icarus_nmr.analysis.Dataset">[docs]</a><span class="k">class</span> <span class="nc">Dataset</span><span class="p">():</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">folder</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">folder</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">        :param folder: folder, defaults to None</span>
@@ -208,7 +207,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="kn">from</span> <span class="nn">time</span> <span class="k">import</span> <span class="n">time</span>
+        <span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span>
         <span class="kn">import</span> <span class="nn">os</span>
         <span class="n">t1</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">is_init_done</span> <span class="o">=</span> <span class="kc">False</span>
@@ -223,13 +222,8 @@
             <span class="c1">#get log_header</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">log_header</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_read_header</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">folder</span><span class="p">)</span>
             <span class="c1">#check if pickle file exist and load it</span>
-            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">folder</span> <span class="o">+</span> <span class="s1">&#39;experiment.pickle&#39;</span><span class="p">):</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;the experiment.pickle file in the folder </span><span class="si">{}</span><span class="s1"> was detected and will be uploaded&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">folder</span><span class="p">))</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">log_data</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">log_raw_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_pickled_log</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">folder</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">info</span><span class="p">(</span><span class="s1">&#39;the pickle file in the folder </span><span class="si">{}</span><span class="s1"> was NOT detected and the processing of the raw .log file is initiated&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">folder</span><span class="p">))</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">log_data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_raw_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_read_raw_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">folder</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">dump_to_pickle_file</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">log_data</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">log_raw_data</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log_rawdata</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">log_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_read_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">folder</span><span class="p">)</span>
+
             <span class="bp">self</span><span class="o">.</span><span class="n">log_length</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">is_init_done</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">else</span><span class="p">:</span>
@@ -239,29 +233,29 @@
         <span class="n">dt</span> <span class="o">=</span> <span class="n">t2</span><span class="o">-</span><span class="n">t1</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Init of Dataset from folder = </span><span class="si">{}</span><span class="s1"> has status </span><span class="si">{}</span><span class="s1">. It took </span><span class="si">{}</span><span class="s1"> seconds.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">folder</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">is_init_done</span><span class="p">,</span><span class="n">dt</span><span class="p">))</span>
 
-<div class="viewcode-block" id="Dataset.dump_to_pickle_file"><a class="viewcode-back" href="../../data-analysis.html#icarus_nmr.analysis.Dataset.dump_to_pickle_file">[docs]</a>    <span class="k">def</span> <span class="nf">dump_to_pickle_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        pickles data and puts it on the drive. the default name is experiment.pickle (similar to original experiment.log)</span>
-
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        data: numpy array</span>
-<span class="sd">            data to append</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-
-<span class="sd">        Examples</span>
-<span class="sd">        --------</span>
-<span class="sd">        &gt;&gt;&gt; dataset = Dataset()</span>
-<span class="sd">        &gt;&gt;&gt; dataset.dump_to_pickle_file(data = data)</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">from</span> <span class="nn">pickle</span> <span class="k">import</span> <span class="n">dump</span><span class="p">,</span> <span class="n">HIGHEST_PROTOCOL</span>
-        <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">folder</span> <span class="o">+</span> <span class="s1">&#39;experiment.pickle&#39;</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
-                <span class="n">dump</span><span class="p">(</span><span class="n">obj</span> <span class="o">=</span> <span class="n">data</span><span class="p">,</span> <span class="n">file</span> <span class="o">=</span> <span class="n">file</span><span class="p">,</span> <span class="n">protocol</span><span class="o">=</span><span class="n">HIGHEST_PROTOCOL</span><span class="p">)</span></div>
+    <span class="c1"># def dump_to_pickle_file(self, data = None):</span>
+    <span class="c1">#     &quot;&quot;&quot;</span>
+    <span class="c1">#     pickles data and puts it on the drive. the default name is experiment.pickle (similar to original experiment.log)</span>
+    <span class="c1">#</span>
+    <span class="c1">#</span>
+    <span class="c1">#     Parameters</span>
+    <span class="c1">#     ----------</span>
+    <span class="c1">#     data: numpy array</span>
+    <span class="c1">#         data to append</span>
+    <span class="c1">#</span>
+    <span class="c1">#     Returns</span>
+    <span class="c1">#     -------</span>
+    <span class="c1">#</span>
+    <span class="c1">#     Examples</span>
+    <span class="c1">#     --------</span>
+    <span class="c1">#     &gt;&gt;&gt; dataset = Dataset()</span>
+    <span class="c1">#     &gt;&gt;&gt; dataset.dump_to_pickle_file(data = data)</span>
+    <span class="c1">#</span>
+    <span class="c1">#     &quot;&quot;&quot;</span>
+    <span class="c1">#     from pickle import dump, HIGHEST_PROTOCOL</span>
+    <span class="c1">#     if data is not None:</span>
+    <span class="c1">#         with open(self.folder + &#39;experiment.pickle&#39;, &#39;wb&#39;) as file:</span>
+    <span class="c1">#             dump(obj = data, file = file, protocol=HIGHEST_PROTOCOL)</span>
 
 <div class="viewcode-block" id="Dataset.log_read_header"><a class="viewcode-back" href="../../data-analysis.html#icarus_nmr.analysis.Dataset.log_read_header">[docs]</a>    <span class="k">def</span> <span class="nf">log_read_header</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">folder</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -288,11 +282,12 @@
         <span class="n">header</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">folder</span> <span class="o">+</span> <span class="s1">&#39;experiment.log&#39;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">a</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
-            <span class="n">a</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
-            <span class="n">header</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+        <span class="n">header</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;b&#39;&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="n">header</span></div>
 
-<div class="viewcode-block" id="Dataset.log_read_raw_data"><a class="viewcode-back" href="../../data-analysis.html#icarus_nmr.analysis.Dataset.log_read_raw_data">[docs]</a>    <span class="k">def</span> <span class="nf">log_read_raw_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">folder</span><span class="p">):</span>
+<div class="viewcode-block" id="Dataset.log_read_file"><a class="viewcode-back" href="../../data-analysis.html#icarus_nmr.analysis.Dataset.log_read_file">[docs]</a>    <span class="k">def</span> <span class="nf">log_read_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">folder</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        converts raw log file data to collapsed 2D numpy array where every entry corresponds to one period. The time stamp on the period will be taken from the period event, which is defined elsewhere.</span>
 
@@ -311,14 +306,28 @@
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
 <span class="sd">        &gt;&gt;&gt; folder = &#39;/2019-05-31-13-13-52/&#39;</span>
-<span class="sd">        &gt;&gt;&gt; data = dataset.log_read_raw_data(folder = folder)</span>
+<span class="sd">        &gt;&gt;&gt; raw_data, data = dataset.log_read_file(folder = folder)</span>
+<span class="sd">        &gt;&gt;&gt; raw_data.shape</span>
+<span class="sd">        (980, 37)</span>
 <span class="sd">        &gt;&gt;&gt; data.shape</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">raw_data</span> <span class="o">=</span> <span class="n">genfromtxt</span><span class="p">(</span><span class="n">folder</span> <span class="o">+</span> <span class="s1">&#39;experiment.log&#39;</span><span class="p">,</span> <span class="n">delimiter</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="n">skip_header</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">combine_log_entries</span><span class="p">(</span><span class="n">raw_data</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">data</span><span class="p">,</span> <span class="n">raw_data</span></div>
+<span class="sd">        (403, 37)</span>
 
-<div class="viewcode-block" id="Dataset.load_pickled_log"><a class="viewcode-back" href="../../data-analysis.html#icarus_nmr.analysis.Dataset.load_pickled_log">[docs]</a>    <span class="k">def</span> <span class="nf">load_pickled_log</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">folder</span><span class="p">):</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">exists</span>
+        <span class="n">raw_data</span> <span class="o">=</span> <span class="n">genfromtxt</span><span class="p">(</span><span class="n">folder</span> <span class="o">+</span> <span class="s1">&#39;experiment.log&#39;</span><span class="p">,</span> <span class="n">delimiter</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="n">skip_header</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">exists</span><span class="p">(</span><span class="n">folder</span> <span class="o">+</span> <span class="s1">&#39;experiment.pickle&#39;</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;the experiment.pickle file in the folder </span><span class="si">{}</span><span class="s1"> was detected and will be uploaded&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">folder</span><span class="p">))</span>
+            <span class="c1"># read processed data from .pickle file</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_load_pickle_file</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">info</span><span class="p">(</span><span class="s1">&#39;the pickle file in the folder </span><span class="si">{}</span><span class="s1"> was NOT detected and the processing of the raw .log file is initiated&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">folder</span><span class="p">))</span>
+            <span class="n">data</span> <span class="o">=</span>  <span class="bp">self</span><span class="o">.</span><span class="n">combine_log_entries</span><span class="p">(</span><span class="n">raw_data</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dump_to_pickle_file</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">raw_data</span><span class="p">,</span> <span class="n">data</span></div>
+
+<div class="viewcode-block" id="Dataset.log_load_pickle_file"><a class="viewcode-back" href="../../data-analysis.html#icarus_nmr.analysis.Dataset.log_load_pickle_file">[docs]</a>    <span class="k">def</span> <span class="nf">log_load_pickle_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">folder</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        checks if the pickle file exist and loads it</span>
 
@@ -331,6 +340,8 @@
 <span class="sd">        -------</span>
 <span class="sd">        data: numpy array</span>
 <span class="sd">            data to append</span>
+<span class="sd">        rawdata: numpy array</span>
+<span class="sd">            data to append</span>
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
@@ -339,12 +350,37 @@
 <span class="sd">        &gt;&gt;&gt; data.shape</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">pickle</span> <span class="kn">import</span> <span class="n">load</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">folder</span> <span class="o">+</span> <span class="s1">&#39;experiment.pickle&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
-            <span class="n">log_data</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">log_data</span></div>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">data</span></div>
+
+<div class="viewcode-block" id="Dataset.dump_to_pickle_file"><a class="viewcode-back" href="../../data-analysis.html#icarus_nmr.analysis.Dataset.dump_to_pickle_file">[docs]</a>    <span class="k">def</span> <span class="nf">dump_to_pickle_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        pickles data and puts it on the drive. the default name is experiment.pickle (similar to original experiment.log)</span>
+
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        data: numpy array</span>
+<span class="sd">            data to append</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; dataset = Dataset()</span>
+<span class="sd">        &gt;&gt;&gt; dataset.dump_to_pickle_file(data = data)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">pickle</span> <span class="kn">import</span> <span class="n">dump</span><span class="p">,</span> <span class="n">HIGHEST_PROTOCOL</span>
+        <span class="k">if</span> <span class="n">obj</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">folder</span> <span class="o">+</span> <span class="s1">&#39;experiment.pickle&#39;</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+                <span class="n">dump</span><span class="p">(</span><span class="n">obj</span> <span class="o">=</span> <span class="n">obj</span><span class="p">,</span> <span class="n">file</span> <span class="o">=</span> <span class="n">file</span><span class="p">,</span> <span class="n">protocol</span><span class="o">=</span><span class="n">HIGHEST_PROTOCOL</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">get_lst</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">folder</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="nb">type</span> <span class="o">=</span> <span class="s1">&#39;cooling&#39;</span><span class="p">):</span>
-        <span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="n">genfromtxt</span>
+        <span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">genfromtxt</span>
         <span class="kn">import</span> <span class="nn">os</span>
         <span class="n">dir_lst</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">folder</span> <span class="o">+</span> <span class="s2">&quot;buffer_files/&quot;</span><span class="p">)</span>
         <span class="n">temp_lst</span> <span class="o">=</span> <span class="p">[]</span>
@@ -355,18 +391,6 @@
                 <span class="n">temp_lst</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t_lst</span><span class="p">)</span>
         <span class="n">lst2</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">temp_lst</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
         <span class="k">return</span> <span class="n">lst2</span>
-
-
-
-    <span class="k">def</span> <span class="nf">get_history_log</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">history_log</span><span class="o">=</span> <span class="n">genfromtxt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">folder</span> <span class="o">+</span> <span class="s1">&#39;experiment.log&#39;</span><span class="p">,</span> <span class="n">delimiter</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="n">skip_header</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span>
-        <span class="n">dic</span> <span class="o">=</span> <span class="p">{}</span> <span class="c1">#create dictionary</span>
-        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_header</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">key</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
-                <span class="n">dic</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">history_log</span><span class="p">[:,</span><span class="n">i</span><span class="p">]</span>
-                <span class="n">i</span><span class="o">+=</span><span class="mi">1</span>
-        <span class="k">return</span> <span class="n">dic</span>
 
 <div class="viewcode-block" id="Dataset.combine_log_entries"><a class="viewcode-back" href="../../data-analysis.html#icarus_nmr.analysis.Dataset.combine_log_entries">[docs]</a>    <span class="k">def</span> <span class="nf">combine_log_entries</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">raw_data</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -410,11 +434,11 @@
         <span class="k">return</span> <span class="n">asarray</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">get_log_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">param</span> <span class="o">=</span> <span class="s1">&#39;None&#39;</span><span class="p">):</span>
-        <span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="n">squeeze</span>
+        <span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">squeeze</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_header</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">param</span><span class="p">)</span>
         <span class="k">except</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;param </span><span class="si">%r</span><span class="s2"> doesn&#39;t exist&quot;</span> <span class="o">%</span><span class="n">param</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;param </span><span class="si">{param}</span><span class="s2"> doesn&#39;t exist&quot;</span><span class="p">)</span>
             <span class="n">idx</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">vector</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">period</span><span class="p">[:,</span><span class="n">idx</span><span class="p">]</span>
@@ -442,7 +466,7 @@
 <span class="sd">        &gt;&gt;&gt; data.shape</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="kn">import</span> <span class="nn">os</span>
-        <span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="n">genfromtxt</span><span class="p">,</span> <span class="n">transpose</span>
+        <span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">genfromtxt</span><span class="p">,</span> <span class="n">transpose</span>
         <span class="n">filename</span> <span class="o">=</span> <span class="s1">&#39;some_nonexisting_file.x&#39;</span>
         <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">trace_lists</span><span class="p">[</span><span class="nb">type</span><span class="p">]:</span>
             <span class="k">if</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="nb">str</span><span class="p">(</span><span class="n">period</span><span class="p">):</span>
@@ -480,26 +504,50 @@
 <span class="sd">        &gt;&gt;&gt; data = dataset.get_trace(period = 2, type = &#39;pump&#39;)</span>
 <span class="sd">        &gt;&gt;&gt; data.shape</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">from</span> <span class="nn">matplotlib</span> <span class="k">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+        <span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+
+        <span class="c1"># fetch the data from the /buffers/ folder.</span>
         <span class="k">if</span> <span class="n">period</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_trace</span><span class="p">(</span><span class="nb">type</span> <span class="o">=</span> <span class="nb">type</span><span class="p">,</span> <span class="n">period</span> <span class="o">=</span> <span class="n">period</span><span class="p">)</span>
-            
+            <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">pass</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">pass</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">None</span></div></div>
+            <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="Dataset.plot_log"><a class="viewcode-back" href="../../data-analysis.html#icarus_nmr.analysis.Dataset.plot_log">[docs]</a>    <span class="k">def</span> <span class="nf">plot_log</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        returns matplotlib figure object of a trace of selected type and period. Returns None if tracefile doesn&#39;t exist.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        type: string</span>
+<span class="sd">            type of buffer file (pre,depre,pump,cooling, etc)</span>
+<span class="sd">        period: integer</span>
+<span class="sd">            period index number</span>
+<span class="sd">        show: boolean</span>
+<span class="sd">            optional plot show flag</span>
+
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        object: matplotlib object</span>
+<span class="sd">            matplotlib object</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; data = dataset.plot_log(type = &#39;all&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; data.shape</span>
+<span class="sd">        &quot;&quot;&quot;</span></div></div>
+
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="kn">import</span> <span class="nn">unittest</span>
-    <span class="kn">from</span> <span class="nn">pdb</span> <span class="k">import</span> <span class="n">pm</span>
+    <span class="kn">from</span> <span class="nn">pdb</span> <span class="kn">import</span> <span class="n">pm</span>
     <span class="kn">import</span> <span class="nn">os</span>
-    <span class="c1">##Examples of commands</span>
-    <span class="c1">## to get a trace: dataset_1.get_trace(i,&#39;pre&#39;) -&gt; return a pressurization trace of all 10 channels at period i</span>
-    <span class="c1">## to get a vector from log file for given parameter: dataset_1.get_log_vector(param = &#39;tSwitchDepressure_1&#39;)</span>
-    <span class="n">main_folder</span> <span class="o">=</span> <span class="s1">&#39;/Volumes/C/Pressure-Jump-NMR/icarus-ii-50/&#39;</span>
-    <span class="n">folder</span> <span class="o">=</span> <span class="s1">&#39;test_dataset/&#39;</span>
-    <span class="n">dataset</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">()</span>
-    <span class="n">dataset</span><span class="o">.</span><span class="n">folder</span> <span class="o">=</span> <span class="n">folder</span>
-    <span class="n">dataset</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+    <span class="n">folder</span> <span class="o">=</span> <span class="n">get_test_folder</span><span class="p">()</span>
+    <span class="n">dataset</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span>
 </pre></div>
 
            </div>
