@@ -52,9 +52,9 @@ class MockTest(unittest.TestCase):
         driver.init()
         driver.start_scan()
         data, flag = driver.get_readings(512)
-        self.assertEqual(data.shape,(10,512))
-        self.assertEqual(data[9].mean(),127.0)
-        self.assertEqual(data[9].std(), 0.0)
+        self.assertEqual(data.shape,(512,10))
+        self.assertEqual(data.T[9].mean(),127.0)
+        self.assertEqual(data.T[9].std(), 0.0)
 
     def test_set_digital(self):
         from ..mock_driver import Driver
@@ -62,15 +62,15 @@ class MockTest(unittest.TestCase):
         driver.init()
         driver.start_scan()
         data, flag = driver.get_readings(512)
-        self.assertEqual(data[9].mean(),127.0)
+        self.assertEqual(data.T[9].mean(),127.0)
 
         driver.set_digital(126)
         data, flag = driver.get_readings(512)
-        self.assertEqual(data[9].mean(),126.0)
+        self.assertEqual(data.T[9].mean(),126.0)
 
         driver.set_digital(122)
         data, flag = driver.get_readings(512)
-        self.assertEqual(data[9].mean(),122.0)
+        self.assertEqual(data.T[9].mean(),122.0)
 
 
     def test_get_pre_trace(self):

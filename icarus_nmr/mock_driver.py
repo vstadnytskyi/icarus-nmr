@@ -210,6 +210,9 @@ class Driver(object):
             res = 'Command not found\r\x00'
         return res
 
+    def flush(self):
+        pass
+
     def close_port(self):
         pass
     """DI-4108 Communcation functions"""
@@ -399,7 +402,7 @@ class Driver(object):
                 sleep(64/4000.0)
                 k = 0
         flag = True
-        return res, flag #(analog_data,digital_data)
+        return res.T, flag #(analog_data,digital_data)
 
     def blink(self):
         pass
@@ -608,11 +611,12 @@ class Driver(object):
     #     print('print t.timeit(number = M)')
 
 
-driver = Driver()
+
 
 if __name__ == "__main__": #for testing
     import logging
     from tempfile import gettempdir
+    driver = Driver()
     self = driver
 
 

@@ -28,16 +28,17 @@ version 3.0.0 - added tube_length and medium
 __version__ = '4.0.0' #
 import sys
 
-from XLI.precision_sleep import precision_sleep
+from ubcs_auxiliary.advsleep import precision_sleep
 from time import time,sleep,clock
+
+import traceback
 
 import sys
 if sys.version_info[0] ==3:
-    from _thread import start_new_thread
-    from persistent_property.persistent_property3 import persistent_property
+    from time import time,sleep,clock
 else:
-    from thread import start_new_thread
-    from persistent_property.persistent_property import persistent_property
+    from time import time,sleep,perf_counter
+
 from logging import debug,info,warn,error
 from numpy import nan, std, inf, nanmean, nanstd, nonzero, zeros, nanargmax, nanargmin, nanmin, nanmax, asarray
 import platform
@@ -46,66 +47,70 @@ import traceback
 import scipy.stats
 from scipy.interpolate import UnivariateSpline
 
+from ubcs_auxiliary.saved_property import DataBase, SavedProperty
+from ubcs_auxiliary.threading import new_thread
 from pdb import pm
 
 prefix = platform.node()+'_'
 class Event_Detector(object):
-    ppLogFolder = persistent_property('log folder', 'log/')
-    history_buffer_size  = persistent_property('history_buffer_size', 1) #1000000
-    event_buffer_size= persistent_property('event_buffer_size', (2,100))
+    db = DataBase(root = 'TEMP', name = 'event_detector')
+    pr_serial_number = SavedProperty(db,'Serial Number', '00000').init()
+    ppLogFolder = SavedProperty(db,'log folder', 'log/')
+    history_buffer_size  = SavedProperty(db,'history_buffer_size', 1) #1000000
+    event_buffer_size= SavedProperty(db,'event_buffer_size', (2,100))
 
-    timeout_period_time = persistent_property('timeout_period_time', 30.0)
+    timeout_period_time = SavedProperty(db,'timeout_period_time', 30.0)
 
-    depressure_before_time = persistent_property('Depressure analyse time before (ms)', 20.0)
-    depressure_after_time = persistent_property('Depressure analyse time after (ms)', 100.0)
-    pressure_before_time = persistent_property('Pressure analyse time before (ms)', 20.0)
-    pressure_after_time = persistent_property('Pressure analyse time after (ms)', 100.0)
+    depressure_before_time = SavedProperty(db,'Depressure analyse time before (ms)', 20.0)
+    depressure_after_time = SavedProperty(db,'Depressure analyse time after (ms)', 100.0)
+    pressure_before_time = SavedProperty(db,'Pressure analyse time before (ms)', 20.0)
+    pressure_after_time = SavedProperty(db,'Pressure analyse time after (ms)', 100.0)
 
-    coeff_target_pressure = persistent_property('coeff Target Pressure', 0.92)
-    coeff_sample_pressure = persistent_property('coeff Sample Pressure', 100000.0)
-    scaleTopValve1 = persistent_property('scaleTopValve1', 100000.0)
-    scaleBotValve1 = persistent_property('scaleBotValve1', 100000.0)
-    scaleTopValve2 = persistent_property('scaleTopValve2', 100000.0)
-    scaleBotValve2 = persistent_property('scaleBotValve2', 100000.0)
+    coeff_target_pressure = SavedProperty(db,'coeff Target Pressure', 0.92)
+    coeff_sample_pressure = SavedProperty(db,'coeff Sample Pressure', 100000.0)
+    scaleTopValve1 = SavedProperty(db,'scaleTopValve1', 100000.0)
+    scaleBotValve1 = SavedProperty(db,'scaleBotValve1', 100000.0)
+    scaleTopValve2 = SavedProperty(db,'scaleTopValve2', 100000.0)
+    scaleBotValve2 = SavedProperty(db,'scaleBotValve2', 100000.0)
 
-    bit_HPpump = persistent_property('bit_HPpump',0b1)
-    bit_valve1 = persistent_property('bit_valve1',0b10)
-    bit_valve2 = persistent_property('bit_valve2',0b100)
-    bit_valve3 = persistent_property('bit_valve3',0b1000)
-    bit_log = persistent_property('bit_log',0b10000)
+    bit_HPpump = SavedProperty(db,'bit_HPpump',0b1)
+    bit_valve1 = SavedProperty(db,'bit_valve1',0b10)
+    bit_valve2 = SavedProperty(db,'bit_valve2',0b100)
+    bit_valve3 = SavedProperty(db,'bit_valve3',0b1000)
+    bit_log = SavedProperty(db,'bit_log',0b10000)
 
-    medium = persistent_property('medium','none')
-    tube_length = persistent_property('tranfer tube length (in)',100.0)
+    medium = SavedProperty(db,'medium','none')
+    tube_length = SavedProperty(db,'tranfer tube length (in)',100.0)
 
-    selectedPressureUnits = persistent_property('Last Unit Selected', 'kbar')
-    userUnits = persistent_property('User Units', {'psi': 1, 'atm': 0.06804572672836146, 'kbar': 6.894756709891046e-05})
+    selectedPressureUnits = SavedProperty(db,'Last Unit Selected', 'kbar')
+    userUnits = SavedProperty(db,'User Units', {'psi': 1, 'atm': 0.06804572672836146, 'kbar': 6.894756709891046e-05})
 
-    counters_pump = persistent_property('counter pump',0)
-    counters_depressurize = persistent_property('counter depressurize',0)
-    counters_pressurize = persistent_property('counter pressurize',0)
-    counters_valve3 = persistent_property('counter valve3',0)
-    counters_logging = persistent_property('counter logging',0)
-    counters_D5 = persistent_property('counter D5',0)
-    counters_D6 = persistent_property('counter D6',0)
-    counters_period = persistent_property('counter period',0)
-    counters_delay = persistent_property('counter delay',0)
-    counters_pump_stroke = persistent_property('counter pump_stroke',0)
-    counters_timeout = persistent_property('counter timeout',0)
-    counters_periodic_update = persistent_property('counter periodic_update',0)
-    counters_periodic_update_cooling = persistent_property('counter periodic_update_cooling',0)
+    counters_pump = SavedProperty(db,'counter pump',0)
+    counters_depressurize = SavedProperty(db,'counter depressurize',0)
+    counters_pressurize = SavedProperty(db,'counter pressurize',0)
+    counters_valve3 = SavedProperty(db,'counter valve3',0)
+    counters_logging = SavedProperty(db,'counter logging',0)
+    counters_D5 = SavedProperty(db,'counter D5',0)
+    counters_D6 = SavedProperty(db,'counter D6',0)
+    counters_period = SavedProperty(db,'counter period',0)
+    counters_delay = SavedProperty(db,'counter delay',0)
+    counters_pump_stroke = SavedProperty(db,'counter pump_stroke',0)
+    counters_timeout = SavedProperty(db,'counter timeout',0)
+    counters_periodic_update = SavedProperty(db,'counter periodic_update',0)
+    counters_periodic_update_cooling = SavedProperty(db,'counter periodic_update_cooling',0)
 
-    save_trace_to_a_file = persistent_property('save_trace_to_a_file', False)
+    save_trace_to_a_file = SavedProperty(db,'save_trace_to_a_file', False)
 
-    email_dic_packed = persistent_property('email dictionary','')
+    email_dic_packed = SavedProperty(db,'email dictionary','')
 
-    periodic_udpate_hz = persistent_property('periodic_udpate_hz',3)
-    periodic_udpate_cooling_hz = persistent_property('periodic_udpate_cooling_hz',10)
+    periodic_udpate_hz = SavedProperty(db,'periodic_udpate_hz',3)
+    periodic_udpate_cooling_hz = SavedProperty(db,'periodic_udpate_cooling_hz',10)
 
 
-    save_data_period = persistent_property('save_data_period',0)
+    save_data_period = SavedProperty(db,'save_data_period',0)
 
-    slow_leak_threshold = persistent_property('slow_leak_threshold',-20.0)
-    slow_leak_threshold_counter = persistent_property('slow_leak_threshold_counter',5)
+    slow_leak_threshold = SavedProperty(db,'slow_leak_threshold',-20.0)
+    slow_leak_threshold_counter = SavedProperty(db,'slow_leak_threshold_counter',5)
 
     def __init__(self):
         """
@@ -400,9 +405,9 @@ class Event_Detector(object):
         To prevent multiple threads from running
         """
         if self.running:
-            pass
+            warning('The event detector thread is already running')
         else:
-            start_new_thread(self.run,())
+            new_thread(self.run)
 
     def run(self):
         """
@@ -1477,9 +1482,8 @@ class Event_Detector(object):
                 flag = True
             else:
                 flag = False
-
-        except as err:
-            error(err)
+        except:
+            error(traceback.format_exc())
             flag, idx_min, grad_min = False, 0, 0
         return flag, idx_min, grad_min
 

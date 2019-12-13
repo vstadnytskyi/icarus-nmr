@@ -37,7 +37,7 @@ import os.path
 import struct
 from pdb import pm
 from time import gmtime, strftime, time
-from logging import debug,info,warn,error
+from logging import debug,info,warning,error
 # see https://vstadnytskyi.github.io/auxiliary/saved-property.html for details
 from ubcs_auxiliary.saved_property import DataBase, SavedProperty
 
@@ -134,8 +134,8 @@ class Indicators(IndicatorsTemplate):
         from numpy import zeros
         response = {}
         try:
-            for key in list(device.buffers.keys()):
-                response[key] = device.buffers[key].get_last_value()
+            for key in list(self.object.buffers.keys()):
+                response[key] = self.object.buffers[key].get_last_value()
         except:
             warning(traceback.format_exc())
             response = None
@@ -160,7 +160,7 @@ class Indicators(IndicatorsTemplate):
         4000
         """
         try:
-            response = icarus_dl.queue.len
+            response = self.object.queue.length
         except:
             error(traceback.format_exc())
             response = None
@@ -213,7 +213,7 @@ class Indicators(IndicatorsTemplate):
         >>> sn
         """
         try:
-            return icarus_dl.device_info[b'Serial Number']
+            return self.object.device_info[b'Serial Number']
         except:
             return None
     s_serial_number = property(get_s_serial_number)
@@ -277,7 +277,7 @@ class Indicators(IndicatorsTemplate):
         >>> device.s_firmware
         'FIXIT'
         """
-        return icarus_dl.device_info[b'Firmware version']
+        return self.object.device_info[b'Firmware version']
     s_firmware = property(get_s_firmware)
 
     def get_s_frequency(self):
@@ -297,7 +297,7 @@ class Indicators(IndicatorsTemplate):
         >>> device.s_frequency
         4000
         """
-        return icarus_dl.pr_rate
+        return self.object.pr_rate
     s_frequency = property(get_s_frequency)
 
     def get_s_packet_size(self):
@@ -317,21 +317,21 @@ class Indicators(IndicatorsTemplate):
         >>> device.s_packet_size
         128
         """
-        return icarus_dl.pr_packet_size
+        return self.object.pr_packet_size
     s_packet_size = property(get_s_packet_size)
 
     def get_target_pressure(self):
         from numpy import mean
-        return mean(icarus_dl.queue.buffer[0,icarus_dl.queue.front-100:icarus_dl.queue.front])
+        return mean(self.object.queue.buffer[0,self.object.queue.rear-100:self.object.queue.rear])
     target_pressure = property(get_target_pressure)
 
     def get_sample_pressure(self):
         from numpy import mean
-        return mean(icarus_dl.queue.buffer[5,icarus_dl.queue.front-100:icarus_dl.queue.front])
+        return mean(self.object.queue.buffer[5,self.object.queue.rear-100:self.object.queue.rear])
     sample_pressure = property(get_sample_pressure)
 
     def get_pressure_sensor_offset(self):
-        return icarus_dl.pressure_sensor_offset
+        return self.object.pressure_sensor_offset
     pressure_sensor_offset = property(get_pressure_sensor_offset)
 
 
@@ -346,7 +346,6 @@ class Controls(ControlsTemplate):
         response = {}
         response[b'DIO'] = self.DIO
         response[b'DIO_default'] = self.DIO_default
-
 
         response[b'pg_period'] = self.pg_period
         response[b'pg_pre_pulse_width'] = self.pg_pre_pulse_width
@@ -368,50 +367,50 @@ class Controls(ControlsTemplate):
         if isinstance(value,str):
             value = int(value,2)
         driver.set_digital(value)
-        sleep((icarus_dl.pr_packet_size/4000)*1.1)
+        sleep((self.object.pr_packet_size/4000)*1.1)
     def get_DIO(self):
         from time import sleep
-        return int(icarus_dl.queue.buffer[9,icarus_dl.queue.front])
+        return int(self.object.queue.buffer[9,self.object.queue.rear])
     DIO = property(get_DIO,set_DIO)
 
     def set_DIO_default_pulsed(self,value):
         if isinstance(value,str):
             value = int(value,2)
-        icarus_dl.DIO_default = value
+        self.object.DIO_default = value
     def get_DIO_default_pulsed(self):
         from time import sleep
-        return icarus_dl.DIO_default
+        return self.object.DIO_default
     DIO_default_pulsed = property(get_DIO_default_pulsed,set_DIO_default_pulsed)
     DIO_default = DIO_default_pulsed
 
     def set_pg_pre_pulse_width(self, value = 0.007):
-        icarus_dl.pg_pre_pulse_width = value
+        self.object.pg_pre_pulse_width = value
     def get_pg_pre_pulse_width(self):
-        return icarus_dl.pg_pre_pulse_width
+        return self.object.pg_pre_pulse_width
     pg_pre_pulse_width = property(get_pg_pre_pulse_width,set_pg_pre_pulse_width)
 
     def set_pg_depre_pulse_width(self, value = 0.007):
-        icarus_dl.pg_depre_pulse_width = value
+        self.object.pg_depre_pulse_width = value
     def get_pg_depre_pulse_width(self):
-        return icarus_dl.pg_depre_pulse_width
+        return self.object.pg_depre_pulse_width
     pg_depre_pulse_width = property(get_pg_depre_pulse_width,set_pg_depre_pulse_width)
 
     def set_pg_delay_width(self, value = 0.1):
-        icarus_dl.pg_delay_width = value
+        self.object.pg_delay_width = value
     def get_pg_delay_width(self):
-        return icarus_dl.pg_delay_width
+        return self.object.pg_delay_width
     pg_delay_width = property(get_pg_delay_width,set_pg_delay_width)
 
     def set_pg_period(self, value = 3):
-        icarus_dl.pg_period = value
+        self.object.pg_period = value
     def get_pg_period(self):
-        return icarus_dl.pg_period
+        return self.object.pg_period
     pg_period = property(get_pg_period,set_pg_period)
 
     def set_trigger_mode(self, value = 0):
-        icarus_dl.trigger_mode = value
+        self.object.trigger_mode = value
     def get_trigger_mode(self):
-        return icarus_dl.trigger_mode
+        return self.object.trigger_mode
     trigger_mode = property(get_trigger_mode,set_trigger_mode)
 
 
@@ -469,9 +468,10 @@ class DI4108_DL(XLevelTemplate):
     DIO_default = 126
 
 
-    inds = Indicators()
-    ctrls = Controls()
+
     def __init__(self):
+        self.inds = Indicators(object = self)
+        self.ctrls = Controls(object = self)
         self.name = 'DI4108_DL'
         self.device_info = {}
         self.device_info['empty'] = 'empty'
@@ -485,8 +485,8 @@ class DI4108_DL(XLevelTemplate):
         self.pr_baserate = 20000
         self.pr_dec = 5
         self.pr_rate = (self.pr_baserate)/self.pr_dec
-        self.pr_buffer_size = (10,int(self.pr_packet_size*self.pr_rate))
-        self.queue = Queue(size = self.pr_buffer_size, var_type = 'int16')
+        self.pr_buffer_size = (int(self.pr_packet_size*self.pr_rate),10)
+        self.queue = Queue(shape = self.pr_buffer_size, dtype = 'int16')
         self.OverflowFlag = False
 
     def first_time_setup(self):
@@ -504,18 +504,16 @@ class DI4108_DL(XLevelTemplate):
     def init_driver(self):
         self.driver.init()
 
-    def init(self, msg_in = None, client = None):
+    def init(self, msg_in = None, client = None, driver = None):
 
         """
         initialize the DL program
         """
-        #from DI4108_BULK_driver import driver
         self.driver = driver
         self.driver.init()
         self.device_info = {**self.driver.get_hardware_information(),**self.device_info}
         self.stop()
         self.config_DL()
-        self.start()
         flag = True
         buff = nan
         err = None
@@ -588,11 +586,8 @@ class DI4108_DL(XLevelTemplate):
         return flag,result_dic,err
 
     def start(self):
-        if sys.version_info[0] ==3:
-            from ubcs_auxiliary.threading import new_thread
-        else:
-            from thread import start_new_thread as new_thread
-        new_thread(self.run,())
+        from ubcs_auxiliary.threading import new_thread
+        new_thread(self.run)
 
     def stop(self):
         self.running = False
@@ -653,7 +648,7 @@ class DI4108_DL(XLevelTemplate):
             value = int(value,2)
         self.driver.set_digital(value)
     def get_DIO(self):
-        return int(self.queue.buffer[9,self.queue.front])
+        return int(self.queue.buffer[9,self.queue.rear])
     ### Advance function
 
 
@@ -684,21 +679,28 @@ class DI4108_DL(XLevelTemplate):
         self.event = False
         self.OverflowFlag = False
         while self.running:
-            data, flag = (self.driver.get_readings(points_to_read = self.pr_packet_size))
-            self.data = data
-            if flag and self.running:
-                for i in range(8):
-                    try:
-                       data[i,:] = data[i,:] - self.pressure_sensor_offset[i]
-                    except:
-                        error(traceback.format_exc())
-                self.queue.enqueue(data)
+            self.run_once()
+        info('data acquisition thread has stopped')
 
-            else:
-                info('buffer overflow')
-                self.running = False
+    def run_once(self):
+        from numpy import array
+        data, flag = (self.driver.get_readings(points_to_read = self.pr_packet_size))
+        self.data = data
+        debug(f'data from one reading cycle of the driver {data.shape}')
+        debug(f'the length of pressure sensor is  offset{len(self.pressure_sensor_offset)}')
+        pressure_sensor_offset = array(self.pressure_sensor_offset)
+        if flag and self.running:
+            for i in range(8):
+                try:
+                   data[i,:] = data[i,:] - pressure_sensor_offset[i]
+                except:
+                    error(traceback.format_exc())
+            self.queue.enqueue(data)
 
-        warn('thread is done')
+        else:
+            info('buffer overflow')
+            self.running = False
+
 
     def read_queue(self, msg_in = {b'number':0}, client = None):
         """
@@ -760,13 +762,13 @@ class DI4108_DL(XLevelTemplate):
             self.set_DIO(self.unparse_binary(arr_DIO)) # up
 
     def pulse_sequence(self):
-        icarus_dl.ctrls.DIO = 127-4;
+        self.object.ctrls.DIO = 127-4;
         sleep(0.1);
-        icarus_dl.ctrls.DIO = 127;
+        self.object.ctrls.DIO = 127;
         sleep(0.5);
-        icarus_dl.ctrls.DIO = 127-2;
+        self.object.ctrls.DIO = 127-2;
         sleep(0.007);
-        icarus_dl.ctrls.DIO = 127;
+        self.object.ctrls.DIO = 127;
 
     #####Auxiliary functions
     def parse_binary(self,value = 0):
@@ -799,9 +801,9 @@ class DI4108_DL(XLevelTemplate):
         from time import sleep
         from numpy import mean, std
         sleep(N)
-        offsets = mean(icarus_dl.queue.buffer[:,icarus_dl.queue.front-4000*N:icarus_dl.queue.front],\
+        offsets = mean(self.object.queue.buffer[:,self.object.queue.rear-4000*N:self.object.queue.rear],\
                        axis = 1)
-        stds = std(icarus_dl.queue.buffer[:,icarus_dl.queue.front-4000*N:icarus_dl.queue.front],\
+        stds = std(self.object.queue.buffer[:,self.object.queue.rear-4000*N:self.object.queue.rear],\
                        axis = 1)
         print('Pressure sensors offsets are %r and errors are %r ' %(offsets,stds))
         self.pressure_sensor_offset = offsets[:8]
@@ -822,12 +824,23 @@ class Pulse_Generator():
         """
         """
         self.name = 'PulseGenerator'
-        self.curr_DIO = icarus_dl.ctrls.DIO_default
+        self.curr_DIO = self.object.ctrls.DIO_default
         self.running = False
         self.console_running = False
 
     def init(self):
         """
+        initialization functions. sets instance to default values.
+
+        Parameters
+        ----------
+
+        Returns
+        -------
+
+        Examples
+        --------
+        >>> pulse_generator.init()
         """
         from numpy import nan
         self.trigger_mode = 0  # can be int (1) or ext (0) Always start with console
@@ -841,13 +854,21 @@ class Pulse_Generator():
     def set_DIO(self, command):
         """
         a wrapper for communicate with DI-4108
-        -input-
-        command: an integer 0 to 127 defining the state of digital input\output
-        -return-
-        nothing
+
+        Parameters
+        ----------
+        command :: string
+            an integer 0 to 127 defining the state of digital input/output
+
+        Returns
+        -------
+
+        Examples
+        --------
+        >>> pulse_generator.init()
         """
         try:
-            icarus_dl.ctrls.set_DIO(command)
+            self.object.ctrls.set_DIO(command)
         except:
             error(traceback.format_exc())
 
@@ -855,12 +876,12 @@ class Pulse_Generator():
         """
         a wrapper for communicate with DI-4108
         -input-
-        command: an integer 0 to 127 defining the state of digital input\output
+        command: an integer 0 to 127 defining the state of digital input/output
         -return-
         nothing
         """
         try:
-            value = icarus_dl.ctrls.get_DIO()
+            value = self.object.ctrls.get_DIO()
         except:
             error(traceback.format_exc())
             value = nan
@@ -888,7 +909,7 @@ class Pulse_Generator():
             valve_bit = int('0000000',2) # Wait
         else:
             valve_bit = int('0000000',2) # Wait if valve selection is not recognized
-        curr_DIO = icarus_dl.ctrls.DIO_default
+        curr_DIO = self.object.ctrls.DIO_default
         new_DIO = curr_DIO-valve_bit
         if valve_bit != 0 and self.trigger_mode != 0:
             driver.set_digital(new_DIO) #down
@@ -938,8 +959,6 @@ class Pulse_Generator():
             error(traceback.format_exc())
 
     def get_pump_state(self):
-        """
-        """
         return int((self.get_DIO()& self.bit_HPpump) / self.bit_HPpump)
 
     def set_pressurize_state(self,value = ''):
@@ -1019,9 +1038,9 @@ class Pulse_Generator():
         important parameters: trigger: 0 manual, 1 -internal; 2 - external
         """
         from time import clock, time
-        from event_detector_LL import event_detector
+        from icarus_nmr.event_detector import event_detector
 
-        self.set_DIO(icarus_dl.ctrls.DIO_default)
+        self.set_DIO(self.object.ctrls.DIO_default)
         sleep(0.3)
         self.curr_DIO  = self.get_DIO()
         self.running = True
@@ -1043,7 +1062,7 @@ class Pulse_Generator():
                 self.shutdown_flag = False
             elif self.trigger_mode == 1:
                 if manual_flag:
-                    icarus_dl.ctrls.DIO = icarus_dl.ctrls.DIO_default_pulsed
+                    self.object.ctrls.DIO = self.object.ctrls.DIO_default_pulsed
                     manual_flag = False
                 #pulse_valve3_duration = 0.02
                 #self.pulse(valve = 3, duration = pulse_valve3_duration)#comment this
@@ -1127,33 +1146,33 @@ class Pulse_Generator():
             #casput(socket_server.CAS_prefix+'PG_prepulse_width',value)
 
     def get_period(self):
-        return icarus_dl.ctrls.pg_period
+        return self.object.ctrls.pg_period
     def set_period(self,value = 0):
-        icarus_dl.ctrls.pg_period = value
+        self.object.ctrls.pg_period = value
     period = property(get_period,set_period)
 
     def get_tw1(self):
-        return icarus_dl.ctrls.pg_depre_pulse_width
+        return self.object.ctrls.pg_depre_pulse_width
     def set_tw1(self,value = 0):
-        icarus_dl.ctrls.pg_depre_pulse_width = value
+        self.object.ctrls.pg_depre_pulse_width = value
     tw1 = property(get_tw1,set_tw1)
 
     def get_tw2(self):
-        return icarus_dl.ctrls.pg_pre_pulse_width
+        return self.object.ctrls.pg_pre_pulse_width
     def set_tw2(self,value = 0):
-        icarus_dl.ctrls.pg_pre_pulse_width = value
+        self.object.ctrls.pg_pre_pulse_width = value
     tw2 = property(get_tw2,set_tw2)
 
     def get_td(self):
-        return icarus_dl.ctrls.pg_delay_width
+        return self.object.ctrls.pg_delay_width
     def set_td(self,value = 0):
-        icarus_dl.ctrls.pg_delay_width = value
+        self.object.ctrls.pg_delay_width = value
     td = property(get_td,set_td)
 
     def get_safe_state(self):
-        return icarus_dl.ctrls.safe_state
+        return self.object.ctrls.safe_state
     def set_safe_state(self,value = 0):
-        icarus_dl.ctrls.safe_state = value
+        self.object.ctrls.safe_state = value
     safe_state = property(get_safe_state,set_safe_state)
 
 
@@ -1163,7 +1182,7 @@ class Pulse_Generator():
         """
         returns trigger mode from pulse_generator instance
         """
-        return icarus_dl.ctrls.trigger_mode
+        return self.object.ctrls.trigger_mode
     def set_trigger_mode(self,value = ''):
         """
         sets trigger mode either from CA monitor or manually via value variable
@@ -1171,7 +1190,7 @@ class Pulse_Generator():
         value = int(value)
         if value == 0 or value == 1 or value == 2 or value == 3:
             curr_trigger_mode = self.trigger_mode
-            icarus_dl.ctrls.trigger_mode = value
+            self.object.ctrls.trigger_mode = value
     trigger_mode = property(get_trigger_mode,set_trigger_mode)
 
 
@@ -1183,9 +1202,9 @@ class Pulse_Generator():
         """
         for back competibility with older SL codes does nothing
         """
-        from _thread import start_new_thread
+        from ubcs_auxiliary.threading import new_thread
         if not self.running:
-            start_new_thread(self.run,())
+            new_thread(self.run)
 
     def stop(self):
         self.set_DIO(self.default_state)
@@ -1271,12 +1290,9 @@ import sys
 try:
     first_arg = sys.argv[1]
 except:
-    first_arg = 'simulator'
+    first_arg = 'emulator'
 
-if first_arg == 'device':
-    from icarus_nmr.usb_buld_driver import driver
-elif first_arg == 'simulator':
-    from icarus_nmr.mock_driver import driver
+
 
 
 
@@ -1316,11 +1332,17 @@ if __name__ == "__main__": #for testing
 
     msg = 'DI4108 Data Acquisiion server is running. \n'
     msg += 'The server port %r and ip-address %r' %(server.port,server.ip_address)
-    icarus_dl.init()
+    if device == 'device':
+        from icarus_nmr.usb_buld_driver import driver
+    elif device == 'emulator':
+        from icarus_nmr.mock_driver import driver
+    else:
+        driver = None
+    icarus_dl.init(driver = driver)
     print(msg)
     print(icarus_dl.name)
-    if local:
-        pass
-    else:
-        keyboard_input("Press enter to exit:")
-        server.stop()
+    # if local:
+    #     pass
+    # else:
+    #     keyboard_input("Press enter to exit:")
+    #     server.stop()
