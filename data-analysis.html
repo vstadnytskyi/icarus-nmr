@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Data Analysis &mdash; Icarus Pressure Jump for NMR 0.0.2.post22+ga223453 documentation</title>
+  <title>Data Analysis &mdash; Icarus Pressure Jump for NMR 0.0.2.post23+g601c2c7 documentation</title>
   
 
   
@@ -63,7 +63,7 @@
             
             
               <div class="version">
-                0.0.2.post22+ga223453
+                0.0.2.post23+g601c2c7
               </div>
             
           
@@ -203,7 +203,7 @@
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">folder</span> <span class="o">=</span> <span class="s1">&#39;/2019-05-31-13-13-52/&#39;</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">folder</span> <span class="o">=</span> <span class="s1">&#39;/2019-05-31-13-13-52/&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">raw_data</span> <span class="o">=</span> <span class="n">genfromtxt</span><span class="p">(</span><span class="n">folder</span> <span class="o">+</span> <span class="s1">&#39;experiment.log&#39;</span><span class="p">,</span> <span class="n">delimiter</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="n">skip_header</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">combine_log_entries</span><span class="p">(</span><span class="n">raw_data</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">shape</span>
@@ -224,7 +224,7 @@
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">()</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span><span class="o">.</span><span class="n">dump_to_pickle_file</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -251,7 +251,7 @@
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">get_trace</span><span class="p">(</span><span class="n">period</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="nb">type</span> <span class="o">=</span> <span class="s1">&#39;pump&#39;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">get_trace</span><span class="p">(</span><span class="n">period</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="nb">type</span> <span class="o">=</span> <span class="s1">&#39;pump&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">shape</span>
 </pre></div>
 </div>
@@ -278,7 +278,7 @@
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">folder</span> <span class="o">=</span> <span class="s1">&#39;/2019-05-31-13-13-52/&#39;</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">folder</span> <span class="o">=</span> <span class="s1">&#39;/2019-05-31-13-13-52/&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">log_read_raw_data</span><span class="p">(</span><span class="n">folder</span> <span class="o">=</span> <span class="n">folder</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">shape</span>
 </pre></div>
@@ -305,7 +305,7 @@
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">folder</span> <span class="o">=</span> <span class="s1">&#39;/2019-05-31-13-13-52/&#39;</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">folder</span> <span class="o">=</span> <span class="s1">&#39;/2019-05-31-13-13-52/&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">raw_data</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">log_read_file</span><span class="p">(</span><span class="n">folder</span> <span class="o">=</span> <span class="n">folder</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">raw_data</span><span class="o">.</span><span class="n">shape</span>
 <span class="go">(980, 37)</span>
@@ -334,7 +334,7 @@
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">()</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">folder</span> <span class="o">=</span> <span class="s1">&#39;/2019-05-31-13-13-52/&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">header</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">log_read_header</span><span class="p">(</span><span class="n">folder</span> <span class="o">=</span> <span class="n">folder</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">header</span>
@@ -365,7 +365,7 @@
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">plot_log</span><span class="p">(</span><span class="nb">type</span> <span class="o">=</span> <span class="s1">&#39;all&#39;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">plot_log</span><span class="p">(</span><span class="nb">type</span> <span class="o">=</span> <span class="s1">&#39;all&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">shape</span>
 </pre></div>
 </div>
@@ -394,7 +394,7 @@
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">get_trace</span><span class="p">(</span><span class="n">period</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="nb">type</span> <span class="o">=</span> <span class="s1">&#39;pump&#39;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">get_trace</span><span class="p">(</span><span class="n">period</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="nb">type</span> <span class="o">=</span> <span class="s1">&#39;pump&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">shape</span>
 </pre></div>
 </div>
