@@ -20,9 +20,9 @@ Next step is to initialize the device instance with appropriate driver
 .. code-block:: python
 
   device.init(driver = driver)
-  
+
 
 .. automodule:: icarus_nmr.device
   :members:
 
-  TODO: this is not working yet
+TODO: this is not working yet

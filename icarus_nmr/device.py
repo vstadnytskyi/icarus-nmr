@@ -525,17 +525,6 @@ class DI4108_DL(XLevelTemplate):
 
     # tests in progress
 
-    def test1():
-        from icarus_nmr.device import DI4108_DL
-        from icarus_nmr.mock_driver import Driver
-        driver = Driver()
-        device = DI4108_DL()
-        device.pr_packet_size = 64
-        device._init(driver = driver)
-        device.run_once()
-        device.DIO
-        device.queue.length
-
     # Old function with unknown purpose
     def submit_DIO(self,digital):
         """
