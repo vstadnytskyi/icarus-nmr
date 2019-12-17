@@ -8,7 +8,7 @@ Start by importing analysis submodule for Icarus Pressure Jump for NMR .
 
   from icarus_nmr import device
 
-  .. automodule:: icarus_nmr.device
-    :members:
+.. automodule:: icarus_nmr.device
+  :members:
 
   TODO: this is not working yet
