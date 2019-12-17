@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Device Level &mdash; Icarus Pressure Jump for NMR 0.0.2.post25+g372595a documentation</title>
+  <title>Device Level &mdash; Icarus Pressure Jump for NMR 0.0.2.post29+gc20bf5d documentation</title>
   
 
   
@@ -63,7 +63,7 @@
             
             
               <div class="version">
-                0.0.2.post25+g372595a
+                0.0.2.post29+gc20bf5d
               </div>
             
           
@@ -161,14 +161,25 @@
   <div class="section" id="device-level">
 <h1>Device Level<a class="headerlink" href="#device-level" title="Permalink to this headline">¶</a></h1>
 <p>Start by importing analysis submodule for Icarus Pressure Jump for NMR .</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">icarus_nmr</span> <span class="kn">import</span> <span class="n">device</span>
-
-<span class="o">..</span> <span class="n">automodule</span><span class="p">::</span> <span class="n">icarus_nmr</span><span class="o">.</span><span class="n">device</span>
-  <span class="p">:</span><span class="n">members</span><span class="p">:</span>
-
-<span class="n">TODO</span><span class="p">:</span> <span class="n">this</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">working</span> <span class="n">yet</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">icarus_nmr.device</span> <span class="kn">import</span> <span class="n">DI4108_DL</span>
 </pre></div>
 </div>
+<p>To import the mock driver instead of actual driver for the DI-4108</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">icarus_nmr.mock_driver</span> <span class="kn">import</span> <span class="n">Driver</span>
+<span class="n">driver</span> <span class="o">=</span> <span class="n">Driver</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Next step is to initialize the device instance with appropriate driver</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">device</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">driver</span> <span class="o">=</span> <span class="n">driver</span><span class="p">)</span>
+</pre></div>
+</div>
+<span class="target" id="module-icarus_nmr.device"></span><p>DATAQ 4108 Device Level code
+author: Valentyn Stadnytskyi
+Date: November 2017- November 2019</p>
+<p>fully python3 compatible.</p>
+<p>The main purpose of this module is to provide useful interface between DI-4108 and a server system level code that does all numbercrynching. This modules only job is to attend DI-4108 and insure that all data is collected and stored in a circular buffer.</p>
+<p>The communication in this module is done via XLI module developed by Valentyn Stadnytskyi. This module is based on python sockets.</p>
+<p>TODO: this is not working yet</p>
 </div>
 
 
