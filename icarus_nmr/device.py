@@ -97,9 +97,11 @@ class DI4108_DL(XLevelTemplate):
         self.pr_DOI_set = '1111111' #all high
         self.pressure_sensor_offset = [69.5595, 65.562, 68.881375, 84.2195, 86.96075, 17.248, 17.322, 0]
 
-    def _init(self, driver = None):
-        if driver is not None:
-            self.driver = driver
+    def bind_driver(self, driver = None):
+        self.driver = driver
+
+    def _init(self):
+        if self.driver is not None:
             self.driver.init()
             self.device_info = {**self.driver.get_hardware_information(),**self.device_info}
             self.stop()
@@ -507,6 +509,7 @@ class DI4108_DL(XLevelTemplate):
     def io_execute(self, name = None, value = None):
         """
         a wrapper that processes incoming calls from the IO
+
         Parameters
         ----------
         name :: string

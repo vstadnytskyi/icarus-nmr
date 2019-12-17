@@ -196,7 +196,7 @@ class Driver(object):
 
         Examples
         --------
-        >>> mock.write(command = 'info 1 \r')
+        >>> mock.write(command = 'info 1 \\r')
         """
         try:
             self.dev.write(self.epo,command)
@@ -235,7 +235,7 @@ class Driver(object):
 
         Examples
         --------
-        >>> mock.write(command = 'info 1 \r')
+        >>> mock.write(command = 'info 1 \\r')
         """
         from numpy import arange,ndarray,nan
         binary = format(value, '#0'+str(Nbits+3)+'b')
@@ -309,7 +309,7 @@ class Driver(object):
             integer number that will be set to DI-4108 digital outputs
         baserate :: boolean, optional
             optional flag that turn on reply.
-        dec ::
+        dec :: integer
 
         Returns
         -------
