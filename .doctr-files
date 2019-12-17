@@ -1,10 +1,7 @@
 ./_modules/icarus_nmr/analysis.html
-./_modules/icarus_nmr/device.html
-./_modules/icarus_nmr/mock_driver.html
 ./_modules/index.html
 ./_sources/data-analysis.rst.txt
 ./_sources/device.rst.txt
-./_sources/driver.rst.txt
 ./_sources/index.rst.txt
 ./_sources/installation.rst.txt
 ./_sources/min_versions.rst.txt
@@ -68,7 +65,6 @@
 ./_static/underscore.js
 ./data-analysis.html
 ./device.html
-./driver.html
 ./genindex.html
 ./index.html
 ./installation.html
