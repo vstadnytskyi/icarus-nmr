@@ -21,8 +21,7 @@ Next step is to initialize the device instance with appropriate driver
 
   device.init(driver = driver)
 
-
-.. automodule:: icarus_nmr.device
+.. autoclass:: icarus_nmr.device.Device
   :members:
 
 TODO: this is not working yet
