@@ -60,7 +60,7 @@ from ubcs_auxiliary.XLI.hierarchy_instrumentation import XLevelTemplate, Indicat
 
 class Indicators(IndicatorsTemplate):
     """
-    
+
     """
     def get(self, value = None):
         response = {}

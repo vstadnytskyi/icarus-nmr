@@ -13,7 +13,7 @@ class MockTest(unittest.TestCase):
         from time import sleep
         driver = Driver()
         device = DI4108_DL()
-        device.init(driver = driver)
+        device._init(driver = driver)
         device.start()
         dic = {b'Device name': '4108',
                  b'Firmware version': 'VS',
@@ -29,3 +29,14 @@ class MockTest(unittest.TestCase):
         self.assertEqual(data.T[9].mean(),127.0)
         self.assertEqual(data.T[9].std(), 0.0)
         self.assertEqual(length1, 128)
+
+    def test_operation1(self):
+        from icarus_nmr.device import DI4108_DL
+        from icarus_nmr.mock_driver import Driver
+        driver = Driver()
+        device = DI4108_DL()
+        device.pr_packet_size = 64
+        device._init(driver = driver)
+        device.run_once()
+        self.assertEqual(device.DIO, 127)
+        self.assertEqual(device.queue.length, 64)
