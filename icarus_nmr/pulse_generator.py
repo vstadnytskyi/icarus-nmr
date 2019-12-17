@@ -431,12 +431,12 @@ class Pulse_Generator():
         return eval(string1)
 
     def play_sequence(self,lst):
-            """
-            bit_HPpump = persistent_property('bit_HPpump',0b1)
-            bit_valve1 = persistent_property('bit_valve1',0b10)
-            bit_valve2 = persistent_property('bit_valve2',0b100)
-            bit_valve3 = persistent_property('bit_valve3',0b1000)
-            bit_log = persistent_property('bit_log',0b10000)
+        """
+        bit_HPpump = persistent_property('bit_HPpump',0b1)
+        bit_valve1 = persistent_property('bit_valve1',0b10)
+        bit_valve2 = persistent_property('bit_valve2',0b100)
+        bit_valve3 = persistent_property('bit_valve3',0b1000)
+        bit_log = persistent_property('bit_log',0b10000)
         """
         from time import time, sleep
         flag = True
