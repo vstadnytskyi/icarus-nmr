@@ -243,7 +243,7 @@ class Pulse_Generator():
     def run_once(self):
         """
         """
-                from icarus_nmr.event_detector import event_detector
+        from icarus_nmr.event_detector import event_detector
         #print(pulse_generator.console_counter)
         if self.trigger_mode == 0:
             if not manual_flag:
