@@ -246,7 +246,7 @@ class Driver(object):
 
     def set_digital(self, number = 127, echo = False):
         """
-        set digital value
+        sets digital value. The mock driver emulates pressure transitions due to change in digital state.
 
         Parameters
         ----------
@@ -409,6 +409,7 @@ class Driver(object):
 
 # Supporting
     def get_pre_trace(self):
+        print('get pre trace')
         from numpy import arange, zeros
         import random
         from ubcs_auxiliary.save_load_object import load_from_file as load
@@ -431,27 +432,37 @@ class Driver(object):
         return data
 
     def get_depre_trace(self):
-        from numpy import genfromtxt
+        print('get depre trace')
+        from numpy import arange, zeros
         import random
-        N = int(random.uniform(0,len(lst_depre)-1))
-        data = genfromtxt(lst_depre[N], delimiter = ',')
-        var_last = data[5,-1]
-        data[5,:] = data[5,:]-var_last
-        val_first = data[5,0]
-        data[5,:] = data[5,:]*12000/val_first
+        from ubcs_auxiliary.save_load_object import load_from_file as load
+        N = int(random.uniform(0,len(self.lst_depre)-1))
+        spl_list = load(self.lst_depre[N])
+        x = arange(0,333,1)*0.25
+        data = zeros((10,333))
 
-        var_last = data[6,-1]
-        data[6,:] = data[6,:]-var_last
-        val_first = data[6,0]
-        data[6,:] = data[6,:]*12000/val_first
+        data[5,:] = spl_list[5](x)
+        var_first = spl_list[5](x[-1])
+        data[5,:] = data[5,:]-var_first
+        val_last = data[5,0]
+        data[5,:] = data[5,:]*12000/val_last
+
+        data[6,:] = spl_list[6](x)
+        var_first = spl_list[6](x[-1])
+        data[6,:] = data[6,:]-var_first
+        val_last = data[6,0]
+        data[6,:] = data[6,:]*12000/val_last
         return data
 
     def get_pump_trace(self):
-        from numpy import genfromtxt
+        print('get pump trace')
+        from numpy import arange, zeros
         import random
-        N = int(random.uniform(0,len(lst_pump)-1))
-        data = genfromtxt(lst_pump[N], delimiter = ',')
-        data = data+(19000-data[0])
+        from ubcs_auxiliary.save_load_object import load_from_file as load
+        N = int(random.uniform(0,len(self.lst_pump)-1))
+        spl_list = load(self.lst_pump[N])
+        x = arange(0,333,1)*0.25
+        data = spl_list(x)
         return data
 ########################################################
 ##### Artificial events

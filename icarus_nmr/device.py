@@ -560,47 +560,17 @@ class DI4108_DL(XLevelTemplate):
             error(traceback.format_exc())
         return flag,buff,err
 
+
+
+
 if __name__ == "__main__": #for testing
     from tempfile import gettempdir
     import logging
-    logging.basicConfig(filename=gettempdir()+'/di4108_DL.log',
-                        level=logging.WARN, format="%(asctime)s %(levelname)s: %(message)s")
-
-
-    icarus_dl = DI4108_DL()
-    if first_arg == 'simulator':
-        icarus_dl.name = icarus_dl.name + 'simulator'
-    pulse_generator = Pulse_Generator()
-    pulse_generator.start()
-
-    from ubcs_auxiliary.XLI.server import Server_LL
-    server = Server_LL()
-    server.init_server(name = 'icarus-DL')
-    server.commands[b'init'] = icarus_dl.init
-    server.commands[b'help'] = icarus_dl.help
-    server.commands[b'snapshot'] = icarus_dl.snapshot
-    #server.commands[b'close'] = device.close
-    server.commands[b'controls'] = icarus_dl.controls
-    server.commands[b'indicators'] = icarus_dl.indicators
-    #server.commands[b'retrieve_values'] = device.retrieve_values
-    server.commands[b'subscribe'] = server.subscribe
-    server.commands[b'read_queue'] = icarus_dl.read_queue
-    #server.commands[b'dump_buffers'] = icarus_SL.subscribe
-
-
-    msg = 'DI4108 Data Acquisiion server is running. \n'
-    msg += 'The server port %r and ip-address %r' %(server.port,server.ip_address)
-    if device == 'device':
-        from icarus_nmr.usb_buld_driver import driver
-    elif device == 'emulator':
-        from icarus_nmr.mock_driver import driver
-    else:
-        driver = None
-    icarus_dl.init(driver = driver)
-    print(msg)
-    print(icarus_dl.name)
-    # if local:
-    #     pass
-    # else:
-    #     keyboard_input("Press enter to exit:")
-    #     server.stop()
+    logging.basicConfig(filename=gettempdir()+'/di4108_device.log',
+                        level=logging.INFO, format="%(asctime)s %(levelname)s: %(message)s")
+    from icarus_nmr.device import DI4108_DL
+    device = DI4108_DL()
+    from icarus_nmr.mock_driver import Driver
+    driver = Driver()
+    device.bind_driver(driver)
+    device.init()

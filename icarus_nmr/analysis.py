@@ -277,6 +277,9 @@ class Dataset():
         return asarray(data)
 
     def get_log_vector(self,param = 'None'):
+        """
+
+        """
         from numpy import squeeze
         try:
             idx = self.log_header.index(param)
@@ -383,6 +386,7 @@ class Dataset():
         >>> data = dataset.plot_log(type = 'all')
         >>> data.shape
         """
+        pass
 
 
 
