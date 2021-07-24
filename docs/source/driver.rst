@@ -13,5 +13,3 @@ To import the mock driver instead of actual driver for the DI-4108
 
 .. autoclass:: icarus_nmr.mock_driver.Driver
   :members:
-
-Next
