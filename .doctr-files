@@ -1,3 +1,4 @@
+./_images/overview_block_diagram.png
 ./_modules/icarus_nmr/analysis.html
 ./_modules/icarus_nmr/device.html
 ./_modules/icarus_nmr/mock_driver.html
@@ -8,6 +9,7 @@
 ./_sources/index.rst.txt
 ./_sources/installation.rst.txt
 ./_sources/min_versions.rst.txt
+./_sources/overview.rst.txt
 ./_sources/release-history.rst.txt
 ./_sources/system-level.rst.txt
 ./_sources/usage.rst.txt
@@ -99,6 +101,7 @@
 ./installation.html
 ./min_versions.html
 ./objects.inv
+./overview.html
 ./release-history.html
 ./search.html
 ./searchindex.js
