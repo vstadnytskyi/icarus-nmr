@@ -10,6 +10,7 @@ Icarus Pressure Jump for NMR Documentation
    :maxdepth: 2
 
    installation
+   overview
    usage
    data-analysis
    driver
