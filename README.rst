@@ -11,7 +11,7 @@ Icarus Pressure Jump for NMR
 Pressure Jump Software for time-resolved pressure NMR
 
 * Free software: 3-clause BSD license
-* Documentation: (COMING SOON!) https://vstadnytskyi.github.io/icarus-nmr.
+* Documentation: https://vstadnytskyi.github.io/icarus-nmr 
 
 Features
 --------
