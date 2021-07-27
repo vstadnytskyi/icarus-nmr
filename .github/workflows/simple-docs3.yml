@@ -1,19 +1,21 @@
-name: Build and Deploy
-on: [push]
+name: docs
+on:
+  push:
+    branches:
+      - master
+
 jobs:
-  build-and-deploy:
+  docs:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout 🛎️
+      - name: checkout
         uses: actions/checkout@v2.3.1
-
-      - name: Install and Build 🔧 # This example project is built using npm and outputs the result to the 'build' folder. Replace with the commands required to build your project, or remove this step entirely if your site is pre-built.
-        run: |
-          npm install
-          npm run build
-
-      - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@4.1.4
+      - name: install-dependencies
+        uses: bahmutov/npm-install@v1
+      - name: build-docs
+        run: yarn typedoc --out docs/generated src/index.tsx
+      - name: upload-docs
+        uses: JamesIves/github-pages-deploy-action@4.1.1
         with:
-          branch: gh-pages # The branch the action should deploy to.
-          folder: build # The folder the action should deploy.
+          branch: gh-pages
+          folder: ~/
