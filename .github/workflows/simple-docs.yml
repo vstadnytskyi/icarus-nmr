@@ -17,7 +17,7 @@ jobs:
       fail-fast: false
       matrix:
 #        python-version: [3.7, 3.8, 3.9]
-        python-version: [3.6, 3.7]
+        python-version: [3.7] #, 3.7]
 
     steps:
     - uses: actions/checkout@v2
@@ -38,7 +38,6 @@ jobs:
 #         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: create docs
       run: |
-      #  set -e  # If any of the following steps fail, just stop at that point.
         make -C docs html  # Build the documentation.
         pip3 install doctr
         doctr deploy --built-docs docs/build/html .
