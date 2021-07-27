@@ -13,16 +13,16 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     # Standard drop-in approach that should work for most people.
-    - uses: ammaraskar/sphinx-action@master
+    - uses: vstadnytskyi/icarus-nmr@master
       with:
         docs-folder: "docs/"
     # Example of using a custom build-command.
-    - uses: ammaraskar/sphinx-action@master
+    - uses: vstadnytskyi/icarus-nmr@master
       with:
         build-command: "sphinx-build -b html . _build"
         docs-folder: "docs2/"
     # Grabbing custom dependencies and building as a pdf.
-    - uses: ammaraskar/sphinx-action@master
+    - uses: vstadnytskyi/icarus-nmr@master
       with:
         pre-build-command: "apt-get update -y && apt-get install -y latexmk texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended"
         build-command: "make latexpdf"
