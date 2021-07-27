@@ -40,7 +40,7 @@ jobs:
       run: |
         python -m pip install -e .
         python -m pip install sphinx_rtd_theme ipython numpydoc sphinx_copybutton
-        python -m pip install -U --pre sphinx
+        python -m pip install -U sphinx
         make -C docs html  # Build the documentation.
-        pip3 install doctr
-        doctr deploy --built-docs docs/build/html .
+# pip3 install doctr
+# doctr deploy --built-docs docs/build/html .
