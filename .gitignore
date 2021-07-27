@@ -59,8 +59,8 @@ coverage.xml
 *.csv
 
 # Sphinx documentation
-docs/build/
-docs/source/generated/
+#docs/build/
+#docs/source/generated/
 
 # pytest
 .pytest_cache/
