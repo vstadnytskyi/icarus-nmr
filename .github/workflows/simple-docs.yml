@@ -39,7 +39,7 @@ jobs:
     - name: create docs
       run: |
         python -m pip install -e .
-        python -m pip install sphinx_rtd_theme ipython
+        python -m pip install sphinx_rtd_theme ipython numpydoc
         python -m pip install -U --pre sphinx
         make -C docs html  # Build the documentation.
         pip3 install doctr
