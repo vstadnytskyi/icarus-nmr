@@ -24,7 +24,7 @@ class MockTest(unittest.TestCase):
         self.assertEqual(dic,result)
         result = driver.get_hardware_information()
         self.assertEqual(dic,result)
-        sleep(1)
+        sleep(0.05)
         length1 = device.queue.length
         data,flag = device.driver.get_readings(length1)
         self.assertEqual(data.T[9].mean(),127.0)
