@@ -14,7 +14,9 @@ Icarus Pressure Jump for NMR Documentation
    usage
    data-analysis
    driver
+   mock-driver
    device
    system-level
+   development
    release-history
    min_versions
