@@ -24,12 +24,12 @@ class MockTest(unittest.TestCase):
         self.assertEqual(dic,result)
         result = driver.get_hardware_information()
         self.assertEqual(dic,result)
-        sleep(0.05)
+        sleep(1)
         length1 = device.queue.length
         data,flag = device.driver.get_readings(length1)
         self.assertEqual(data.T[9].mean(),127.0)
         self.assertEqual(data.T[9].std(), 0.0)
-        self.assertEqual(length1, 64)
+        self.assertEqual(length1, 128)
 
     def test_operation1(self):
         from icarus_nmr.device import DI4108_DL

@@ -399,7 +399,7 @@ class DI4108_DL(XLevelTemplate):
         self.running = False
         self.packet_pointer = -1
         #Init circular buffer
-        self.pr_packet_size = 64
+        self.pr_packet_size = 128
         self.pr_baserate = 20000
         self.pr_dec = 5
         self.pr_rate = (self.pr_baserate)/self.pr_dec
