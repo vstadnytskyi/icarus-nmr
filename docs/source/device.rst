@@ -18,7 +18,7 @@ and two auxiliary modules(blue shaded blocks). The red shaded block is the must 
 
 *Data acquisition device level*
 
-Data acquisition device level module interacts with the DATAQ-4108 via Python based driver. The module is responsible to retrieve data from the DI-4108 buffer and put it in its' own buffer. The data acquisition module passes digital inputs to the DI-4108. The data acquisition module uses two functions XXX and XXX to interact with the Channel Access server. The data acquisition server publishes new values (PVs or Process Variables) to a special dictionary that is available to Channel Access module. The acquisition server checks special process variable input dictionary to see if there are any commands that need to be processed.
+Data acquisition device level module interacts with the DATAQ-4108 via Python based driver. The module is responsible to retrieve data from the DI-4108 buffer and put it in its' own buffer. The data acquisition module passes digital inputs to the DI-4108. The data acquisition module uses two structures (TODO) and (TODO) to interact with the Channel Access server. The data acquisition server publishes new values (PVs or Process Variables) to a special dictionary that is available to Channel Access module. The acquisition server checks special process variable input dictionary to see if there are any commands that need to be processed.
 
 *Channel Access server*
 
