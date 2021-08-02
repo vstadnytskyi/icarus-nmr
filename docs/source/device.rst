@@ -1,11 +1,20 @@
-=============
+================
 Device Level
-=============
+================
 
-The device level code consists of three major modules:
+.. image:: ../files/device_level_diagram.png
+  :width: 600
+  :alt: device level block diagram
+
+The device level code consists of three major modules(green shaded blocks)
+
 - data acquisition device level module (terminal based)
+
 - Channel Access server modules
+
 - Graphical user interface (PyEpics based)
+
+and two auxiliary modules(blue shaded blocks). The red shaded block is the must dependency without which the device level will simply not run. The driver module can be either real module that connected to a real device or a mock driver that simulates the performance of a real device, see driver section for details. The System Level red shaded block is only one client allowed to connect under normal operating conditions.
 
 *Data acquisition device level*
 
