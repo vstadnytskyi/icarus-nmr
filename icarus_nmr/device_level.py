@@ -30,8 +30,6 @@ elif platform.system() == 'Linux': #linux FIXIT
 
 from numpy import nan, mean, std, nanstd, asfarray, asarray, hstack, array, concatenate, delete, round, vstack, hstack, zeros, transpose, split, unique, nonzero, take, savetxt, min, max
 from time import time, sleep
-import sys
-sys.path.append('/Users/femto-13/All-Projects-on-femto/LaserLab/Software/')
 
 import os.path
 import struct
@@ -56,6 +54,7 @@ from datetime import datetime
 from XLI.precision_sleep import precision_sleep #home-made module for accurate sleep
 
 from XLI.hierarchy_instrumentation import XLevelTemplate, IndicatorsTemplate, ControlsTemplate
+
 class Indicators(IndicatorsTemplate):
 
     ###Data Acquisision module indicators

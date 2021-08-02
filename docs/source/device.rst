@@ -2,9 +2,30 @@
 Device Level
 =============
 
+The device level code consists of three major modules:
+- data acquisition device level module (terminal based)
+- Channel Access server modules
+- Graphical user interface (PyEpics based)
+
+*Data acquisition device level*
+
+Data acquisition device level module interacts with the DATAQ-4108 via Python based driver. The module is responsible to retrieve data from the DI-4108 buffer and put it in its' own buffer. The data acquisition module passes digital inputs to the DI-4108. The data acquisition module uses two functions XXX and XXX to interact with the Channel Access server. The data acquisition server publishes new values (PVs or Process Variables) to a special dictionary that is available to Channel Access module. The acquisition server checks special process variable input dictionary to see if there are any commands that need to be processed.
+
+*Channel Access server*
+
+The CA server is based on `CAProto library  <https://caproto.github.io/caproto/v0.8.1/>`_ which allows to create channel access servers. The server interacts with device level via two specialized input\output queues (dictionary like). The server checks on a timer if there is anything to do in the input queue and publishes any updates to the output queue if data need to be send to the device level data acquisition module.
+
+*Graphical User interface*
+
+`PyEpics <http://pyepics.github.io/pyepics/>`_ based graphical user interface.
+
+
+
 *****************
 Device Level
 *****************
+
+
 
 Start by importing analysis submodule for Icarus Pressure Jump for NMR .
 
