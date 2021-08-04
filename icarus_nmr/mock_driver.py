@@ -53,7 +53,7 @@ class Driver(object):
 
         self.sim_flag = False
 
-        from icarus_nmr.tests.test_data.mock_driver import traces
+        import icarus_nmr.tests.test_data.mock_driver.traces as traces
 
         self.lst_pre = traces.get_lst_pre_trace()
         self.lst_depre = traces.get_lst_pre_trace()

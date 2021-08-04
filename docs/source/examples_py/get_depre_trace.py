@@ -1,5 +1,6 @@
 
 from icarus_nmr.mock_driver import Driver
+import icarus_nmr
 driver = Driver()
 driver.init()
 
