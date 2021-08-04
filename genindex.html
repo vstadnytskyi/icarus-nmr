@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Index &mdash; Icarus Pressure Jump for NMR 0.post50+g4398935 documentation</title>
+  <title>Index &mdash; Icarus Pressure Jump for NMR 0.post51+gcff789c documentation</title>
   
 
   
@@ -68,7 +68,7 @@
             
             
               <div class="version">
-                0.post50+g4398935
+                0.post51+gcff789c
               </div>
             
           
@@ -97,10 +97,13 @@
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="data-analysis.html">Data Analysis</a></li>
 <li class="toctree-l1"><a class="reference internal" href="driver.html">Driver Level</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mock-driver.html">Mock Driver Level</a></li>
 <li class="toctree-l1"><a class="reference internal" href="device.html">Device Level</a></li>
 <li class="toctree-l1"><a class="reference internal" href="system-level.html">System Level</a></li>
+<li class="toctree-l1"><a class="reference internal" href="application-level.html">Application Level</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data-analysis.html">Data Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="development.html">Development</a></li>
 <li class="toctree-l1"><a class="reference internal" href="release-history.html">Release History</a></li>
 <li class="toctree-l1"><a class="reference internal" href="min_versions.html">Minimum Version of Python and NumPy</a></li>
 </ul>
@@ -219,10 +222,16 @@
 </li>
       <li><a href="device.html#icarus_nmr.device.DI4108_DL">DI4108_DL (class in icarus_nmr.device)</a>
 </li>
+      <li><a href="driver.html#icarus_nmr.usb_bulk_driver.Driver.discover">discover() (icarus_nmr.usb_bulk_driver.Driver method)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="driver.html#icarus_nmr.mock_driver.Driver">Driver (class in icarus_nmr.mock_driver)</a>
+      <li><a href="mock-driver.html#icarus_nmr.mock_driver.Driver">Driver (class in icarus_nmr.mock_driver)</a>
+
+      <ul>
+        <li><a href="driver.html#icarus_nmr.usb_bulk_driver.Driver">(class in icarus_nmr.usb_bulk_driver)</a>
 </li>
+      </ul></li>
       <li><a href="data-analysis.html#icarus_nmr.analysis.Dataset.dump_to_pickle_file">dump_to_pickle_file() (icarus_nmr.analysis.Dataset method)</a>
 </li>
   </ul></td>
@@ -231,7 +240,7 @@
 <h2 id="F">F</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="device.html#icarus_nmr.device.DI4108_DL.first_time_setup">first_time_setup() (icarus_nmr.device.DI4108_DL method)</a>
+      <li><a href="driver.html#icarus_nmr.usb_bulk_driver.Driver.flush">flush() (icarus_nmr.usb_bulk_driver.Driver method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -239,13 +248,15 @@
 <h2 id="G">G</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="driver.html#icarus_nmr.mock_driver.Driver.get_hardware_information">get_hardware_information() (icarus_nmr.mock_driver.Driver method)</a>
+      <li><a href="mock-driver.html#icarus_nmr.mock_driver.Driver.get_hardware_information">get_hardware_information() (icarus_nmr.mock_driver.Driver method)</a>
 </li>
-      <li><a href="driver.html#icarus_nmr.mock_driver.Driver.get_information">get_information() (icarus_nmr.mock_driver.Driver method)</a>
+      <li><a href="mock-driver.html#icarus_nmr.mock_driver.Driver.get_information">get_information() (icarus_nmr.mock_driver.Driver method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="data-analysis.html#icarus_nmr.analysis.Dataset.get_log_vector">get_log_vector() (icarus_nmr.analysis.Dataset method)</a>
+</li>
+      <li><a href="mock-driver.html#icarus_nmr.mock_driver.Driver.get_readings">get_readings() (icarus_nmr.mock_driver.Driver method)</a>
 </li>
       <li><a href="data-analysis.html#icarus_nmr.analysis.Dataset.get_trace">get_trace() (icarus_nmr.analysis.Dataset method)</a>
 </li>
@@ -303,7 +314,7 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="device.html#icarus_nmr.device.DI4108_DL.parse_binary">parse_binary() (icarus_nmr.device.DI4108_DL method)</a>
 </li>
-      <li><a href="driver.html#icarus_nmr.mock_driver.Driver.parse_binary_number">parse_binary_number() (icarus_nmr.mock_driver.Driver method)</a>
+      <li><a href="mock-driver.html#icarus_nmr.mock_driver.Driver.parse_binary_number">parse_binary_number() (icarus_nmr.mock_driver.Driver method)</a>
 </li>
       <li><a href="device.html#icarus_nmr.device.DI4108_DL.pg_delay_width">pg_delay_width (icarus_nmr.device.DI4108_DL property)</a>
 </li>
@@ -313,7 +324,7 @@
 </li>
       <li><a href="device.html#icarus_nmr.device.DI4108_DL.pg_pre_pulse_width">pg_pre_pulse_width (icarus_nmr.device.DI4108_DL property)</a>
 </li>
-      <li><a href="driver.html#icarus_nmr.mock_driver.Driver.pinhole_leak">pinhole_leak() (icarus_nmr.mock_driver.Driver method)</a>
+      <li><a href="mock-driver.html#icarus_nmr.mock_driver.Driver.pinhole_leak">pinhole_leak() (icarus_nmr.mock_driver.Driver method)</a>
 </li>
       <li><a href="data-analysis.html#icarus_nmr.analysis.Dataset.plot_log">plot_log() (icarus_nmr.analysis.Dataset method)</a>
 </li>
@@ -355,7 +366,7 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="device.html#icarus_nmr.device.DI4108_DL.read_queue">read_queue() (icarus_nmr.device.DI4108_DL method)</a>
 </li>
-      <li><a href="driver.html#icarus_nmr.mock_driver.Driver.readall">readall() (icarus_nmr.mock_driver.Driver method)</a>
+      <li><a href="mock-driver.html#icarus_nmr.mock_driver.Driver.readall">readall() (icarus_nmr.mock_driver.Driver method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -369,9 +380,9 @@
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="driver.html#icarus_nmr.mock_driver.Driver.set_acquisition_rate">set_acquisition_rate() (icarus_nmr.mock_driver.Driver method)</a>
+      <li><a href="mock-driver.html#icarus_nmr.mock_driver.Driver.set_acquisition_rate">set_acquisition_rate() (icarus_nmr.mock_driver.Driver method)</a>
 </li>
-      <li><a href="driver.html#icarus_nmr.mock_driver.Driver.set_digital">set_digital() (icarus_nmr.mock_driver.Driver method)</a>
+      <li><a href="mock-driver.html#icarus_nmr.mock_driver.Driver.set_digital">set_digital() (icarus_nmr.mock_driver.Driver method)</a>
 </li>
       <li><a href="device.html#icarus_nmr.device.DI4108_DL.set_DIO">set_DIO() (icarus_nmr.device.DI4108_DL method)</a>
 </li>
@@ -379,7 +390,7 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="driver.html#icarus_nmr.mock_driver.Driver.slow_leak">slow_leak() (icarus_nmr.mock_driver.Driver method)</a>
+      <li><a href="mock-driver.html#icarus_nmr.mock_driver.Driver.slow_leak">slow_leak() (icarus_nmr.mock_driver.Driver method)</a>
 </li>
       <li><a href="device.html#icarus_nmr.device.DI4108_DL.snapshot">snapshot() (icarus_nmr.device.DI4108_DL method)</a>
 </li>
@@ -403,7 +414,7 @@
 <h2 id="W">W</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="driver.html#icarus_nmr.mock_driver.Driver.write">write() (icarus_nmr.mock_driver.Driver method)</a>
+      <li><a href="mock-driver.html#icarus_nmr.mock_driver.Driver.write">write() (icarus_nmr.mock_driver.Driver method)</a>
 </li>
   </ul></td>
 </tr></table>

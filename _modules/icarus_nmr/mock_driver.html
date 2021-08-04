@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>icarus_nmr.mock_driver &mdash; Icarus Pressure Jump for NMR 0.post50+g4398935 documentation</title>
+  <title>icarus_nmr.mock_driver &mdash; Icarus Pressure Jump for NMR 0.post51+gcff789c documentation</title>
   
 
   
@@ -68,7 +68,7 @@
             
             
               <div class="version">
-                0.post50+g4398935
+                0.post51+gcff789c
               </div>
             
           
@@ -97,10 +97,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../data-analysis.html">Data Analysis</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../driver.html">Driver Level</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mock-driver.html">Mock Driver Level</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../device.html">Device Level</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../system-level.html">System Level</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application-level.html">Application Level</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../data-analysis.html">Data Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development.html">Development</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../release-history.html">Release History</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../min_versions.html">Minimum Version of Python and NumPy</a></li>
 </ul>
@@ -209,7 +212,7 @@
 <span class="n">mock_commands</span><span class="p">[</span><span class="s1">&#39;led 5 </span><span class="se">\r</span><span class="s1">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;led 5 </span><span class="se">\r</span><span class="s1">&#39;</span>
 
 
-<div class="viewcode-block" id="Driver"><a class="viewcode-back" href="../../driver.html#icarus_nmr.mock_driver.Driver">[docs]</a><span class="k">class</span> <span class="nc">Driver</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="Driver"><a class="viewcode-back" href="../../mock-driver.html#icarus_nmr.mock_driver.Driver">[docs]</a><span class="k">class</span> <span class="nc">Driver</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">available_ports</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dev</span> <span class="o">=</span> <span class="kc">None</span>
@@ -224,19 +227,11 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">sim_flag</span> <span class="o">=</span> <span class="kc">False</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">lst_pre</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">lst_depre</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">lst_pump</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">test_data_root</span> <span class="o">=</span> <span class="s1">&#39;./icarus_nmr/tests/test_data/&#39;</span>
-        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">test_data_root</span><span class="o">+</span><span class="s1">&#39;mock_driver/&#39;</span><span class="p">):</span>
-            <span class="k">if</span> <span class="s1">&#39;_pre.&#39;</span> <span class="ow">in</span> <span class="n">item</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">lst_pre</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">test_data_root</span><span class="o">+</span><span class="s1">&#39;mock_driver/&#39;</span> <span class="o">+</span> <span class="n">item</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">test_data_root</span><span class="o">+</span><span class="s1">&#39;mock_driver/&#39;</span><span class="p">):</span>
-            <span class="k">if</span> <span class="s1">&#39;_depre.&#39;</span> <span class="ow">in</span> <span class="n">item</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">lst_depre</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">test_data_root</span><span class="o">+</span><span class="s1">&#39;mock_driver/&#39;</span><span class="o">+</span><span class="n">item</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">test_data_root</span><span class="o">+</span><span class="s1">&#39;mock_driver/&#39;</span><span class="p">):</span>
-            <span class="k">if</span> <span class="s1">&#39;_pump.&#39;</span> <span class="ow">in</span> <span class="n">item</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">lst_pump</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">test_data_root</span><span class="o">+</span><span class="s1">&#39;mock_driver/&#39;</span><span class="o">+</span><span class="n">item</span><span class="p">)</span>
+        <span class="kn">from</span> <span class="nn">icarus_nmr.tests.test_data.mock_driver</span> <span class="kn">import</span> <span class="n">traces</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">lst_pre</span> <span class="o">=</span> <span class="n">traces</span><span class="o">.</span><span class="n">get_lst_pre_trace</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lst_depre</span> <span class="o">=</span> <span class="n">traces</span><span class="o">.</span><span class="n">get_lst_pre_trace</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lst_pump</span> <span class="o">=</span> <span class="n">traces</span><span class="o">.</span><span class="n">get_lst_pump_trace</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">discover</span><span class="p">()</span>
@@ -247,7 +242,7 @@
 
         <span class="n">info</span><span class="p">(</span><span class="s2">&quot;initialization of the driver is complete&quot;</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Driver.get_information"><a class="viewcode-back" href="../../driver.html#icarus_nmr.mock_driver.Driver.get_information">[docs]</a>    <span class="k">def</span> <span class="nf">get_information</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Driver.get_information"><a class="viewcode-back" href="../../mock-driver.html#icarus_nmr.mock_driver.Driver.get_information">[docs]</a>    <span class="k">def</span> <span class="nf">get_information</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        emulates retrieval of information via usb. Creates two new atrbiutes to the class: self.dev_dict and self.epi_dict</span>
 
@@ -286,7 +281,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">epi_dict</span><span class="p">[</span><span class="s1">&#39;EPI:bInterval&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">epi_dict</span><span class="p">[</span><span class="s1">&#39;EPI:bInterval&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span></div>
 
-<div class="viewcode-block" id="Driver.get_hardware_information"><a class="viewcode-back" href="../../driver.html#icarus_nmr.mock_driver.Driver.get_hardware_information">[docs]</a>    <span class="k">def</span> <span class="nf">get_hardware_information</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Driver.get_hardware_information"><a class="viewcode-back" href="../../mock-driver.html#icarus_nmr.mock_driver.Driver.get_hardware_information">[docs]</a>    <span class="k">def</span> <span class="nf">get_hardware_information</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        emulates retrieval of information via usb. Creates two new atrbiutes to the class: self.dev_dict and self.epi_dict</span>
 
@@ -334,7 +329,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">sim_last_read</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
         <span class="k">return</span> <span class="kc">True</span>
 
-<div class="viewcode-block" id="Driver.readall"><a class="viewcode-back" href="../../driver.html#icarus_nmr.mock_driver.Driver.readall">[docs]</a>    <span class="k">def</span> <span class="nf">readall</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Driver.readall"><a class="viewcode-back" href="../../mock-driver.html#icarus_nmr.mock_driver.Driver.readall">[docs]</a>    <span class="k">def</span> <span class="nf">readall</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        reads all information in the usb buffer</span>
 
@@ -353,7 +348,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Driver.write"><a class="viewcode-back" href="../../driver.html#icarus_nmr.mock_driver.Driver.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">command</span><span class="p">):</span>
+<div class="viewcode-block" id="Driver.write"><a class="viewcode-back" href="../../mock-driver.html#icarus_nmr.mock_driver.Driver.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">command</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        writes into USB buffer</span>
 
@@ -392,7 +387,7 @@
         <span class="c1">#tested dec 17, 2017</span>
         <span class="k">return</span> <span class="kc">True</span>
 
-<div class="viewcode-block" id="Driver.parse_binary_number"><a class="viewcode-back" href="../../driver.html#icarus_nmr.mock_driver.Driver.parse_binary_number">[docs]</a>    <span class="k">def</span> <span class="nf">parse_binary_number</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">Nbits</span> <span class="o">=</span> <span class="mi">7</span><span class="p">):</span>
+<div class="viewcode-block" id="Driver.parse_binary_number"><a class="viewcode-back" href="../../mock-driver.html#icarus_nmr.mock_driver.Driver.parse_binary_number">[docs]</a>    <span class="k">def</span> <span class="nf">parse_binary_number</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">Nbits</span> <span class="o">=</span> <span class="mi">7</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        parses integer number into bits and represents them as an array</span>
 
@@ -415,7 +410,7 @@
             <span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">binary</span><span class="p">[</span><span class="n">Nbits</span><span class="o">+</span><span class="mi">2</span><span class="o">-</span><span class="n">i</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">arr</span></div>
 
-<div class="viewcode-block" id="Driver.set_digital"><a class="viewcode-back" href="../../driver.html#icarus_nmr.mock_driver.Driver.set_digital">[docs]</a>    <span class="k">def</span> <span class="nf">set_digital</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">number</span> <span class="o">=</span> <span class="mi">127</span><span class="p">,</span> <span class="n">echo</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Driver.set_digital"><a class="viewcode-back" href="../../mock-driver.html#icarus_nmr.mock_driver.Driver.set_digital">[docs]</a>    <span class="k">def</span> <span class="nf">set_digital</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">number</span> <span class="o">=</span> <span class="mi">127</span><span class="p">,</span> <span class="n">echo</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        sets digital value. The mock driver emulates pressure transitions due to change in digital state.</span>
 
@@ -470,7 +465,7 @@
             <span class="n">flag</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">return</span> <span class="n">flag</span>
 
-<div class="viewcode-block" id="Driver.set_acquisition_rate"><a class="viewcode-back" href="../../driver.html#icarus_nmr.mock_driver.Driver.set_acquisition_rate">[docs]</a>    <span class="k">def</span> <span class="nf">set_acquisition_rate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rate</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">baserate</span> <span class="o">=</span> <span class="mi">20000</span><span class="p">,</span> <span class="n">dec</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">echo</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="Driver.set_acquisition_rate"><a class="viewcode-back" href="../../mock-driver.html#icarus_nmr.mock_driver.Driver.set_acquisition_rate">[docs]</a>    <span class="k">def</span> <span class="nf">set_acquisition_rate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rate</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">baserate</span> <span class="o">=</span> <span class="mi">20000</span><span class="p">,</span> <span class="n">dec</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">echo</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        sets acquisition rate (simulation rate)</span>
 
@@ -512,7 +507,10 @@
         <span class="n">c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_acquisition_rate</span><span class="p">(</span><span class="n">rate</span> <span class="o">=</span> <span class="n">rate</span><span class="p">,</span> <span class="n">dec</span> <span class="o">=</span> <span class="n">dec</span><span class="p">,</span> <span class="n">baserate</span> <span class="o">=</span> <span class="mi">20000</span><span class="p">,</span> <span class="n">echo</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="c1">#3000 gives maximum rate</span>
         <span class="k">return</span> <span class="n">x</span><span class="o">*</span><span class="n">a</span><span class="o">*</span><span class="n">b</span><span class="o">*</span><span class="n">c</span>
 
-    <span class="k">def</span> <span class="nf">get_readings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points_to_read</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">to_read_analog</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span> <span class="n">to_read_digital</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+<div class="viewcode-block" id="Driver.get_readings"><a class="viewcode-back" href="../../mock-driver.html#icarus_nmr.mock_driver.Driver.get_readings">[docs]</a>    <span class="k">def</span> <span class="nf">get_readings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points_to_read</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">to_read_analog</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span> <span class="n">to_read_digital</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        the original get_readings function should just return data from the buffer on the DI-4108 DATAQ. Since this is module is a mock device, there are extra functionality build in into this specific function. The function handles random number generation around specified values with specified standard deviations. The fucntion also includes what happens if pressurization and depresurrization event flags are True.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">zeros</span><span class="p">,</span> <span class="n">random</span>
         <span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span>
 
@@ -570,10 +568,10 @@
             <span class="c1"># this section simulates continous data generation. It will sleep for ~16 ms every 64 points.</span>
             <span class="n">k</span><span class="o">+=</span><span class="mi">1</span>
             <span class="k">if</span> <span class="n">k</span> <span class="o">&gt;=</span> <span class="mi">64</span><span class="p">:</span>
-                <span class="n">sleep</span><span class="p">(</span><span class="mi">64</span><span class="o">/</span><span class="mf">4000.0</span><span class="p">)</span>
+                <span class="n">sleep</span><span class="p">(</span><span class="mi">64</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">sim_rate</span><span class="p">)</span>
                 <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">flag</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="k">return</span> <span class="n">res</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">flag</span> <span class="c1">#(analog_data,digital_data)</span>
+        <span class="k">return</span> <span class="n">res</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">flag</span> <span class="c1">#(analog_data,digital_data)</span></div>
 
     <span class="k">def</span> <span class="nf">blink</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">pass</span>
@@ -583,9 +581,9 @@
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;get pre trace&#39;</span><span class="p">)</span>
         <span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">arange</span><span class="p">,</span> <span class="n">zeros</span>
         <span class="kn">import</span> <span class="nn">random</span>
-        <span class="kn">from</span> <span class="nn">ubcs_auxiliary.save_load_object</span> <span class="kn">import</span> <span class="n">load_from_file</span> <span class="k">as</span> <span class="n">load</span>
+
         <span class="n">N</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lst_pre</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
-        <span class="n">spl_list</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lst_pre</span><span class="p">[</span><span class="n">N</span><span class="p">])</span>
+        <span class="n">spl_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lst_pre</span><span class="p">[</span><span class="n">N</span><span class="p">]</span>
         <span class="n">x</span> <span class="o">=</span> <span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">333</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mf">0.25</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span><span class="mi">333</span><span class="p">))</span>
 
@@ -606,9 +604,9 @@
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;get depre trace&#39;</span><span class="p">)</span>
         <span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">arange</span><span class="p">,</span> <span class="n">zeros</span>
         <span class="kn">import</span> <span class="nn">random</span>
-        <span class="kn">from</span> <span class="nn">ubcs_auxiliary.save_load_object</span> <span class="kn">import</span> <span class="n">load_from_file</span> <span class="k">as</span> <span class="n">load</span>
+
         <span class="n">N</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lst_depre</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
-        <span class="n">spl_list</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lst_depre</span><span class="p">[</span><span class="n">N</span><span class="p">])</span>
+        <span class="n">spl_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lst_depre</span><span class="p">[</span><span class="n">N</span><span class="p">]</span>
         <span class="n">x</span> <span class="o">=</span> <span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">333</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mf">0.25</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span><span class="mi">333</span><span class="p">))</span>
 
@@ -629,17 +627,18 @@
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;get pump trace&#39;</span><span class="p">)</span>
         <span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">arange</span><span class="p">,</span> <span class="n">zeros</span>
         <span class="kn">import</span> <span class="nn">random</span>
-        <span class="kn">from</span> <span class="nn">ubcs_auxiliary.save_load_object</span> <span class="kn">import</span> <span class="n">load_from_file</span> <span class="k">as</span> <span class="n">load</span>
+
         <span class="n">N</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lst_pump</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
-        <span class="n">spl_list</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lst_pump</span><span class="p">[</span><span class="n">N</span><span class="p">])</span>
+        <span class="n">spl_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lst_pump</span><span class="p">[</span><span class="n">N</span><span class="p">]</span>
         <span class="n">x</span> <span class="o">=</span> <span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">333</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mf">0.25</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">spl_list</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">data</span>
+
 <span class="c1">########################################################</span>
 <span class="c1">##### Artificial events</span>
 <span class="c1">########################################################</span>
 
-<div class="viewcode-block" id="Driver.pinhole_leak"><a class="viewcode-back" href="../../driver.html#icarus_nmr.mock_driver.Driver.pinhole_leak">[docs]</a>    <span class="k">def</span> <span class="nf">pinhole_leak</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Driver.pinhole_leak"><a class="viewcode-back" href="../../mock-driver.html#icarus_nmr.mock_driver.Driver.pinhole_leak">[docs]</a>    <span class="k">def</span> <span class="nf">pinhole_leak</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        creates a pin hole leak event. Values in channel 5,6 are set to 0.</span>
 
@@ -657,7 +656,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">sim_analog</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sim_pressure_state</span> <span class="o">=</span> <span class="mi">0</span></div>
 
-<div class="viewcode-block" id="Driver.slow_leak"><a class="viewcode-back" href="../../driver.html#icarus_nmr.mock_driver.Driver.slow_leak">[docs]</a>    <span class="k">def</span> <span class="nf">slow_leak</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Driver.slow_leak"><a class="viewcode-back" href="../../mock-driver.html#icarus_nmr.mock_driver.Driver.slow_leak">[docs]</a>    <span class="k">def</span> <span class="nf">slow_leak</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        emulates slow leak</span>
 
@@ -678,121 +677,6 @@
         <span class="c1">#self.sim_slow_leak_tau = 1</span>
         <span class="c1">#self.sim_slow_leak_start_time = 0</span>
         <span class="k">return</span> <span class="n">exp</span><span class="p">(</span><span class="n">t</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">sim_slow_leak_start_time</span><span class="p">,</span> <span class="n">amp</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">tau</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sim_slow_leak_tau</span><span class="p">)</span></div></div>
-
-
-    <span class="c1"># &quot;&quot;&quot;Test functions&quot;&quot;&quot;</span>
-    <span class="c1"># def self_test(self):</span>
-    <span class="c1">#     self.inquire(&#39;led 7\r&#39;)</span>
-    <span class="c1">#     self.tau = 0.001</span>
-    <span class="c1">#     #dictionary with device parameters such as S\N, device name, ect</span>
-    <span class="c1">#     self.dict = {}</span>
-    <span class="c1">#     self.dict[&#39;Device name&#39;] = self.inquire(&#39;info 1 \r&#39;).split(&#39;info 1 &#39;)[1][:-2]</span>
-    <span class="c1">#     self.dict[&#39;Firmware version&#39;] = self.inquire(&#39;info 2 \r&#39;).split(&#39;info 2 &#39;)[1][:-2]</span>
-    <span class="c1">#     self.dict[&#39;Serial Number&#39;] = self.inquire(&#39;info 6 \r&#39;).split(&#39;info 6 &#39;)[1][:-2]</span>
-    <span class="c1">#     self.dict[&#39;Sample Rate Divisor&#39;] = self.inquire(&#39;info 9 \r&#39;).split(&#39;info 9 &#39;)[1][:-2]</span>
-    <span class="c1">#     #Useful variables</span>
-    <span class="c1">#     #wait time after write (before) read. This seems to be not necessary.</span>
-    <span class="c1">#     for i in self.dict.keys():</span>
-    <span class="c1">#         print(&#39;%r, %r&#39; % (i, self.dict[i]))</span>
-    <span class="c1">#     print(&#39;information request complete: the DI-4108 with SN %r&#39; %self.dict[&#39;Serial Number&#39;])</span>
-    <span class="c1">#     print(&#39;%r&#39; % self.inquire(&#39;led 2\r&#39;))</span>
-    <span class="c1">#</span>
-    <span class="c1"># def test1(self):</span>
-    <span class="c1">#     self.self_test()</span>
-    <span class="c1">#     self.config_channels()</span>
-    <span class="c1">#</span>
-    <span class="c1">#     self.start_scan()</span>
-    <span class="c1">#     while self._waiting()[0] &lt;1:</span>
-    <span class="c1">#         sleep(0.001)</span>
-    <span class="c1">#     start_t = time()</span>
-    <span class="c1">#     while time()-start_t&lt;2:</span>
-    <span class="c1">#         print(&quot;%0.5f %r %r&quot; % (time()-start_t,self._waiting()[0],self.get_readings()))</span>
-    <span class="c1">#     self.stop_scan()</span>
-    <span class="c1">#     print(&#39;test 1 is Done. IN buffer has all data&#39;)</span>
-    <span class="c1">#     print(&#39;data = dev.get_readings()&#39;)</span>
-    <span class="c1">#     print(&#39;buffer waiting %r&#39; % self._waiting()[0])</span>
-    <span class="c1">#</span>
-    <span class="c1"># def test2(self):</span>
-    <span class="c1">#     self.self_test()</span>
-    <span class="c1">#     self.config_channels()</span>
-    <span class="c1">#     self.start_scan()</span>
-    <span class="c1">#     sleep(6)</span>
-    <span class="c1">#     self.stop_scan()</span>
-    <span class="c1">#     sleep(1)</span>
-    <span class="c1">#     while self._waiting()[0]&gt;5:</span>
-    <span class="c1">#         print(&#39;time %r and value %r&#39;% (time(),self.get_readings()))</span>
-    <span class="c1">#     print(&#39;test 2 is Done&#39;)</span>
-    <span class="c1">#</span>
-    <span class="c1"># def test3(self):</span>
-    <span class="c1">#     self.self_test()</span>
-    <span class="c1">#     self.config_channels()</span>
-    <span class="c1">#     self.start_scan()</span>
-    <span class="c1">#     sleep(6)</span>
-    <span class="c1">#     self.stop_scan()</span>
-    <span class="c1">#     print(self.waiting())</span>
-    <span class="c1">#     sleep(1)</span>
-    <span class="c1">#     while self.waiting()[0]&gt;5:</span>
-    <span class="c1">#         print(self.waiting()[0])</span>
-    <span class="c1">#         print(self.get_readings())</span>
-    <span class="c1">#     print(&#39;test 2 is Done&#39;)</span>
-    <span class="c1">#</span>
-    <span class="c1">#</span>
-    <span class="c1"># def echo_test1(self):</span>
-    <span class="c1">#     self.config_channels()</span>
-    <span class="c1">#     self.start_scan()</span>
-    <span class="c1">#     while self.waiting()[0] &lt;1:</span>
-    <span class="c1">#         sleep(0.001)</span>
-    <span class="c1">#     start_t = time()</span>
-    <span class="c1">#     while time()- start_t &lt;1:</span>
-    <span class="c1">#         self.write(&#39;dout 0\r&#39;)</span>
-    <span class="c1">#         self.write(&#39;dout 127 \r&#39;)</span>
-    <span class="c1">#         sleep(0.06)</span>
-    <span class="c1">#     self.stop_scan()</span>
-    <span class="c1">#     print(&quot;%r&quot; % self._waiting()[0])</span>
-    <span class="c1">#     data = self.readall()</span>
-    <span class="c1">#     print(&#39;%r&#39; % data)</span>
-    <span class="c1">#</span>
-    <span class="c1"># def performance_test1(self):</span>
-    <span class="c1">#     self.self_test()</span>
-    <span class="c1">#     self.config_channels()</span>
-    <span class="c1">#</span>
-    <span class="c1">#     self.start_scan()</span>
-    <span class="c1">#     while self.waiting()[0] &lt;10000:</span>
-    <span class="c1">#         sleep(0.001)</span>
-    <span class="c1">#     start_t = time()</span>
-    <span class="c1">#     self.stop_scan()</span>
-    <span class="c1">#</span>
-    <span class="c1">#     print(&#39;test 1 is Done. IN buffer has all data&#39;)</span>
-    <span class="c1">#     print(&#39;data = dev.get_readings(10)&#39;)</span>
-    <span class="c1">#     print(&#39;buffer waiting %r&#39; % self._waiting()[0])</span>
-    <span class="c1">#     print(&#39;t = Timer(lambda: dev.get_readings(N))&#39;)</span>
-    <span class="c1">#     print(&#39;print t.timeit(number = M)&#39;)</span>
-    <span class="c1">#</span>
-    <span class="c1"># def performance_test2(self):</span>
-    <span class="c1">#     self.self_test()</span>
-    <span class="c1">#     self.config_channels()</span>
-    <span class="c1">#</span>
-    <span class="c1">#     self.start_scan()</span>
-    <span class="c1">#     start_t = time()</span>
-    <span class="c1">#     self.lst = []</span>
-    <span class="c1">#     time_st = time()</span>
-    <span class="c1">#     while time()-start_t&lt;10:</span>
-    <span class="c1">#         if self._waiting()[0]&gt; 512*16:</span>
-    <span class="c1">#             data = self.get_readings(512)</span>
-    <span class="c1">#             self.lst.append([time()-start_t,self._waiting()[0],(time() - time_st)*1000])</span>
-    <span class="c1">#             print(&quot;%r %0.10f&quot; % (self._waiting()[0], (time() - time_st)*1000))</span>
-    <span class="c1">#         sleep(24/1000) #wait for 12.8 ms</span>
-    <span class="c1">#     start_t = time()</span>
-    <span class="c1">#     self.stop_scan()</span>
-    <span class="c1">#     print(&#39;time between 4 kS = %0.5f&#39; % mean(10.0/len(self.lst)))</span>
-    <span class="c1">#     print(&#39;Sampling rate: %0.1f&#39; % (512/mean(10.0/len(self.lst))))</span>
-    <span class="c1">#     print(&#39;test 1 is Done. IN buffer has all data&#39;)</span>
-    <span class="c1">#     print(&#39;data = dev.get_readings(10)&#39;)</span>
-    <span class="c1">#     print(&#39;buffer waiting %r&#39; % self._waiting()[0])</span>
-    <span class="c1">#     print(&#39;t = Timer(lambda: dev.get_readings(N))&#39;)</span>
-    <span class="c1">#     print(&#39;print t.timeit(number = M)&#39;)</span>
-
-
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span> <span class="c1">#for testing</span>
