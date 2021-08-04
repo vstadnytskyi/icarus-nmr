@@ -1,7 +1,7 @@
 from icarus_nmr.tests.test_data.mock_driver import traces
 import os
 head, tail = os.path.split(traces.__file__)
-
+print(head, tail )
 def get_lst_pre_trace(N = None):
     import os
     head, tail = os.path.split(traces.__file__)
