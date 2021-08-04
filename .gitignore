@@ -21,7 +21,7 @@ parts/
 sdist/
 var/
 venv/
-#icarus_nmr/tests/test_dataset
+# icarus_nmr/tests/test_dataset
 *.egg-info/
 .installed.cfg
 *.egg
