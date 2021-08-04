@@ -6,10 +6,10 @@ The library comes with a support for rs232 (slow) and bulk USB(recommended) inte
 
 To import the  driver for the DI-4108. This library has to be tested manually to insure that all communication with the device is working well. To test the rest of the code, please use the mock driver.
 
-#.. code-block:: python
+.. code-block:: python
 
-  #from icarus_nmr.usb_bulk_driver import Driver
-  #driver = Driver()
+  from icarus_nmr.usb_bulk_driver import Driver
+  driver = Driver()
 
-#.. autoclass:: icarus_nmr.usb_bulk_driver.Driver
-  #:members:
+.. autoclass:: icarus_nmr.usb_bulk_driver.Driver
+  :members:

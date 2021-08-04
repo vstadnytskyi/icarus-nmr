@@ -50,6 +50,7 @@ class MockTest(unittest.TestCase):
         from ..mock_driver import Driver
         driver = Driver()
         driver.init()
+        driver.config_channels()
         driver.start_scan()
         data, flag = driver.get_readings(512)
         self.assertEqual(data.shape,(512,10))
@@ -60,6 +61,7 @@ class MockTest(unittest.TestCase):
         from ..mock_driver import Driver
         driver = Driver()
         driver.init()
+        driver.config_channels()
         driver.start_scan()
         data, flag = driver.get_readings(512)
         self.assertEqual(data.T[9].mean(),127.0)
@@ -77,6 +79,7 @@ class MockTest(unittest.TestCase):
         from ..mock_driver import Driver
         driver = Driver()
         driver.init()
+        driver.config_channels()
         driver.start_scan()
         trace = driver.get_pre_trace()
         self.assertEqual(trace.shape, (10, 333))

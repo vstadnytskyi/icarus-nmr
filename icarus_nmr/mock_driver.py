@@ -394,7 +394,7 @@ class Driver(object):
             # this section simulates continous data generation. It will sleep for ~16 ms every 64 points.
             k+=1
             if k >= 64:
-                sleep(64/4000.0)
+                sleep(64/self.sim_rate)
                 k = 0
         flag = True
         return res.T, flag #(analog_data,digital_data)

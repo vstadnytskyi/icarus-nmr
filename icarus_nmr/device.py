@@ -48,9 +48,9 @@ from datetime import datetime
 from ubcs_auxiliary.saved_property import DataBase, SavedProperty
 from ubcs_auxiliary.threading import new_thread
 from ubcs_auxiliary.advsleep import precision_sleep #home-made module for accurate sleep
-from ubcs_auxiliary.XLI.hierarchy_instrumentation import XLevelTemplate, IndicatorsTemplate, ControlsTemplate
 
-class DI4108_DL(XLevelTemplate):
+
+class DI4108_DL():
     db = DataBase(root = 'TEMP', name = 'DI4108_DL')
     pr_serial_number = SavedProperty(db,'Serial Number', '00000').init()
     pr_AI_channels = SavedProperty(db,'Number of AI',8).init()
@@ -343,7 +343,7 @@ class DI4108_DL(XLevelTemplate):
             value = int(value,2)
         self.driver.set_digital(value)
     def get_DIO(self):
-        return int(self.queue.buffer[self.queue.rear,9])
+        return int(self.queue.peek_last_N(3)[-1,9])
     DIO = property(get_DIO,set_DIO)
     ### Advance function
 

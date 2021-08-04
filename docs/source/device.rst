@@ -59,6 +59,11 @@ Next step is to bind the device instance with appropriate driver.
 
 After the driver is bound, the device instance will use it for all communication with the device (or with the emulator).
 
+.. code-block:: python
+
+  device.bind_driver(driver)
+  device.init()
+
 *********************
 Device Level Client
 *********************
@@ -67,6 +72,21 @@ Device Level Client
 **********************
 Device Level Server
 **********************
+
+The process variables(PVs) associated with the device level server are:
+
+* response[b'running'] = self.running
+* response[b'in_waiting'] = self.in_waiting
+* response[b'packet_size'] = self.packet_size
+* serial_number - driver\device serial number
+* frequency - data collection frequency
+* response[b'port'] = self.port
+* response[b'ip_address'] = self.ip_address
+* response[b'firmware'] = self.firmware
+* target_pressure - target pressure in kbars
+* sample_pressure - sample pressure in kbars
+* last_call_lst - old variable showing who connected last the server
+* pressure_sensor_offset - eight integer long array of numbers that offset the sensors
 
 
 

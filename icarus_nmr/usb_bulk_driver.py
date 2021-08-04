@@ -17,7 +17,7 @@ import struct
 from pdb import pm
 from time import gmtime, strftime
 import logging
-from persistent_property import persistent_property
+
 from struct import pack, unpack
 from timeit import Timer
 from logging import info,warn, debug, error
@@ -113,13 +113,13 @@ class Driver(object):
         #self.readall()
 
     def discover(self):
-        '''the function allows to discover DI-4108 device.
-
-            returns: flag if a device(devices) are found.
-            assigns: self.available_ports list entry
-                    [0] - COM port namer
-                    [1] - serial number
-        '''
+        """
+        the function allows to discover DI-4108 device.
+        returns: flag if a device(devices) are found.
+        assigns: self.available_ports list entry
+        [0] - COM port namer
+        [1] - serial number
+        """
         import usb.core
         flag = True
         self.dev = usb.core.find(idVendor=0x0683, idProduct=0x4108)
@@ -127,10 +127,6 @@ class Driver(object):
             raise ValueError('Device not found')
             flag = False
         return flag
-
-
-    """Set and Get persistent_property"""
-    # functions for persistent properties if needed
 
     """Basic serial communication functions"""
 
@@ -299,7 +295,7 @@ class Driver(object):
         else:
             flag = True
         try:
-            
+
             data = asarray(unpack(('h'*to_read_analog+'BB')*points_to_read,result))
         except:
             error(traceback.format_exc())
