@@ -51,6 +51,7 @@ The mock driver generates random data to simulate actual data stream from DI-410
 One can also request a pressurization or depressurization traceback
 
 Note, the code below does not work, `see issue 9 on GitHub <https://github.com/vstadnytskyi/icarus-nmr/issues/9>`_
+
 #.. plot:: ./examples_py/get_depre_trace.py
 #   :include-source:
 

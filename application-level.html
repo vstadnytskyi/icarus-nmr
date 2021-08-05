@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Application Level &mdash; Icarus Pressure Jump for NMR 0.post51+gcff789c documentation</title>
+  <title>Application Level &mdash; Icarus Pressure Jump for NMR 0.post51+geeed350 documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                0.post51+gcff789c
+                0.post51+geeed350
               </div>
             
           
@@ -192,6 +192,9 @@
 <li><p>two buttons for manual pressurization and depressurization</p></li>
 <li><p>message field for faults and warnings</p></li>
 </ul>
+<p>Modern monitors should have more than HD (1920x1080) resolution. Hence, I propose to use HD resolution as a standard to create the icarus application level GUI. The GUI showed in the picture above is divided into 3 sections and the ration is roughly 221. Given this the columns should be 768768384 pixels wide. Vertically we have 1080 pixels. The middle logging graphs should occupy all vertical space (1080 pixels) and left should be divided into 4 sections with ratio of 1/1/1/2 (1 for figures and 2 for the table)</p>
+<p>## The structure of elements in the GUI</p>
+<p>The majority of the elements in the GUI are pointing at a specific PV in one of the system level processes. This structure allows a simplest possible GUI where all the smarts are buried in the system level applications. wxPython box sizers were extensively used in the development of the GUI. There are several nested levels of box sizers. …</p>
 </div>
 
 
