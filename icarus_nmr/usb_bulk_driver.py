@@ -118,7 +118,7 @@ class Driver(object):
         returns: flag if a device(devices) are found.
         assigns: self.available_ports list entry
         [0] - COM port namer
-        [1] - serial number
+        pvproperty(value=2.0)[1] - serial number
         """
         import usb.core
         flag = True
