@@ -295,15 +295,10 @@ class Driver(object):
         else:
             flag = True
         try:
-
             data = asarray(unpack(('h'*to_read_analog+'BB')*points_to_read,result))
         except:
             error(traceback.format_exc())
             data = None
-
-
-
-            #analog_data = asarray(unpack('h'*to_read_analog,res[0:to_read_analog*2])) #this will be
         #first N bytes (where N/2 is number of analog channels to read
         #see https://docs.python.org/2/library/struct.html for 'h' description
             #digital_data = array(unpack('B',res[-1:])[0])
