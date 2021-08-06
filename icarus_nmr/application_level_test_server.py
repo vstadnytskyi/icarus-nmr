@@ -100,9 +100,12 @@ class softIOC(PVGroup):
             await self.dt.write(value = (t2-t1))
 
             await self.pump_counter.write(int(len(self.x)))
+
+            #this is for testing purposes. Somehow when button is pressed. Server needs to depress it for the button to actually bounce back.
             await self.ctrl_pump_state.write(0)
             await self.ctrl_pre_state.write(1)
             await self.ctrl_depre_state.write(1)
+
             await async_lib.library.sleep(1)
 
     @ctrl_operating_mode.putter
