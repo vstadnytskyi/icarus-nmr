@@ -2,6 +2,9 @@
 Device Level
 ================
 
+*****************
+Overview
+*****************
 .. image:: ../files/device_level_diagram.png
   :width: 600
   :alt: device level block diagram
@@ -19,6 +22,14 @@ and two auxiliary modules(blue shaded blocks). The red shaded block is the must 
 *Data acquisition device level*
 
 Data acquisition device level module interacts with the DATAQ-4108 via Python based driver. The module is responsible to retrieve data from the DI-4108 buffer and put it in its' own buffer. The data acquisition module passes digital inputs to the DI-4108. The data acquisition module uses two structures (TODO) and (TODO) to interact with the Channel Access server. The data acquisition server publishes new values (PVs or Process Variables) to a special dictionary that is available to Channel Access module. The acquisition server checks special process variable input dictionary to see if there are any commands that need to be processed.
+
+Data Acquisition Loop
+
+.. image:: ../files/data-acquisition-loop.png
+  :width: 600
+  :alt: data acquisition loop
+
+
 
 *Channel Access server*
 
@@ -63,6 +74,16 @@ After the driver is bound, the device instance will use it for all communication
 
   device.bind_driver(driver)
   device.init()
+
+You can peek into the device queue with functions inside of the Queue object.
+
+.. code-block:: python
+
+  data = device.queue.peek_all()
+  
+  from matplotlib import pyplot as plt
+  plt.figure()
+  plt.plot(data[:,5]) #will show sample pressure readings.
 
 *********************
 Device Level Client

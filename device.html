@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Device Level &mdash; Icarus Pressure Jump for NMR 0.post51+geeed350 documentation</title>
+  <title>Device Level &mdash; Icarus Pressure Jump for NMR 0.post51+gc5b5f56 documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                0.post51+geeed350
+                0.post51+gc5b5f56
               </div>
             
           
@@ -102,6 +102,7 @@
 <li class="toctree-l1"><a class="reference internal" href="driver.html">Driver Level</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mock-driver.html">Mock Driver Level</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Device Level</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#id1">Device Level</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#device-level-client">Device Level Client</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#device-level-server">Device Level Server</a></li>
@@ -182,6 +183,8 @@
             
   <div class="section" id="device-level">
 <h1>Device Level<a class="headerlink" href="#device-level" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <a class="reference internal image-reference" href="_images/device_level_diagram.png"><img alt="device level block diagram" src="_images/device_level_diagram.png" style="width: 600px;" /></a>
 <p>The device level code consists of three major modules(green shaded blocks)</p>
 <ul class="simple">
@@ -192,10 +195,13 @@
 <p>and two auxiliary modules(blue shaded blocks). The red shaded block is the must dependency without which the device level will simply not run. The driver module can be either real module that connected to a real device or a mock driver that simulates the performance of a real device, see driver section for details. The System Level red shaded block is only one client allowed to connect under normal operating conditions.</p>
 <p><em>Data acquisition device level</em></p>
 <p>Data acquisition device level module interacts with the DATAQ-4108 via Python based driver. The module is responsible to retrieve data from the DI-4108 buffer and put it in its’ own buffer. The data acquisition module passes digital inputs to the DI-4108. The data acquisition module uses two structures (TODO) and (TODO) to interact with the Channel Access server. The data acquisition server publishes new values (PVs or Process Variables) to a special dictionary that is available to Channel Access module. The acquisition server checks special process variable input dictionary to see if there are any commands that need to be processed.</p>
+<p>Data Acquisition Loop</p>
+<a class="reference internal image-reference" href="_images/data-acquisition-loop.png"><img alt="data acquisition loop" src="_images/data-acquisition-loop.png" style="width: 600px;" /></a>
 <p><em>Channel Access server</em></p>
 <p>The CA server is based on <a class="reference external" href="https://caproto.github.io/caproto/v0.8.1/">CAProto library</a> which allows to create channel access servers. The server interacts with device level via two specialized inputoutput queues (dictionary like). The server checks on a timer if there is anything to do in the input queue and publishes any updates to the output queue if data need to be send to the device level data acquisition module.</p>
 <p><em>Graphical User interface</em></p>
 <p><a class="reference external" href="http://pyepics.github.io/pyepics/">PyEpics</a> based graphical user interface.</p>
+</div>
 <div class="section" id="id1">
 <h2>Device Level<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <p>Start by importing analysis submodule for Icarus Pressure Jump for NMR .</p>
@@ -216,6 +222,14 @@
 <p>After the driver is bound, the device instance will use it for all communication with the device (or with the emulator).</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">device</span><span class="o">.</span><span class="n">bind_driver</span><span class="p">(</span><span class="n">driver</span><span class="p">)</span>
 <span class="n">device</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>You can peek into the device queue with functions inside of the Queue object.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">device</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">peek_all</span><span class="p">()</span>
+
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">data</span><span class="p">[:,</span><span class="mi">5</span><span class="p">])</span> <span class="c1">#will show sample pressure readings.</span>
 </pre></div>
 </div>
 </div>

@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>icarus_nmr.usb_bulk_driver &mdash; Icarus Pressure Jump for NMR 0.post51+geeed350 documentation</title>
+  <title>icarus_nmr.usb_bulk_driver &mdash; Icarus Pressure Jump for NMR 0.post51+gc5b5f56 documentation</title>
   
 
   
@@ -68,7 +68,7 @@
             
             
               <div class="version">
-                0.post51+geeed350
+                0.post51+gc5b5f56
               </div>
             
           
@@ -469,15 +469,10 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">flag</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">try</span><span class="p">:</span>
-
             <span class="n">data</span> <span class="o">=</span> <span class="n">asarray</span><span class="p">(</span><span class="n">unpack</span><span class="p">((</span><span class="s1">&#39;h&#39;</span><span class="o">*</span><span class="n">to_read_analog</span><span class="o">+</span><span class="s1">&#39;BB&#39;</span><span class="p">)</span><span class="o">*</span><span class="n">points_to_read</span><span class="p">,</span><span class="n">result</span><span class="p">))</span>
         <span class="k">except</span><span class="p">:</span>
             <span class="n">error</span><span class="p">(</span><span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">())</span>
             <span class="n">data</span> <span class="o">=</span> <span class="kc">None</span>
-
-
-
-            <span class="c1">#analog_data = asarray(unpack(&#39;h&#39;*to_read_analog,res[0:to_read_analog*2])) #this will be</span>
         <span class="c1">#first N bytes (where N/2 is number of analog channels to read</span>
         <span class="c1">#see https://docs.python.org/2/library/struct.html for &#39;h&#39; description</span>
             <span class="c1">#digital_data = array(unpack(&#39;B&#39;,res[-1:])[0])</span>
