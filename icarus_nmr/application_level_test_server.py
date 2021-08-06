@@ -5,6 +5,7 @@ this is an application level test server that would generate random data to popu
 
 import time
 from caproto.server import pvproperty, PVGroup, ioc_arg_parser, run
+import random
 import numpy as np
 from caproto import ChannelType
 import logging
@@ -36,26 +37,27 @@ class softIOC(PVGroup):
     sample_pressure = pvproperty(value=1.0, precision = 3)
     pump_counter = pvproperty(value=1.0)
     valves_per_pump = pvproperty(value=1.0, precision = 3)
-    operating_mode = pvproperty(value=1)
 
-    shutdown_state = pvproperty(value=0)
-    pump_state = pvproperty(value=0)
-    pre_state = pvproperty(value=0)
-    depre_state = pvproperty(value=0)
+    ctrl_operating_mode = pvproperty(value=1)
+    ctrl_shutdown_state = pvproperty(value=0,dtype = int)
+    ctrl_pump_state = pvproperty(value=0,dtype = int)
+    ctrl_disable_pump_state = pvproperty(value=0,dtype = int)
+    ctrl_pre_state = pvproperty(value=0,dtype = int)
+    ctrl_depre_state = pvproperty(value=0,dtype = int)
 
 
-    pressure_after_pre = pvproperty(value=1.0, precision = 3)
-    pressure_before_depre = pvproperty(value=1.0, precision = 3)
-    time_to_switch_pre = pvproperty(value=1.0, precision = 3)
-    time_to_switch_depre = pvproperty(value=1.0, precision = 3)
-    rise_slope = pvproperty(value=1.0, precision = 3)
-    fall_slope = pvproperty(value=1.0, precision = 3)
-    pulse_width_pre = pvproperty(value=1.0, precision = 3)
-    pulse_width_depre = pvproperty(value=1.0, precision = 3)
-    delay = pvproperty(value=1.0, precision = 3)
-    period = pvproperty(value=1.0, precision = 3)
-    valve_counter_pre = pvproperty(value=1.0, precision = 3)
-    valve_counter_depre = pvproperty(value=1.0, precision = 3)
+    table_pressure_after_pre = pvproperty(value=1.0, precision = 3)
+    table_pressure_before_depre = pvproperty(value=1.0, precision = 3)
+    table_time_to_switch_pre = pvproperty(value=1.0, precision = 3)
+    table_time_to_switch_depre = pvproperty(value=1.0, precision = 3)
+    table_rise_slope = pvproperty(value=1.0, precision = 3)
+    table_fall_slope = pvproperty(value=1.0, precision = 3)
+    table_pulse_width_pre = pvproperty(value=1.0, precision = 3)
+    table_pulse_width_depre = pvproperty(value=1.0, precision = 3)
+    table_delay = pvproperty(value=1.0, precision = 3)
+    table_period = pvproperty(value=1.0, precision = 3)
+    table_valve_counter_pre = pvproperty(value=1.0, precision = 3)
+    table_valve_counter_depre = pvproperty(value=1.0, precision = 3)
 
     warning_text = pvproperty(value='this is a warning/faults field')
 
@@ -96,7 +98,41 @@ class softIOC(PVGroup):
             await self.image_period.write(value = img_period)
 
             await self.dt.write(value = (t2-t1))
+
+            await self.pump_counter.write(int(len(self.x)))
+            await self.ctrl_pump_state.write(0)
+            await self.ctrl_pre_state.write(1)
+            await self.ctrl_depre_state.write(1)
             await async_lib.library.sleep(1)
+
+    @ctrl_operating_mode.putter
+    async def ctrl_operating_mode(self, instance, value):
+        """
+        called when the a new value is written into "jog" PV
+        """
+        print(f"Server: {'operating_mode'} Got 'put' request from outside: new value is {value} and type {type(value)}")
+
+    @ctrl_pump_state.putter
+    async def ctrl_pump_state(self, instance, value):
+        """
+        called when the a new value is written into "jog" PV
+        """
+        print(f"Server: {'ctrl_pump_state'} Got 'put' request from outside: new value is {value} and type {type(value)}")
+
+    @ctrl_pre_state.putter
+    async def ctrl_pre_state(self, instance, value):
+        """
+        called when the a new value is written into "jog" PV
+        """
+        print(f"Server: {'ctrl_pre_state'} Got 'put' request from outside: new value is {value} and type {type(value)}")
+
+    @ctrl_depre_state.putter
+    async def ctrl_depre_state(self, instance, value):
+        """
+        called when the a new value is written into "jog" PV
+        """
+        print(f"Server: {'ctrl_depre_state'} Got 'put' request from outside: new value is {value} and type {type(value)}")
+
 
     def chart_one(self, x,y):
         """
