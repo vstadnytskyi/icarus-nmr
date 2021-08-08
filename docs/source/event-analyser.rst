@@ -9,6 +9,7 @@ Overview
 
 Events:
 Digital events:
+
 * D00 (0) - bit 0 goes low
 * D01 (1) - bit 0 goes high
 * D10 (10) - bit 1 goes low
@@ -23,7 +24,9 @@ Digital events:
 * D51 (51) - bit 5 goes high
 * D60 (60) - bit 6 goes low
 * D61 (61) - bit 6 goes high
+
 Analog events:
+
 * A100 (100) - pump stroke
 * A200 (200) - period
 * A300 (300) - 3 Hz periodic update

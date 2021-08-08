@@ -17,6 +17,13 @@ Next step is to create an instance of the Dataset class.
   dataset.description = 'you can write your description here.'
   dataset.init()
 
+All data is stored in one array(dataset.log_data) and the header for that array is stored in dataset.log_header
+
+.. code-block:: python
+
+  dataset.log_header #to see the header
+  dataset.log_data[:,4] #to access the 4th column in the log data array
+
 The data in the folder can be visualized. There are several build in functions that can be used to visualize data quickly.
 
 .. code-block:: python
