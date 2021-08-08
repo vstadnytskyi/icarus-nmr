@@ -1134,11 +1134,6 @@ class Pulse_Generator():
             icarus_dl.ctrls.trigger_mode = value
     trigger_mode = property(get_trigger_mode,set_trigger_mode)
 
-
-
-
-
-
     def start(self):
         """
         for back competibility with older SL codes does nothing

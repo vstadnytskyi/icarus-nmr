@@ -157,6 +157,7 @@ class Dataset():
 
         """
         from os.path import exists
+        from numpy import genfromtxt
         raw_data = genfromtxt(folder + 'experiment.log', delimiter = ',', skip_header = 2)
         if exists(folder + 'experiment.pickle'):
             print('the experiment.pickle file in the folder {} was detected and will be uploaded'.format(folder))
@@ -165,7 +166,7 @@ class Dataset():
 
         else:
             info('the pickle file in the folder {} was NOT detected and the processing of the raw .log file is initiated'.format(folder))
-            data =  self.combine_log_entries(raw_data)
+            data =  raw_data
             self.dump_to_pickle_file(data)
 
         return raw_data, data
