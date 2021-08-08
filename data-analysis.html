@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Data Analysis &mdash; Icarus Pressure Jump for NMR 0.post51+gd509be0 documentation</title>
+  <title>Data Analysis &mdash; Icarus Pressure Jump for NMR 0.post50+gf700308 documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                0.post51+gd509be0
+                0.post50+gf700308
               </div>
             
           
@@ -190,6 +190,11 @@
 <span class="n">dataset</span><span class="o">.</span><span class="n">folder</span> <span class="o">=</span> <span class="s1">&#39;path/to/the/folder/containing/log/data&#39;</span>
 <span class="n">dataset</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s1">&#39;you can write your description here.&#39;</span>
 <span class="n">dataset</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>All data is stored in one array(dataset.log_data) and the header for that array is stored in dataset.log_header</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dataset</span><span class="o">.</span><span class="n">log_header</span> <span class="c1">#to see the header</span>
+<span class="n">dataset</span><span class="o">.</span><span class="n">log_data</span><span class="p">[:,</span><span class="mi">4</span><span class="p">]</span> <span class="c1">#to access the 4th column in the log data array</span>
 </pre></div>
 </div>
 <p>The data in the folder can be visualized. There are several build in functions that can be used to visualize data quickly.</p>
