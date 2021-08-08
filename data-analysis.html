@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Data Analysis &mdash; Icarus Pressure Jump for NMR 0.post51+g226c665 documentation</title>
+  <title>Data Analysis &mdash; Icarus Pressure Jump for NMR 0.post51+gd509be0 documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                0.post51+g226c665
+                0.post51+gd509be0
               </div>
             
           
@@ -103,6 +103,7 @@
 <li class="toctree-l1"><a class="reference internal" href="mock-driver.html">Mock Driver Level</a></li>
 <li class="toctree-l1"><a class="reference internal" href="device.html">Device Level</a></li>
 <li class="toctree-l1"><a class="reference internal" href="system-level.html">System Level</a></li>
+<li class="toctree-l1"><a class="reference internal" href="event-analyser.html">Event Analyser</a></li>
 <li class="toctree-l1"><a class="reference internal" href="application-level.html">Application Level</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Data Analysis</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#the-dataset-class">The Dataset Class</a></li>
@@ -196,6 +197,44 @@
 <span class="n">dataset</span><span class="o">.</span><span class="n">plot_trace</span><span class="p">(</span><span class="nb">type</span> <span class="o">=</span> <span class="s1">&#39;pre&#39;</span><span class="p">,</span> <span class="n">index</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>The log file has 37 columns
+* time - Unix time
+* global_pointer - global pointer in circular buffer where the event occurred
+* period_idx - index for the period
+* event_code - the event integer number see XXX for details
+* pPre_0 - pressure (TODO)
+* pDepre_0 - (TODO)
+* pPre_after_0 - (TODO)
+* pDiff_0 - (TODO)
+* tSwitchDepressure_0 - (TODO)
+* tSwitchDepressureEst_0’,
+* tSwitchPressure_0’,
+* tSwitchPressureEst_0 - (TODO)
+* gradientPressure_0 - (TODO)
+* gradientDepressure_0 - (TODO)
+* gradientPressureEst_0 - (TODO)
+* gradientDepressureEst_0 - (TODO)
+* riseTime_0 - (TODO)
+* fallTime_0 - (TODO)
+* pPre_1 - (TODO)
+* pDepre_1 - (TODO)
+* pPre_after_1 - (TODO)
+* pDiff_1 - (TODO)
+* tSwitchDepressure_1 - (TODO)
+* tSwitchPressure_1 - (TODO)
+* gradientPressure_1 - (TODO)
+* gradientDepressure_1 - (TODO)
+* fallTime_1 - (TODO)
+* riseTime_1 - (TODO)
+* period - (TODO)
+* delay - (TODO)
+* pressure_pulse_width - (TODO)
+* depressure_pulse_width - (TODO)
+* pump_stroke - number of pump strokes since last reset
+* depressure_valve_counter - (TODO)
+* pressure_valve_counter - (TODO)
+* leak_value - (TODO)
+* meanbit3 - mean value while bit 3 is ?high?</p>
 <div class="section" id="the-dataset-class">
 <h2>The Dataset Class<a class="headerlink" href="#the-dataset-class" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
