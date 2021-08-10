@@ -80,7 +80,7 @@ You can peek into the device queue with functions inside of the Queue object.
 .. code-block:: python
 
   data = device.queue.peek_all()
-  
+
   from matplotlib import pyplot as plt
   plt.figure()
   plt.plot(data[:,5]) #will show sample pressure readings.
@@ -96,20 +96,22 @@ Device Level Server
 
 The process variables(PVs) associated with the device level server are:
 
-* response[b'running'] = self.running
-* response[b'in_waiting'] = self.in_waiting
-* response[b'packet_size'] = self.packet_size
+two main PVs:
+
+* data - next packet of data in the queue (read Only)
+* dio - digital input (Write Only)
+
+auxiliary PVs:
+
+* response - self.packet_size
 * serial_number - driver\device serial number
 * frequency - data collection frequency
-* response[b'port'] = self.port
-* response[b'ip_address'] = self.ip_address
-* response[b'firmware'] = self.firmware
-* target_pressure - target pressure in kbars
-* sample_pressure - sample pressure in kbars
-* last_call_lst - old variable showing who connected last the server
+* response - self.firmware
+* target_pressure - target pressure in kbars ?
+* sample_pressure - sample pressure in kbars ?
 * pressure_sensor_offset - eight integer long array of numbers that offset the sensors
 
 
 
-.. autoclass:: icarus_nmr.device.DI4108_DL
+.. autoclass:: icarus_nmr.device_daq.DI4108_DL
   :members:

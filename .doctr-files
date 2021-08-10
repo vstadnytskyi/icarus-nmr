@@ -3,7 +3,7 @@
 ./_images/device_level_diagram.png
 ./_images/overview_block_diagram.png
 ./_modules/icarus_nmr/analysis.html
-./_modules/icarus_nmr/device.html
+./_modules/icarus_nmr/device_daq.html
 ./_modules/icarus_nmr/mock_driver.html
 ./_modules/icarus_nmr/usb_bulk_driver.html
 ./_modules/index.html
