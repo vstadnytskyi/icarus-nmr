@@ -113,5 +113,5 @@ auxiliary PVs:
 
 
 
-.. autoclass:: icarus_nmr.device.DI4108_DL
+.. autoclass:: icarus_nmr.device_daq.DI4108_DL
   :members:
