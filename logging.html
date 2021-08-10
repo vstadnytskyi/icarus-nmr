@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Logging &mdash; Icarus Pressure Jump for NMR 0.post50+g3f23a57 documentation</title>
+  <title>Logging &mdash; Icarus Pressure Jump for NMR 0.post50+g5ba2269 documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                0.post50+g3f23a57
+                0.post50+g5ba2269
               </div>
             
           
@@ -104,7 +104,11 @@
 <li class="toctree-l1"><a class="reference internal" href="device.html">Device Level</a></li>
 <li class="toctree-l1"><a class="reference internal" href="system-level.html">System Level</a></li>
 <li class="toctree-l1"><a class="reference internal" href="event-analyser.html">Event Analyser</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Logging</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Logging</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#current">Current</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#in-future">In future</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="application-level.html">Application Level</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data-analysis.html">Data Analysis</a></li>
 <li class="toctree-l1"><a class="reference internal" href="development.html">Development</a></li>
@@ -179,9 +183,64 @@
             
   <div class="section" id="logging">
 <h1>Logging<a class="headerlink" href="#logging" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="current">
+<h2>Current<a class="headerlink" href="#current" title="Permalink to this headline">¶</a></h2>
+<p>the logging is done within the Event Handler. Every event triggers an entry in the log file. There are 37 columns but not all of them are relevant for each event. Only relevant data is logged as a number and other entries are saved as ‘nan’ to simplify reading of the log file.</p>
+<ol class="arabic simple" start="0">
+<li><p>time</p></li>
+<li><p>global_pointer</p></li>
+<li><p>period_idx</p></li>
+<li><p>event_code</p></li>
+<li><p>pPre_0</p></li>
+<li><p>pDepre_0</p></li>
+<li><p>pPre_after_0</p></li>
+<li><p>pDiff_0</p></li>
+<li><p>tSwitchDepressure_0</p></li>
+<li><p>tSwitchDepressureEst_0</p></li>
+<li><p>tSwitchPressure_0</p></li>
+<li><p>tSwitchPressureEst_0</p></li>
+<li><p>gradientPressure_0</p></li>
+<li><p>gradientDepressure_0</p></li>
+<li><p>gradientPressureEst_0</p></li>
+<li><p>gradientDepressureEst_0</p></li>
+<li><p>riseTime_0</p></li>
+<li><p>fallTime_0</p></li>
+<li><p>pPre_1</p></li>
+<li><p>pDepre_1</p></li>
+<li><p>pPre_after_1</p></li>
+<li><p>pDiff_1</p></li>
+<li><p>tSwitchDepressure_1</p></li>
+<li><p>tSwitchPressure_1</p></li>
+<li><p>gradientPressure_1</p></li>
+<li><p>gradientDepressure_1</p></li>
+<li><p>fallTime_1</p></li>
+<li><p>riseTime_1</p></li>
+<li><p>period</p></li>
+<li><p>delay</p></li>
+<li><p>pressure_pulse_width</p></li>
+<li><p>depressure_pulse_width</p></li>
+<li><p>pump_stroke</p></li>
+<li><p>depressure_valve_counter</p></li>
+<li><p>pressure_valve_counter</p></li>
+<li><p>leak_value</p></li>
+<li><p>meanbit3</p></li>
+</ol>
+<p>Example of first few enties in the current implantation of the log file.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">####This experiment started at: 1627668487.4405897 and other information &#39;and other information&#39;</span>
+<span class="sa">b</span><span class="s1">&#39;time&#39;</span> <span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;global_pointer&#39;</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;period_idx&#39;</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;event_code&#39;</span> <span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;pPre_0&#39;</span> <span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;pDepre_0&#39;</span> <span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;pPre_after_0&#39;</span> <span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;pDiff_0&#39;</span> <span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;tSwitchDepressure_0&#39;</span> <span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;tSwitchDepressureEst_0&#39;</span> <span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;tSwitchPressure_0&#39;</span> <span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;tSwitchPressureEst_0&#39;</span> <span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;gradientPressure_0&#39;</span> <span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;gradientDepressure_0&#39;</span> <span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;gradientPressureEst_0&#39;</span> <span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;gradientDepressureEst_0&#39;</span> <span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;riseTime_0&#39;</span> <span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;fallTime_0&#39;</span> <span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;pPre_1&#39;</span> <span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;pDepre_1&#39;</span> <span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;pPre_after_1$</span>
+<span class="mf">1627668489.8208976</span><span class="p">,</span> <span class="mi">114030759416</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mf">9.591156177712787</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="mf">16.837499999999466</span><span class="p">,</span> <span class="mf">21.607874999999463</span><span class="p">,</span> <span class="mf">0.05554857700839955</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="mf">0.02986482634860191</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="mf">1.4903641129098288</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="mf">3686720.75</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="mi">83452</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span>
+<span class="mf">1627668490.421642</span><span class="p">,</span> <span class="mi">114030759416</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="mf">16.945</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span>
+<span class="mf">1627668496.5032792</span><span class="p">,</span> <span class="mi">114030788216</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="mf">2.4031492716982306</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="mf">0.32877287988655113</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="mf">7200.0</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span>
+<span class="mf">1627668519.4651134</span><span class="p">,</span> <span class="mi">114030879416</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="mf">30.0</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="n">nan</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="in-future">
+<h2>In future<a class="headerlink" href="#in-future" title="Permalink to this headline">¶</a></h2>
 <p>The logging module is a separate Python process that uses Channel Access to subscribe to “logging” PVs hosted by other serves.</p>
 <p>Rules of logging
 TODO</p>
+</div>
 </div>
 
 

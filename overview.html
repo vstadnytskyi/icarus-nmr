@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Overview &mdash; Icarus Pressure Jump for NMR 0.post50+g3f23a57 documentation</title>
+  <title>Overview &mdash; Icarus Pressure Jump for NMR 0.post50+g5ba2269 documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                0.post50+g3f23a57
+                0.post50+g5ba2269
               </div>
             
           
@@ -179,9 +179,18 @@
             
   <div class="section" id="overview">
 <h1>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h1>
-<p>The icarus NMR pressure jump control software is non-invasive and monitoring. The monitoring is done with a fast data acquisition unit from DATAQ DI-4108.</p>
+<p>The icarus NMR pressure jump control software is designed to be minimally invasive and provide real-time constant monitoring. The monitoring is done with a fast data acquisition unit from DATAQ DI-4108, which collects data from 8 analog and 7 digital channels.</p>
 <a class="reference internal image-reference" href="_images/overview_block_diagram.png"><img alt="block diagram" src="_images/overview_block_diagram.png" style="width: 600px;" /></a>
-<p>Adding some new test text</p>
+<p>The Data Handler process has two main responsibilities:</p>
+<ol class="arabic simple">
+<li><p>reading data from the DI-4108 built-in buffer and never let the buffer to overflow. The read data is put into FIFO queue of variable length.</p></li>
+<li><p>provide software path to change the digital state on the DI-4108.</p></li>
+</ol>
+<p>The Event Handler process retrieves all new packets of data from the Data Handler’s FIFO queue and puts them into a circular buffer. Later new packets from the circular buffer are analyzed for events and results are published via corresponding PVs.</p>
+<p>The Graphical User Interface process provides graphical controls and indicators for a user.</p>
+<p>The Logging process subscribes to PVs that it is supposed to log.</p>
+<p>The DIO Handler (digital input/output handler) aggregates functionality associated with digital input/output on the DI-4108 data acquisition unit.</p>
+<p>All communication between these 5 modules is done via Channel Access protocol.</p>
 </div>
 
 
