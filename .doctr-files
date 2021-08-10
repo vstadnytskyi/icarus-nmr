@@ -15,6 +15,7 @@
 ./_sources/event-analyser.rst.txt
 ./_sources/index.rst.txt
 ./_sources/installation.rst.txt
+./_sources/logging.rst.txt
 ./_sources/min_versions.rst.txt
 ./_sources/mock-driver.rst.txt
 ./_sources/overview.rst.txt
@@ -110,6 +111,7 @@
 ./genindex.html
 ./index.html
 ./installation.html
+./logging.html
 ./min_versions.html
 ./mock-driver.html
 ./objects.inv
