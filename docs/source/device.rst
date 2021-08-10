@@ -103,8 +103,8 @@ two main PVs:
 
 auxiliary PVs:
 
-* response - self.packet_size
-* serial_number - driver\device serial number
+* response - packet size
+* serial_number - driver/device serial number
 * frequency - data collection frequency
 * response - self.firmware
 * target_pressure - target pressure in kbars ?

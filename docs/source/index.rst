@@ -17,6 +17,7 @@ Icarus Pressure Jump for NMR Documentation
    device
    system-level
    event-analyser
+   logging
    application-level
    data-analysis
    development

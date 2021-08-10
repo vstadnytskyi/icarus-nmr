@@ -690,7 +690,7 @@ class Event_Detector(object):
         takes an integer and converts it to 8 bit representation as an array.
         If float number is passed, it will be converted to int.
         """
-        from XLI.auxiliary import binary_to_array
+        from ubcs_auxiliary.numerical import binary_to_array
         return parse_binary_number(value = value)
 
     def parse_binary(self,value = 0):
@@ -703,7 +703,7 @@ class Event_Detector(object):
         bit 0 1 2 3 4 5 6 7 instead of standard binary representation
         where the lowest bit comes last
         """
-        from XLI.auxiliary import binary_to_array
+        from ubcs_auxiliary.numerical import binary_to_array
         return binary_to_array(value = value)
 
 
@@ -711,7 +711,7 @@ class Event_Detector(object):
     def find_dio_events(self, data = '', packetPointer = 0, local = False):
         """
         look for the events in the digital channel of the data array.
-        The function will retrieve data from the DAQ circular buffer.
+        The function will retrieve data from the circular buffer.
         However, for testing purposes an array can be passed for analysis.
 
         The digital events codes:
@@ -725,7 +725,8 @@ class Event_Detector(object):
         ###for the local testing
         if len(data) == 0:
             #get packet to analyse. however, if the transition happens between packets
-            #the algorith will not detect it. Hence, I need to grab 2 packets but analyse
+            #the algorith will not detect it.
+            #Hence, I need to grab 2 packets to analyse
             #first packet + 1 point from the next packet.
             packet_pointer = self.packet_pointer
             g_packet_pointer = self.g_packet_pointer
@@ -766,36 +767,11 @@ class Event_Detector(object):
                                                    b'index' : evn_idx,
                                                    b'global_index' : g_evn_idx,
                                                    b'evt_code': 200})
-
-
         return lst_result
 
 
     def sort_events(self,lst_in = []):
         """sorts input list of events according to events_order_list hard coded inside of this function
-
-        digital
-        b'D0':0,
-        b'D1':0,
-        b'D10':0,
-        b'D11':0,
-        b'D20':0,
-        b'D21':0,
-        b'D30':0,
-        b'D31':0,
-        b'D40':0,
-        b'D41':0,
-        b'D50':0,
-        b'D51':0,
-        b'D60':0,
-        b'D61':0,
-
-        analog
-        b'A100':0, #pump stroke event
-        b'A200':0, #period event
-        b'A300':0, #3 Hz periodic update
-        b'A301':0, #3 Hz periodic update
-        b'A999':0 #timeout
         """
         events_order_list = EVENTS_ORDER_ANALYSIS
         lst_out = []
