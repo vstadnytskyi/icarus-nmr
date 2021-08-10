@@ -28,7 +28,9 @@ Digital events:
 Analog events:
 
 * A100 (100) - pump stroke
-* A200 (200) - period
-* A300 (300) - 3 Hz periodic update
-* A301 (301) - 10 Hz periodic update
-* A999 (999) - timeout event
+
+Time based events:
+* T200 (200) - period
+* T300 (300) - 3 Hz periodic update
+* T301 (301) - 10 Hz periodic update
+* T999 (999) - timeout event

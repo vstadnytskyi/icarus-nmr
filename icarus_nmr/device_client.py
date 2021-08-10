@@ -1,11 +1,13 @@
-from ubcs_auxiliary.XLI.client import Client_LL
-client = Client_LL()
-device = {}
-device[b'icarus-0'] = {b'ip_address':'127.0.0.1',b'port':2030}
-
-i=client.indicators(device = device[b'icarus-0'], indicators = {b'all':None});
-c=client.controls(device = device[b'icarus-0'], controls = {b'all':None});
-inds_list = {}
-ctrls_list = {}
-inds_list = i[b'message'][b'indicators']
-ctrls_list = c[b'message'][b'controls']
+from caproto.threading.client import Context
+ctx = Context()
+ca_name = 'device_dl:'
+dio,dio0,dio1,dio2,dio3,dio4,dio5,dio6,data,queue_length = ctx.get_pvs(f'{ca_name}dio',
+    f'{ca_name}dio0',
+    f'{ca_name}dio1',
+    f'{ca_name}dio2',
+    f'{ca_name}dio3',
+    f'{ca_name}dio4',
+    f'{ca_name}dio5',
+    f'{ca_name}dio6',
+    f'{ca_name}data',
+    f'{ca_name}queue_length',)
