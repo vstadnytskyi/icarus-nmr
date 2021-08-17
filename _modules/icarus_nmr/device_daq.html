@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>icarus_nmr.device_daq &mdash; Icarus Pressure Jump for NMR 0.post50+ge177d90 documentation</title>
+  <title>icarus_nmr.device_daq &mdash; Icarus Pressure Jump for NMR 0.post50+g6d164e3 documentation</title>
   
 
   
@@ -68,7 +68,7 @@
             
             
               <div class="version">
-                0.post50+ge177d90
+                0.post50+g6d164e3
               </div>
             
           
@@ -194,14 +194,23 @@
 
 
 <span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">nan</span><span class="p">,</span> <span class="n">mean</span><span class="p">,</span> <span class="n">std</span><span class="p">,</span> <span class="n">nanstd</span><span class="p">,</span> <span class="n">asfarray</span><span class="p">,</span> <span class="n">asarray</span><span class="p">,</span> <span class="n">hstack</span><span class="p">,</span> <span class="n">array</span><span class="p">,</span> <span class="n">concatenate</span><span class="p">,</span> <span class="n">delete</span><span class="p">,</span> <span class="nb">round</span><span class="p">,</span> <span class="n">vstack</span><span class="p">,</span> <span class="n">hstack</span><span class="p">,</span> <span class="n">zeros</span><span class="p">,</span> <span class="n">transpose</span><span class="p">,</span> <span class="n">split</span><span class="p">,</span> <span class="n">unique</span><span class="p">,</span> <span class="n">nonzero</span><span class="p">,</span> <span class="n">take</span><span class="p">,</span> <span class="n">savetxt</span><span class="p">,</span> <span class="nb">min</span><span class="p">,</span> <span class="nb">max</span>
-<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span><span class="p">,</span> <span class="n">sleep</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">7</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">gmtime</span><span class="p">,</span> <span class="n">strftime</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">sleep</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">gmtime</span><span class="p">,</span> <span class="n">strftime</span><span class="p">,</span> <span class="n">clock</span><span class="p">,</span> <span class="n">sleep</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">gmtime</span><span class="p">,</span> <span class="n">strftime</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">sleep</span>
+
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="c1">#sys.path.append(&#39;/Users/femto-13/All-Projects-on-femto/LaserLab/Software/&#39;)</span>
 
 <span class="kn">import</span> <span class="nn">os.path</span>
 <span class="kn">import</span> <span class="nn">struct</span>
 <span class="kn">from</span> <span class="nn">pdb</span> <span class="kn">import</span> <span class="n">pm</span>
-<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">gmtime</span><span class="p">,</span> <span class="n">strftime</span><span class="p">,</span> <span class="n">time</span>
+
 <span class="kn">from</span> <span class="nn">logging</span> <span class="kn">import</span> <span class="n">debug</span><span class="p">,</span><span class="n">info</span><span class="p">,</span><span class="n">warning</span><span class="p">,</span><span class="n">error</span>
 <span class="c1"># see https://vstadnytskyi.github.io/auxiliary/saved-property.html for details</span>
 
@@ -257,7 +266,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">task_name_dict</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">task_name_dict</span><span class="p">[</span><span class="s1">&#39;empty&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;empty&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pr_rate</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pr_baserate</span><span class="p">)</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">pr_dec</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">pr_buffer_size</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pr_packet_size</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">pr_rate</span><span class="o">/</span><span class="mi">10</span><span class="p">),</span><span class="mi">10</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pr_buffer_size</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pr_packet_size</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">pr_rate</span><span class="p">),</span><span class="mi">10</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">queue</span> <span class="o">=</span> <span class="n">Queue</span><span class="p">(</span><span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pr_buffer_size</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="s1">&#39;int16&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">OverflowFlag</span> <span class="o">=</span> <span class="kc">False</span>
 
@@ -579,7 +588,7 @@
         <span class="k">if</span> <span class="n">flag</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">):</span>
                 <span class="k">try</span><span class="p">:</span>
-                   <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span> <span class="o">-</span> <span class="n">pressure_sensor_offset</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                   <span class="n">data</span><span class="p">[:,</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:,</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">pressure_sensor_offset</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
                 <span class="k">except</span><span class="p">:</span>
                     <span class="n">error</span><span class="p">(</span><span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">())</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">enqueue</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
