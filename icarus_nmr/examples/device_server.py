@@ -20,29 +20,23 @@ from textwrap import dedent
 from pdb import pm
 
 from numpy import random, array, zeros, ndarray, nan, isnan
-from time import time,sleep
+from time import time, sleep, ctime
 
 if __name__ == '__main__':
-    from caproto.server import pvproperty, PVGroup, ioc_arg_parser, run
-    import caproto
-    from textwrap import dedent
-    from pdb import pm
-
-    from numpy import random, array, zeros, ndarray, nan, isnan
-    from time import time,sleep
-
+    from icarus_nmr.device_server import Server
     from icarus_nmr.device_daq import DI4108_DL
     device = DI4108_DL()
+    device.pr_buffer_size =  (6400,10)
     from icarus_nmr.mock_driver import Driver
     driver = Driver()
     device.bind_driver(driver)
     device.init()
 
-    from icarus_nmr.device_server import Server
-
     ioc_options, run_options = ioc_arg_parser(
         default_prefix='device_dl:',
         desc=dedent(Server.__doc__))
     ioc = Server(**ioc_options)
+    device.pr_pracket_size = 128
+
     ioc.device = device
     run(ioc.pvdb, **run_options)

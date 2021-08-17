@@ -22,7 +22,7 @@ from pdb import pm
 from numpy import random, array, zeros, ndarray, nan, isnan
 from time import time, sleep, ctime
 
-arr_shape = (128,10)
+arr_shape = (64,10)
 class Server(PVGroup):
     """
     An IOC with three uncoupled read/writable PVs
@@ -38,14 +38,17 @@ class Server(PVGroup):
 
     """
 
-    freq = pvproperty(value=0.0, read_only = True, dtype = float, precision = 1)
+    freq = pvproperty(value=4000.0, read_only = True, dtype = float, precision = 1)
     dio = pvproperty(value=0, read_only = False, dtype = int)
 
 
     queue_length = pvproperty(value=0, read_only = True, dtype = int)
-    data = pvproperty(value=zeros(shape = (128*10,)), read_only = True, dtype = int, max_length = 40000000)
-    data_shape = pvproperty(value=arr_shape, read_only = True,dtype = int)
+    data = pvproperty(value=zeros(shape = (64*10,)), read_only = True, dtype = int, max_length = 40000000)
+    peek_data = pvproperty(value=zeros(shape = (6400*10,)), read_only = True, dtype = int, max_length = 40000000)
+    packet_shape = pvproperty(value=arr_shape, read_only = True, dtype = int)
     LIST = pvproperty(value=[0.0,0.0,0.0,0.0])
+
+
 
     @freq.startup
     async def freq(self, instance, async_lib):
@@ -53,10 +56,10 @@ class Server(PVGroup):
         self.io_pull_queue = async_lib.ThreadsafeQueue()
         self.io_push_queue = async_lib.ThreadsafeQueue()
         self.device.io_push_queue = self.io_push_queue
-        self.device.io_push_queue = self.io_pull_queue
+        self.device.io_pull_queue = self.io_pull_queue
 
         await self.freq.write(self.device.pr_rate)
-        await self.dio.write(self.device.DIO)
+
 
 
 
@@ -78,12 +81,15 @@ class Server(PVGroup):
                     await self.c.write(io_dict[key])
                 elif key == 'd':
                     await self.d.write(io_dict[key])
+
+    @dio.startup
+    async def dio(self, instance, async_lib):
+        await self.dio.write(self.device.DIO)
     @dio.putter
     async def dio(self, instance, value):
         print('Received update for the {}, sending new value {}'.format('dio',value))
         self.device.set_DIO(value = value)
         return value
-
     @dio.getter
     async def dio(self, instance):
         print(f"getter: {'dio'}, new value ")
@@ -97,18 +103,35 @@ class Server(PVGroup):
             print(f'{value.shape}')
             print(f"getter: {'data'}, queue length {self.device.queue.length}")
             print(f"getter: {'data'}, queue rear {self.device.queue.rear}")
-            print(f"getter: {'data'}, new value ")
         return value
 
+    @peek_data.getter
+    async def peek_data(self, instance):
+        value = self.device.queue.peek_first_N(N=6400).flatten()
+        return value
+
+    @queue_length.startup
+    async def queue_length(self, instance, async_lib):
+        await self.queue_length.write(self.device.queue.length)
     @queue_length.getter
     async def queue_length(self, instance):
         print(f"getter: {'data'}, queue length {self.device.queue.length}")
-        print(f"getter: {'data'}, new value ")
         value = self.device.queue.length
         return value
 
-
-
+    # @ai_offset.startup
+    # async def ai_offset(self, instance, async_lib):
+    #     await self.ai_offset.write(self.device.pressure_sensor_offset)
+    # @ai_offset.putter
+    # async def ai_offset(self, instance, value):
+    #     print(f"Received update for the {'dio'}, sending new value {value}")
+    #     self.device.pressure_sensor_offset = value
+    #     return value
+    # @ai_offset.getter
+    # async def ai_offset(self, instance):
+    #     print(f"getter: {'ai_offset'}, new value ")
+    #     value = self.device.pressure_sensor_offset
+    #     return value
 
 
 if __name__ == '__main__':

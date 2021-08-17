@@ -11,6 +11,7 @@ June 2018 - June 2018
 from numpy import nan, mean, std, asarray, array, concatenate, delete, round, vstack, hstack, zeros, transpose, split
 from serial import Serial
 
+import sys
 if sys.version_info[0] == 3:
     if sys.version_info[1] <= 7:
         from time import gmtime, strftime, time, sleep, clock
@@ -20,7 +21,6 @@ if sys.version_info[0] == 3:
 else:
     from time import gmtime, strftime, time, sleep, clock
 
-import sys
 import os.path
 import struct
 from pdb import pm
