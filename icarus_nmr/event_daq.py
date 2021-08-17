@@ -1,3 +1,5 @@
+
+import sys
 if sys.version_info[0] == 3:
     if sys.version_info[1] <= 7:
         from time import gmtime, strftime, time, sleep
@@ -7,7 +9,7 @@ else:
     from time import gmtime, strftime, time, sleep
 
 from numpy import nan
-import sys
+
 sys.path.append('/Users/femto-13/All-Projects-on-femto/LaserLab/Software/')
 
 class DAQ(object):
