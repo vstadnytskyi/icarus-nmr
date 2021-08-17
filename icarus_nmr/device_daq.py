@@ -18,14 +18,23 @@ import psutil, os
 
 
 from numpy import nan, mean, std, nanstd, asfarray, asarray, hstack, array, concatenate, delete, round, vstack, hstack, zeros, transpose, split, unique, nonzero, take, savetxt, min, max
-from time import time, sleep
+import sys
+
+if sys.version_info[0] == 3:
+    if sys.version_info[1] <= 7:
+        from time import gmtime, strftime, time, sleep
+    else:
+        from time import gmtime, strftime, clock, sleep
+else:
+    from time import gmtime, strftime, time, sleep
+
 import sys
 #sys.path.append('/Users/femto-13/All-Projects-on-femto/LaserLab/Software/')
 
 import os.path
 import struct
 from pdb import pm
-from time import gmtime, strftime, time
+
 from logging import debug,info,warning,error
 # see https://vstadnytskyi.github.io/auxiliary/saved-property.html for details
 
@@ -81,7 +90,7 @@ class DI4108_DL():
         self.task_name_dict = {}
         self.task_name_dict['empty'] = 'empty'
         self.pr_rate = (self.pr_baserate)/self.pr_dec
-        self.pr_buffer_size = (int(self.pr_packet_size*self.pr_rate/10),10)
+        self.pr_buffer_size = (int(self.pr_packet_size*self.pr_rate),10)
         self.queue = Queue(shape = self.pr_buffer_size, dtype = 'int16')
         self.OverflowFlag = False
 
@@ -403,7 +412,7 @@ class DI4108_DL():
         if flag:
             for i in range(8):
                 try:
-                   data[i,:] = data[i,:] - pressure_sensor_offset[i]
+                   data[:,i] = data[:,i] - pressure_sensor_offset[i]
                 except:
                     error(traceback.format_exc())
             self.queue.enqueue(data)
