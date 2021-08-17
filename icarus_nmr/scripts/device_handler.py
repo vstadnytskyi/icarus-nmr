@@ -1,0 +1,90 @@
+#!/usr/bin/env python3
+"""
+DATAQ 4108 Device Level code
+author: Valentyn Stadnytskyi
+Date: November 2017 - August 2021
+
+This is an example script that starts "mock" device channel access server.
+
+The variable SERVER_NAME needs to be changed to launch the server with a unique name that corresponds to the desired server.
+
+
+"""
+from caproto.server import pvproperty, PVGroup, ioc_arg_parser, run
+import caproto
+from textwrap import dedent
+from pdb import pm
+
+from numpy import random, array, zeros, ndarray, nan, isnan
+from time import time,sleep
+
+SERVER_NAME = 'mock'
+
+def start(SERVER_NAME = 'mock'):
+    from caproto.server import pvproperty, PVGroup, ioc_arg_parser, run
+    import caproto
+    from textwrap import dedent
+    from pdb import pm
+
+    from numpy import random, array, zeros, ndarray, nan, isnan
+    from time import time, sleep
+
+    # import device (DI_4108_DL) class and initiate device instance.
+    from icarus_nmr.device_daq import DI4108_DL
+    device = DI4108_DL()
+
+    #########
+    # the driver binding section needs to be changed when using actual physical device instead of a mock device
+    from icarus_nmr.driver_mock import Driver
+    driver = Driver()
+    device.bind_driver(driver)
+    #########
+
+
+    device.init()
+
+    from icarus_nmr.device_server import Server
+
+    ioc_options, run_options = ioc_arg_parser(
+        default_prefix=f'device_{SERVER_NAME}:',
+        desc=dedent(Server.__doc__))
+
+    ioc = Server(**ioc_options)
+    ioc.device = device
+    run(ioc.pvdb, **run_options)
+
+if __name__ == '__main__':
+    from caproto.server import pvproperty, PVGroup, ioc_arg_parser, run
+    import caproto
+    from textwrap import dedent
+    from pdb import pm
+
+    from numpy import random, array, zeros, ndarray, nan, isnan
+    from time import time, sleep
+
+    # import device (DI_4108_DL) class and initiate device instance.
+    from icarus_nmr.device_daq import DI4108_DL
+    device = DI4108_DL()
+
+    #########
+    # the driver binding section needs to be changed when using actual physical device instead of a mock device
+    from icarus_nmr.driver_mock import Driver
+    driver = Driver()
+    device.bind_driver(driver)
+    #########
+
+
+    device.init()
+
+    from icarus_nmr.device_server import Server
+
+    ioc_options, run_options = ioc_arg_parser(
+        default_prefix=f'device_{SERVER_NAME}:',
+        desc=dedent(Server.__doc__))
+    ioc = Server(**ioc_options)
+    import sys
+    print(f'{sys.argv}')
+    print(f'{ioc_options}')
+    print(f'{run_options}')
+    ioc.device = device
+    run(ioc.pvdb, **run_options)

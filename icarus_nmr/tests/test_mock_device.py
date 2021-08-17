@@ -8,8 +8,8 @@ else:
 
 class MockTest(unittest.TestCase):
     def test_init_device(self):
-        from ..mock_driver import Driver
-        from ..device import DI4108_DL
+        from ..driver_mock import Driver
+        from ..device_daq import DI4108_DL
         from time import sleep
         driver = Driver()
         device = DI4108_DL()
@@ -32,8 +32,8 @@ class MockTest(unittest.TestCase):
         self.assertEqual(length1, data.T[9].shape[0])
 
     def test_operation1(self):
-        from icarus_nmr.device import DI4108_DL
-        from icarus_nmr.mock_driver import Driver
+        from icarus_nmr.device_daq import DI4108_DL
+        from icarus_nmr.driver_mock import Driver
         device = DI4108_DL()
         device.pr_packet_size = 64
         device.bind_driver(Driver())

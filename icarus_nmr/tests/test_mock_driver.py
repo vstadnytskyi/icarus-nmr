@@ -8,7 +8,7 @@ else:
 
 class MockTest(unittest.TestCase):
     def test_get_hardware_information(self):
-        from ..mock_driver import Driver
+        from ..driver_mock import Driver
         driver = Driver()
         driver.init()
         dic = {b'Device name': '4108',
@@ -19,7 +19,7 @@ class MockTest(unittest.TestCase):
         self.assertEqual(dic,result)
 
     def test_configure(self):
-        from ..mock_driver import Driver
+        from ..driver_mock import Driver
         driver = Driver()
         driver.init()
         driver.set_acquisition_rate(dec = 5)
@@ -28,7 +28,7 @@ class MockTest(unittest.TestCase):
         self.assertEqual(driver.sim_rate,5000)
 
     def test_inquire(self):
-        from ..mock_driver import Driver
+        from ..driver_mock import Driver
         driver = Driver()
         driver.init()
         reply = driver.inquire('info 1 \r')
@@ -37,7 +37,7 @@ class MockTest(unittest.TestCase):
         self.assertEqual('info 5  Mary_Smith\r',reply)
 
     def test_start_stop_scan(self):
-        from ..mock_driver import Driver
+        from ..driver_mock import Driver
         driver = Driver()
         driver.init()
         self.assertEqual(driver.sim_flag,False)
@@ -47,7 +47,7 @@ class MockTest(unittest.TestCase):
         self.assertEqual(driver.sim_flag,False)
 
     def test_get_readings(self):
-        from ..mock_driver import Driver
+        from ..driver_mock import Driver
         driver = Driver()
         driver.init()
         driver.config_channels()
@@ -58,7 +58,7 @@ class MockTest(unittest.TestCase):
         self.assertEqual(data.T[9].std(), 0.0)
 
     def test_set_digital(self):
-        from ..mock_driver import Driver
+        from ..driver_mock import Driver
         driver = Driver()
         driver.init()
         driver.config_channels()
@@ -76,7 +76,7 @@ class MockTest(unittest.TestCase):
 
 
     def test_get_pre_trace(self):
-        from ..mock_driver import Driver
+        from ..driver_mock import Driver
         driver = Driver()
         driver.init()
         driver.config_channels()
