@@ -22,11 +22,11 @@ import sys
 
 if sys.version_info[0] == 3:
     if sys.version_info[1] <= 7:
-        from time import gmtime, strftime, time, sleep
+        from time import gmtime, strftime, time, sleep, clock
     else:
-        from time import gmtime, strftime, clock, sleep
+        from time import gmtime, strftime, time, sleep, perf_counter
 else:
-    from time import gmtime, strftime, time, sleep
+    from time import gmtime, strftime, time, sleep, clock
 
 import sys
 #sys.path.append('/Users/femto-13/All-Projects-on-femto/LaserLab/Software/')
