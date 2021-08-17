@@ -8,3 +8,4 @@ ubcs-auxiliary
 pyepics
 scipy
 psutil
+caproto
