@@ -85,3 +85,6 @@ target/
 
 #Ipython Notebook
 .ipynb_checkpoints
+
+#github secrets
+github_secret_*
