@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Mock Driver Level &mdash; Icarus Pressure Jump for NMR 0.post50+g9347bec documentation</title>
+  <title>Mock Driver Level &mdash; Icarus Pressure Jump for NMR 0.post50+g4878fe1 documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                0.post50+g9347bec
+                0.post50+g4878fe1
               </div>
             
           
@@ -181,7 +181,7 @@
 <h1>Mock Driver Level<a class="headerlink" href="#mock-driver-level" title="Permalink to this headline">¶</a></h1>
 <p>The library comes with a support for rs232 (slow) and bulk USB(recommended) interfaces. It also has a mock driver that allows testing and debugging of the software.</p>
 <p>To import the mock driver instead of actual driver for the DI-4108</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="kn">from</span> <span class="nn">icarus_nmr.mock_driver</span> <span class="kn">import</span> <span class="n">Driver</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="kn">from</span> <span class="nn">icarus_nmr.driver_mock</span> <span class="kn">import</span> <span class="n">Driver</span>
 
 <span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="n">driver</span> <span class="o">=</span> <span class="n">Driver</span><span class="p">()</span>
 </pre></div>
@@ -221,11 +221,11 @@
 #   :include-source:</p>
 <p>Detailed description of the function and properties of the mock_driver class below.</p>
 <dl class="py class">
-<dt class="sig sig-object py" id="icarus_nmr.mock_driver.Driver">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">icarus_nmr.mock_driver.</span></span><span class="sig-name descname"><span class="pre">Driver</span></span><a class="reference internal" href="_modules/icarus_nmr/mock_driver.html#Driver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.mock_driver.Driver" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="icarus_nmr.driver_mock.Driver">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">icarus_nmr.driver_mock.</span></span><span class="sig-name descname"><span class="pre">Driver</span></span><a class="reference internal" href="_modules/icarus_nmr/driver_mock.html#Driver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.driver_mock.Driver" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="py method">
-<dt class="sig sig-object py" id="icarus_nmr.mock_driver.Driver.get_hardware_information">
-<span class="sig-name descname"><span class="pre">get_hardware_information</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/mock_driver.html#Driver.get_hardware_information"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.mock_driver.Driver.get_hardware_information" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="icarus_nmr.driver_mock.Driver.get_hardware_information">
+<span class="sig-name descname"><span class="pre">get_hardware_information</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/driver_mock.html#Driver.get_hardware_information"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.driver_mock.Driver.get_hardware_information" title="Permalink to this definition">¶</a></dt>
 <dd><p>emulates retrieval of information via usb. Creates two new atrbiutes to the class: self.dev_dict and self.epi_dict</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -243,8 +243,8 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="icarus_nmr.mock_driver.Driver.get_information">
-<span class="sig-name descname"><span class="pre">get_information</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/mock_driver.html#Driver.get_information"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.mock_driver.Driver.get_information" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="icarus_nmr.driver_mock.Driver.get_information">
+<span class="sig-name descname"><span class="pre">get_information</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/driver_mock.html#Driver.get_information"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.driver_mock.Driver.get_information" title="Permalink to this definition">¶</a></dt>
 <dd><p>emulates retrieval of information via usb. Creates two new atrbiutes to the class: self.dev_dict and self.epi_dict</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mock</span><span class="o">.</span><span class="n">get_information</span><span class="p">()</span>
@@ -253,14 +253,14 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="icarus_nmr.mock_driver.Driver.get_readings">
-<span class="sig-name descname"><span class="pre">get_readings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points_to_read</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_read_analog</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_read_digital</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/mock_driver.html#Driver.get_readings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.mock_driver.Driver.get_readings" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="icarus_nmr.driver_mock.Driver.get_readings">
+<span class="sig-name descname"><span class="pre">get_readings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points_to_read</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_read_analog</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_read_digital</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/driver_mock.html#Driver.get_readings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.driver_mock.Driver.get_readings" title="Permalink to this definition">¶</a></dt>
 <dd><p>the original get_readings function should just return data from the buffer on the DI-4108 DATAQ. Since this is module is a mock device, there are extra functionality build in into this specific function. The function handles random number generation around specified values with specified standard deviations. The fucntion also includes what happens if pressurization and depresurrization event flags are True.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="icarus_nmr.mock_driver.Driver.parse_binary_number">
-<span class="sig-name descname"><span class="pre">parse_binary_number</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Nbits</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">7</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/mock_driver.html#Driver.parse_binary_number"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.mock_driver.Driver.parse_binary_number" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="icarus_nmr.driver_mock.Driver.parse_binary_number">
+<span class="sig-name descname"><span class="pre">parse_binary_number</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Nbits</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">7</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/driver_mock.html#Driver.parse_binary_number"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.driver_mock.Driver.parse_binary_number" title="Permalink to this definition">¶</a></dt>
 <dd><p>parses integer number into bits and represents them as an array</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -277,8 +277,8 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="icarus_nmr.mock_driver.Driver.pinhole_leak">
-<span class="sig-name descname"><span class="pre">pinhole_leak</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/mock_driver.html#Driver.pinhole_leak"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.mock_driver.Driver.pinhole_leak" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="icarus_nmr.driver_mock.Driver.pinhole_leak">
+<span class="sig-name descname"><span class="pre">pinhole_leak</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/driver_mock.html#Driver.pinhole_leak"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.driver_mock.Driver.pinhole_leak" title="Permalink to this definition">¶</a></dt>
 <dd><p>creates a pin hole leak event. Values in channel 5,6 are set to 0.</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mock</span><span class="o">.</span><span class="n">pinhole_leak</span><span class="p">()</span>
@@ -287,8 +287,8 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="icarus_nmr.mock_driver.Driver.readall">
-<span class="sig-name descname"><span class="pre">readall</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/mock_driver.html#Driver.readall"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.mock_driver.Driver.readall" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="icarus_nmr.driver_mock.Driver.readall">
+<span class="sig-name descname"><span class="pre">readall</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/driver_mock.html#Driver.readall"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.driver_mock.Driver.readall" title="Permalink to this definition">¶</a></dt>
 <dd><p>reads all information in the usb buffer</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -306,8 +306,8 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="icarus_nmr.mock_driver.Driver.set_acquisition_rate">
-<span class="sig-name descname"><span class="pre">set_acquisition_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">baserate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">echo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/mock_driver.html#Driver.set_acquisition_rate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.mock_driver.Driver.set_acquisition_rate" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="icarus_nmr.driver_mock.Driver.set_acquisition_rate">
+<span class="sig-name descname"><span class="pre">set_acquisition_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">baserate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">echo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/driver_mock.html#Driver.set_acquisition_rate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.driver_mock.Driver.set_acquisition_rate" title="Permalink to this definition">¶</a></dt>
 <dd><p>sets acquisition rate (simulation rate)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -327,8 +327,8 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="icarus_nmr.mock_driver.Driver.set_digital">
-<span class="sig-name descname"><span class="pre">set_digital</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">number</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">127</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">echo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/mock_driver.html#Driver.set_digital"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.mock_driver.Driver.set_digital" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="icarus_nmr.driver_mock.Driver.set_digital">
+<span class="sig-name descname"><span class="pre">set_digital</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">number</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">127</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">echo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/driver_mock.html#Driver.set_digital"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.driver_mock.Driver.set_digital" title="Permalink to this definition">¶</a></dt>
 <dd><p>sets digital value. The mock driver emulates pressure transitions due to change in digital state.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -347,8 +347,8 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="icarus_nmr.mock_driver.Driver.slow_leak">
-<span class="sig-name descname"><span class="pre">slow_leak</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/mock_driver.html#Driver.slow_leak"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.mock_driver.Driver.slow_leak" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="icarus_nmr.driver_mock.Driver.slow_leak">
+<span class="sig-name descname"><span class="pre">slow_leak</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/driver_mock.html#Driver.slow_leak"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.driver_mock.Driver.slow_leak" title="Permalink to this definition">¶</a></dt>
 <dd><p>emulates slow leak</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mock</span><span class="o">.</span><span class="n">pinhole_leak</span><span class="p">()</span>
@@ -357,8 +357,8 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="icarus_nmr.mock_driver.Driver.write">
-<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">command</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/mock_driver.html#Driver.write"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.mock_driver.Driver.write" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="icarus_nmr.driver_mock.Driver.write">
+<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">command</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/driver_mock.html#Driver.write"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.driver_mock.Driver.write" title="Permalink to this definition">¶</a></dt>
 <dd><p>writes into USB buffer</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

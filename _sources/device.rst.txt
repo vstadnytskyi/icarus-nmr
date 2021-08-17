@@ -51,14 +51,14 @@ Start by importing analysis submodule for Icarus Pressure Jump for NMR .
 
 .. code-block:: python
 
-  from icarus_nmr.device import DI4108_DL
+  from icarus_nmr.device_daq import DI4108_DL
   device = DI4108_DL()
 
 To import the mock driver instead of actual driver for the DI-4108
 
 .. code-block:: python
 
-  from icarus_nmr.mock_driver import Driver
+  from icarus_nmr.driver_mock import Driver
   driver = Driver()
 
 Next step is to bind the device instance with appropriate driver.
@@ -89,6 +89,7 @@ You can peek into the device queue with functions inside of the Queue object.
 Device Level Client
 *********************
 
+There is no client associated with the device level process.
 
 **********************
 Device Level Server
@@ -100,16 +101,20 @@ two main PVs:
 
 * data - next packet of data in the queue (read Only)
 * dio - digital input (Write Only)
+* queue_length
+* packet_shape
 
 auxiliary PVs:
 
 * response - packet size
 * serial_number - driver/device serial number
 * frequency - data collection frequency
-* response - self.firmware
-* target_pressure - target pressure in kbars ?
-* sample_pressure - sample pressure in kbars ?
+* firmware - firmware
 * pressure_sensor_offset - eight integer long array of numbers that offset the sensors
+
+**********************
+Device Level Script
+**********************
 
 
 

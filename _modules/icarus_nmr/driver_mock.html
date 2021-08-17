@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>icarus_nmr.mock_driver &mdash; Icarus Pressure Jump for NMR 0.post50+g9347bec documentation</title>
+  <title>icarus_nmr.driver_mock &mdash; Icarus Pressure Jump for NMR 0.post50+g4878fe1 documentation</title>
   
 
   
@@ -68,7 +68,7 @@
             
             
               <div class="version">
-                0.post50+g9347bec
+                0.post50+g4878fe1
               </div>
             
           
@@ -158,7 +158,7 @@
         
           <li><a href="../index.html">Module code</a> &raquo;</li>
         
-      <li>icarus_nmr.mock_driver</li>
+      <li>icarus_nmr.driver_mock</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -173,7 +173,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for icarus_nmr.mock_driver</h1><div class="highlight"><pre>
+  <h1>Source code for icarus_nmr.driver_mock</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">DATAQ 4108 driver level code</span>
 <span class="sd">author: Valentyn Stadnytskyi</span>
@@ -214,7 +214,7 @@
 <span class="n">mock_commands</span><span class="p">[</span><span class="s1">&#39;led 5 </span><span class="se">\r</span><span class="s1">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;led 5 </span><span class="se">\r</span><span class="s1">&#39;</span>
 
 
-<div class="viewcode-block" id="Driver"><a class="viewcode-back" href="../../mock-driver.html#icarus_nmr.mock_driver.Driver">[docs]</a><span class="k">class</span> <span class="nc">Driver</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="Driver"><a class="viewcode-back" href="../../mock-driver.html#icarus_nmr.driver_mock.Driver">[docs]</a><span class="k">class</span> <span class="nc">Driver</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">available_ports</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dev</span> <span class="o">=</span> <span class="kc">None</span>
@@ -244,7 +244,7 @@
 
         <span class="n">info</span><span class="p">(</span><span class="s2">&quot;initialization of the driver is complete&quot;</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Driver.get_information"><a class="viewcode-back" href="../../mock-driver.html#icarus_nmr.mock_driver.Driver.get_information">[docs]</a>    <span class="k">def</span> <span class="nf">get_information</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Driver.get_information"><a class="viewcode-back" href="../../mock-driver.html#icarus_nmr.driver_mock.Driver.get_information">[docs]</a>    <span class="k">def</span> <span class="nf">get_information</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        emulates retrieval of information via usb. Creates two new atrbiutes to the class: self.dev_dict and self.epi_dict</span>
 
@@ -283,7 +283,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">epi_dict</span><span class="p">[</span><span class="s1">&#39;EPI:bInterval&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">epi_dict</span><span class="p">[</span><span class="s1">&#39;EPI:bInterval&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span></div>
 
-<div class="viewcode-block" id="Driver.get_hardware_information"><a class="viewcode-back" href="../../mock-driver.html#icarus_nmr.mock_driver.Driver.get_hardware_information">[docs]</a>    <span class="k">def</span> <span class="nf">get_hardware_information</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Driver.get_hardware_information"><a class="viewcode-back" href="../../mock-driver.html#icarus_nmr.driver_mock.Driver.get_hardware_information">[docs]</a>    <span class="k">def</span> <span class="nf">get_hardware_information</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        emulates retrieval of information via usb. Creates two new atrbiutes to the class: self.dev_dict and self.epi_dict</span>
 
@@ -331,7 +331,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">sim_last_read</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
         <span class="k">return</span> <span class="kc">True</span>
 
-<div class="viewcode-block" id="Driver.readall"><a class="viewcode-back" href="../../mock-driver.html#icarus_nmr.mock_driver.Driver.readall">[docs]</a>    <span class="k">def</span> <span class="nf">readall</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Driver.readall"><a class="viewcode-back" href="../../mock-driver.html#icarus_nmr.driver_mock.Driver.readall">[docs]</a>    <span class="k">def</span> <span class="nf">readall</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        reads all information in the usb buffer</span>
 
@@ -350,7 +350,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Driver.write"><a class="viewcode-back" href="../../mock-driver.html#icarus_nmr.mock_driver.Driver.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">command</span><span class="p">):</span>
+<div class="viewcode-block" id="Driver.write"><a class="viewcode-back" href="../../mock-driver.html#icarus_nmr.driver_mock.Driver.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">command</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        writes into USB buffer</span>
 
@@ -389,7 +389,7 @@
         <span class="c1">#tested dec 17, 2017</span>
         <span class="k">return</span> <span class="kc">True</span>
 
-<div class="viewcode-block" id="Driver.parse_binary_number"><a class="viewcode-back" href="../../mock-driver.html#icarus_nmr.mock_driver.Driver.parse_binary_number">[docs]</a>    <span class="k">def</span> <span class="nf">parse_binary_number</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">Nbits</span> <span class="o">=</span> <span class="mi">7</span><span class="p">):</span>
+<div class="viewcode-block" id="Driver.parse_binary_number"><a class="viewcode-back" href="../../mock-driver.html#icarus_nmr.driver_mock.Driver.parse_binary_number">[docs]</a>    <span class="k">def</span> <span class="nf">parse_binary_number</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">Nbits</span> <span class="o">=</span> <span class="mi">7</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        parses integer number into bits and represents them as an array</span>
 
@@ -412,7 +412,7 @@
             <span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">binary</span><span class="p">[</span><span class="n">Nbits</span><span class="o">+</span><span class="mi">2</span><span class="o">-</span><span class="n">i</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">arr</span></div>
 
-<div class="viewcode-block" id="Driver.set_digital"><a class="viewcode-back" href="../../mock-driver.html#icarus_nmr.mock_driver.Driver.set_digital">[docs]</a>    <span class="k">def</span> <span class="nf">set_digital</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">number</span> <span class="o">=</span> <span class="mi">127</span><span class="p">,</span> <span class="n">echo</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Driver.set_digital"><a class="viewcode-back" href="../../mock-driver.html#icarus_nmr.driver_mock.Driver.set_digital">[docs]</a>    <span class="k">def</span> <span class="nf">set_digital</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">number</span> <span class="o">=</span> <span class="mi">127</span><span class="p">,</span> <span class="n">echo</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        sets digital value. The mock driver emulates pressure transitions due to change in digital state.</span>
 
@@ -467,7 +467,7 @@
             <span class="n">flag</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">return</span> <span class="n">flag</span>
 
-<div class="viewcode-block" id="Driver.set_acquisition_rate"><a class="viewcode-back" href="../../mock-driver.html#icarus_nmr.mock_driver.Driver.set_acquisition_rate">[docs]</a>    <span class="k">def</span> <span class="nf">set_acquisition_rate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rate</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">baserate</span> <span class="o">=</span> <span class="mi">20000</span><span class="p">,</span> <span class="n">dec</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">echo</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="Driver.set_acquisition_rate"><a class="viewcode-back" href="../../mock-driver.html#icarus_nmr.driver_mock.Driver.set_acquisition_rate">[docs]</a>    <span class="k">def</span> <span class="nf">set_acquisition_rate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rate</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">baserate</span> <span class="o">=</span> <span class="mi">20000</span><span class="p">,</span> <span class="n">dec</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">echo</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        sets acquisition rate (simulation rate)</span>
 
@@ -509,7 +509,7 @@
         <span class="n">c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_acquisition_rate</span><span class="p">(</span><span class="n">rate</span> <span class="o">=</span> <span class="n">rate</span><span class="p">,</span> <span class="n">dec</span> <span class="o">=</span> <span class="n">dec</span><span class="p">,</span> <span class="n">baserate</span> <span class="o">=</span> <span class="mi">20000</span><span class="p">,</span> <span class="n">echo</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="c1">#3000 gives maximum rate</span>
         <span class="k">return</span> <span class="n">x</span><span class="o">*</span><span class="n">a</span><span class="o">*</span><span class="n">b</span><span class="o">*</span><span class="n">c</span>
 
-<div class="viewcode-block" id="Driver.get_readings"><a class="viewcode-back" href="../../mock-driver.html#icarus_nmr.mock_driver.Driver.get_readings">[docs]</a>    <span class="k">def</span> <span class="nf">get_readings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points_to_read</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">to_read_analog</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span> <span class="n">to_read_digital</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+<div class="viewcode-block" id="Driver.get_readings"><a class="viewcode-back" href="../../mock-driver.html#icarus_nmr.driver_mock.Driver.get_readings">[docs]</a>    <span class="k">def</span> <span class="nf">get_readings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points_to_read</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">to_read_analog</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span> <span class="n">to_read_digital</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        the original get_readings function should just return data from the buffer on the DI-4108 DATAQ. Since this is module is a mock device, there are extra functionality build in into this specific function. The function handles random number generation around specified values with specified standard deviations. The fucntion also includes what happens if pressurization and depresurrization event flags are True.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -640,7 +640,7 @@
 <span class="c1">##### Artificial events</span>
 <span class="c1">########################################################</span>
 
-<div class="viewcode-block" id="Driver.pinhole_leak"><a class="viewcode-back" href="../../mock-driver.html#icarus_nmr.mock_driver.Driver.pinhole_leak">[docs]</a>    <span class="k">def</span> <span class="nf">pinhole_leak</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Driver.pinhole_leak"><a class="viewcode-back" href="../../mock-driver.html#icarus_nmr.driver_mock.Driver.pinhole_leak">[docs]</a>    <span class="k">def</span> <span class="nf">pinhole_leak</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        creates a pin hole leak event. Values in channel 5,6 are set to 0.</span>
 
@@ -658,7 +658,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">sim_analog</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sim_pressure_state</span> <span class="o">=</span> <span class="mi">0</span></div>
 
-<div class="viewcode-block" id="Driver.slow_leak"><a class="viewcode-back" href="../../mock-driver.html#icarus_nmr.mock_driver.Driver.slow_leak">[docs]</a>    <span class="k">def</span> <span class="nf">slow_leak</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Driver.slow_leak"><a class="viewcode-back" href="../../mock-driver.html#icarus_nmr.driver_mock.Driver.slow_leak">[docs]</a>    <span class="k">def</span> <span class="nf">slow_leak</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        emulates slow leak</span>
 

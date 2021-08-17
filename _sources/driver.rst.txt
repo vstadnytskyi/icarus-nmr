@@ -8,8 +8,8 @@ To import the  driver for the DI-4108. This library has to be tested manually to
 
 .. code-block:: python
 
-  from icarus_nmr.usb_bulk_driver import Driver
+  from icarus_nmr.driver_usb_bulk_di_4108 import Driver
   driver = Driver()
 
-.. autoclass:: icarus_nmr.usb_bulk_driver.Driver
+.. autoclass:: icarus_nmr.driver_usb_bulk_di_4108.Driver
   :members:

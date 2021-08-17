@@ -4,8 +4,8 @@
 ./_images/overview_block_diagram.png
 ./_modules/icarus_nmr/analysis.html
 ./_modules/icarus_nmr/device_daq.html
-./_modules/icarus_nmr/mock_driver.html
-./_modules/icarus_nmr/usb_bulk_driver.html
+./_modules/icarus_nmr/driver_mock.html
+./_modules/icarus_nmr/driver_usb_bulk_di_4108.html
 ./_modules/index.html
 ./_sources/application-level.rst.txt
 ./_sources/data-analysis.rst.txt

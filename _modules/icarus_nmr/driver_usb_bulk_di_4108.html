@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>icarus_nmr.usb_bulk_driver &mdash; Icarus Pressure Jump for NMR 0.post50+g9347bec documentation</title>
+  <title>icarus_nmr.driver_usb_bulk_di_4108 &mdash; Icarus Pressure Jump for NMR 0.post50+g4878fe1 documentation</title>
   
 
   
@@ -68,7 +68,7 @@
             
             
               <div class="version">
-                0.post50+g9347bec
+                0.post50+g4878fe1
               </div>
             
           
@@ -158,7 +158,7 @@
         
           <li><a href="../index.html">Module code</a> &raquo;</li>
         
-      <li>icarus_nmr.usb_bulk_driver</li>
+      <li>icarus_nmr.driver_usb_bulk_di_4108</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -173,7 +173,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for icarus_nmr.usb_bulk_driver</h1><div class="highlight"><pre>
+  <h1>Source code for icarus_nmr.driver_usb_bulk_di_4108</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">DATAQ 4108 driver level code</span>
 <span class="sd">author: Valentyn Stadnytskyi</span>
@@ -200,7 +200,7 @@
 <span class="kn">import</span> <span class="nn">traceback</span>
 <span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.1&#39;</span>
 
-<div class="viewcode-block" id="Driver"><a class="viewcode-back" href="../../driver.html#icarus_nmr.usb_bulk_driver.Driver">[docs]</a><span class="k">class</span> <span class="nc">Driver</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="Driver"><a class="viewcode-back" href="../../driver.html#icarus_nmr.driver_usb_bulk_di_4108.Driver">[docs]</a><span class="k">class</span> <span class="nc">Driver</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1">#tested dec 17, 2017</span>
@@ -288,7 +288,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">usb_buff</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">epi</span><span class="o">.</span><span class="n">wMaxPacketSize</span><span class="o">/</span><span class="mi">100</span><span class="p">)</span>
         <span class="c1">#self.readall()</span>
 
-<div class="viewcode-block" id="Driver.discover"><a class="viewcode-back" href="../../driver.html#icarus_nmr.usb_bulk_driver.Driver.discover">[docs]</a>    <span class="k">def</span> <span class="nf">discover</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Driver.discover"><a class="viewcode-back" href="../../driver.html#icarus_nmr.driver_usb_bulk_di_4108.Driver.discover">[docs]</a>    <span class="k">def</span> <span class="nf">discover</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        the function allows to discover DI-4108 device.</span>
 <span class="sd">        returns: flag if a device(devices) are found.</span>
@@ -451,7 +451,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">stop_scan</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">close_port</span><span class="p">()</span>
 
-<div class="viewcode-block" id="Driver.flush"><a class="viewcode-back" href="../../driver.html#icarus_nmr.usb_bulk_driver.Driver.flush">[docs]</a>    <span class="k">def</span> <span class="nf">flush</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Driver.flush"><a class="viewcode-back" href="../../driver.html#icarus_nmr.driver_usb_bulk_di_4108.Driver.flush">[docs]</a>    <span class="k">def</span> <span class="nf">flush</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;backcompetability with serial communication&quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
 

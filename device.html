@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Device Level &mdash; Icarus Pressure Jump for NMR 0.post50+g9347bec documentation</title>
+  <title>Device Level &mdash; Icarus Pressure Jump for NMR 0.post50+g4878fe1 documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                0.post50+g9347bec
+                0.post50+g4878fe1
               </div>
             
           
@@ -106,6 +106,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#id1">Device Level</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#device-level-client">Device Level Client</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#device-level-server">Device Level Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#device-level-script">Device Level Script</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="system-level.html">System Level</a></li>
@@ -207,12 +208,12 @@
 <div class="section" id="id1">
 <h2>Device Level<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <p>Start by importing analysis submodule for Icarus Pressure Jump for NMR .</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">icarus_nmr.device</span> <span class="kn">import</span> <span class="n">DI4108_DL</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">icarus_nmr.device_daq</span> <span class="kn">import</span> <span class="n">DI4108_DL</span>
 <span class="n">device</span> <span class="o">=</span> <span class="n">DI4108_DL</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>To import the mock driver instead of actual driver for the DI-4108</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">icarus_nmr.mock_driver</span> <span class="kn">import</span> <span class="n">Driver</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">icarus_nmr.driver_mock</span> <span class="kn">import</span> <span class="n">Driver</span>
 <span class="n">driver</span> <span class="o">=</span> <span class="n">Driver</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -237,6 +238,7 @@
 </div>
 <div class="section" id="device-level-client">
 <h2>Device Level Client<a class="headerlink" href="#device-level-client" title="Permalink to this headline">¶</a></h2>
+<p>There is no client associated with the device level process.</p>
 </div>
 <div class="section" id="device-level-server">
 <h2>Device Level Server<a class="headerlink" href="#device-level-server" title="Permalink to this headline">¶</a></h2>
@@ -245,17 +247,20 @@
 <ul class="simple">
 <li><p>data - next packet of data in the queue (read Only)</p></li>
 <li><p>dio - digital input (Write Only)</p></li>
+<li><p>queue_length</p></li>
+<li><p>packet_shape</p></li>
 </ul>
 <p>auxiliary PVs:</p>
 <ul class="simple">
 <li><p>response - packet size</p></li>
 <li><p>serial_number - driver/device serial number</p></li>
 <li><p>frequency - data collection frequency</p></li>
-<li><p>response - self.firmware</p></li>
-<li><p>target_pressure - target pressure in kbars ?</p></li>
-<li><p>sample_pressure - sample pressure in kbars ?</p></li>
+<li><p>firmware - firmware</p></li>
 <li><p>pressure_sensor_offset - eight integer long array of numbers that offset the sensors</p></li>
 </ul>
+</div>
+<div class="section" id="device-level-script">
+<h2>Device Level Script<a class="headerlink" href="#device-level-script" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="icarus_nmr.device_daq.DI4108_DL">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">icarus_nmr.device_daq.</span></span><span class="sig-name descname"><span class="pre">DI4108_DL</span></span><a class="reference internal" href="_modules/icarus_nmr/device_daq.html#DI4108_DL"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.device_daq.DI4108_DL" title="Permalink to this definition">¶</a></dt>
