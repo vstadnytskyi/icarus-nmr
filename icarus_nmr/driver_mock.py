@@ -7,10 +7,14 @@ from numpy import nan, mean, std, asarray, array, concatenate, \
      delete, round, vstack, hstack, zeros, transpose, split
 from time import time, sleep
 import sys
-if sys.version_info[0] < 3:
-    from time import clock
+if sys.version_info[0] == 3:
+    if sys.version_info[1] <= 7:
+        from time import gmtime, strftime, time, sleep, clock
+    else:
+        from time import gmtime, strftime, time, sleep
+        from time import perf_counter as clock
 else:
-    from time import perf_counter as clock
+    from time import gmtime, strftime, time, sleep, clock
 import os.path
 import struct
 from pdb import pm
