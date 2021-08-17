@@ -8,7 +8,7 @@ To import the mock driver instead of actual driver for the DI-4108
 
 .. code-block:: python
 
-  In [1]: from icarus_nmr.mock_driver import Driver
+  In [1]: from icarus_nmr.driver_mock import Driver
 
   In [2]: driver = Driver()
 
@@ -57,5 +57,5 @@ Note, the code below does not work, `see issue 9 on GitHub <https://github.com/v
 
 Detailed description of the function and properties of the mock_driver class below.
 
-.. autoclass:: icarus_nmr.mock_driver.Driver
+.. autoclass:: icarus_nmr.driver_mock.Driver
   :members:
