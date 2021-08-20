@@ -5,7 +5,7 @@ author: Valentyn Stadnytskyi
 dates: June 09 2018 - November 16 2018
 """
 
-class Pulse_Generator():
+class Handler():
 
     bit_HPpump = 0b1
     bit_valve1 = 0b10
@@ -17,13 +17,16 @@ class Pulse_Generator():
     pr_pulse_generator_counter = 0
 
 
-    def __init__(self):
+    def __init__(self, client):
         """
         """
         self.name = 'PulseGenerator'
-        self.curr_DIO = self.object.ctrls.DIO_default
+        self.client = client
         self.running = False
         self.console_running = False
+
+        self.io_push_queue = None
+        self.io_put_queue = None
 
     def init(self):
         """
@@ -40,85 +43,132 @@ class Pulse_Generator():
         >>> pulse_generator.init()
         """
         from numpy import nan
-        self.trigger_mode = 0  # can be int (1) or ext (0) Always start with console
-        #self.set_trigger_mode(value = self.trigger_mode)
+        self.trigger_mode = 2 # 0 - manual, 1 - pulsed, 2 - console. Always start with concole
 
         self.running = False
 
-        self.curr_DIO = int('1111111',2)
+        #self.curr_DIO = int('1111111',2)
 
 
-    def set_DIO(self, command):
+    def set_dio(self, value):
         """
-        a wrapper for communicate with DI-4108
+        a wrapper to set digital state in the device handler process via channel access
 
         Parameters
         ----------
-        command :: string
-            an integer 0 to 127 defining the state of digital input/output
+        value :: integer
 
         Returns
         -------
 
         Examples
         --------
-        >>> pulse_generator.init()
+        >>> value = client.get_dio()
         """
-        try:
-            self.object.ctrls.set_DIO(command)
-        except:
-            error(traceback.format_exc())
 
-    def get_DIO(self):
+        self.client.set_dio(value)
+
+
+    def get_dio(self):
         """
-        a wrapper for communicate with DI-4108
-        -input-
-        command: an integer 0 to 127 defining the state of digital input/output
-        -return-
-        nothing
+        a wrapper to get digital state in the device handler process via channel access
+
+        Parameters
+        ----------
+
+        Returns
+        -------
+        value :: integer
+
+        Examples
+        --------
+        >>> value = self.client.get_dio()
         """
-        try:
-            value = self.object.ctrls.get_DIO()
-        except:
-            error(traceback.format_exc())
-            value = nan
+
+        value = self.client.get_dio()
+
         return value
 
 
-    def pulse(self, valve = 1, duration = 1, precision = True, echo = False):
+    def pulse(self, current_dio, valve = 1, duration = 1, precision = False, echo = False):
         """
-        generates a pulse at a given valve.
-        Parameters:
-        valve: integer 1 - Depressure; 2 - Pressure;  4 - High Pressure pump; -1 - wait
-        duration: in seconds
-        precision: 1 - presicion sleep; 2 - normal sleep;
-        echo: True or False - this is an absolute parameter
+        generates a negative pulse (high-low-high) for 'duration' seconds for 'valve' (bit)
+
+        Parameters
+        ----------
+        current_dio :: int
+        valve :: int
+        duration :: float
+        precision :: boolean
+        echo :: boolean
+
+        Returns
+        -------
+
+        Examples
+        --------
+        >>> self.pulse(valve = 1, duration = 1)
         """
+        from time import sleep
         if valve == 1:
             valve_bit = int(self.bit_valve1) # Depressure
         elif valve == 2:
             valve_bit = int(self.bit_valve2) # Pressure
         elif valve == 3:
-            valve_bit = int(self.bit_valve3) # Pressure
-        elif valve == 4:
+            valve_bit = int(self.bit_valve3) # Bit 3
+        elif valve == 0:
             valve_bit = int(self.bit_HPpump) # High pressure valve
         elif valve == -1:
             valve_bit = int('0000000',2) # Wait
         else:
             valve_bit = int('0000000',2) # Wait if valve selection is not recognized
-        curr_DIO = self.object.ctrls.DIO_default
+        curr_DIO = current_dio
         new_DIO = curr_DIO-valve_bit
-        if valve_bit != 0 and self.trigger_mode != 0:
-            driver.set_digital(new_DIO) #down
+        if valve_bit != 0:
+            self.set_dio(new_DIO) #down
         if precision:
             precision_sleep.psleep(duration)
         else:
             sleep(duration)
-        if valve_bit != 0 and self.trigger_mode != 0:
-            driver.set_digital(curr_DIO) # up
-        debug('DIO %r -> %r -> %r' % (curr_DIO,new_DIO,curr_DIO))
+        if valve_bit != 0:
+            self.set_dio(curr_DIO) # up
+        print('DIO %r -> %r -> %r' % (curr_DIO,new_DIO,curr_DIO))
 
 
+    def set_bit(self, current_dio, bit = 1, value = 1):
+        """
+        sets bit 'bit' to value 'value' (0 or 1)
+
+        Parameters
+        ----------
+        bit :: int
+        valve :: int
+
+        Returns
+        -------
+
+        Examples
+        --------
+        >>> self.set_bit(bit = 1, value = 1)
+        """
+        from time import sleep
+        if bit == 1:
+            _bit = int(self.bit_valve1) # Depressure
+        elif bit == 2:
+            _bit = int(self.bit_valve2) # Pressure
+        elif bit == 3:
+            _bit = int(self.bit_valve3) # Bit 3
+        elif bit == 0:
+            _bit = int(self.bit_HPpump) # High pressure valve
+        elif bit == -1:
+            _bit = int('0000000',2) # Wait
+        else:
+            _bit = int('0000000',2) # Wait if valve selection is not recognized
+        curr_DIO = current_dio
+        new_DIO = curr_DIO-_bit
+
+        self.set_dio(new_DIO) #down
+        print('setting bit %r -> %r -> %r' % (curr_DIO,new_DIO))
 
     def pulse_sequence(self,pvname = '',value = '', char_val = ''):
         """

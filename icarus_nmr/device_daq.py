@@ -357,6 +357,26 @@ class DI4108_DL():
         self.io_push({'dio':value})
         print('set DIO inside device daq library')
 
+    def set_outside_DIO(self, value = '00000000'):
+        """
+        sets digital input/output state
+
+        Parameters
+        ----------
+        value :: string
+
+        Returns
+        -------
+
+        Examples
+        --------
+        >>> device.DIO = 127
+        """
+        if isinstance(value,str):
+            value = int(value,2)
+        self.driver.set_digital(value)
+        print('set DIO inside device daq library')
+
 
     def get_DIO(self):
         return int(self.queue.peek_last_N(3)[-1,9])
