@@ -42,7 +42,7 @@ if __name__ == '__main__':
     daq.init()
     #daq.start()
 
-    handler = Handler(daq)
+    handler = Handler(daq, client)
     handler.init()
     handler.fault_detection_init()
     handler.start()

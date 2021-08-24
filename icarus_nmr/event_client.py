@@ -47,7 +47,7 @@ from scipy.interpolate import UnivariateSpline
 from pdb import pm
 
 class Client():
-    def __init__(self,device_ca_server_prefix = 'device_mock:'):
+    def __init__(self,device_ca_server_prefix = 'device_mock:', dio_ca_server_prefix = 'digital_handler_mock:'):
         """
         ToDo: rewrite the function to include the list of PVs.
         - restructure subscription to PVs to be saved as a dictionary. this will allow potential future expansions.
@@ -55,6 +55,7 @@ class Client():
         from caproto.threading.client import Context
         self.ctx = Context()
         self.ca_name = device_ca_server_prefix
+        self.dio_ca_name = dio_ca_server_prefix
         self.dio,self.data,self.peek_data,self.queue_length,self.packet_shape,self.freq = self.ctx.get_pvs(f'{self.ca_name}dio',
             f'{self.ca_name}data',
             f'{self.ca_name}peek_data',
@@ -62,9 +63,12 @@ class Client():
             f'{self.ca_name}packet_shape',
             f'{self.ca_name}freq',)
 
+        self.dio,= self.ctx.get_pvs(f'{self.dio_ca_name}dio',)
 
-
-
+    def get_dio(self, value):
+        return self.dio.read().data[0]
+    def set_dio(self, value):
+        self.dio.write(value)
 
 if __name__ == "__main__":
     from importlib import reload

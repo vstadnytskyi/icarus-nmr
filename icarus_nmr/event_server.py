@@ -21,6 +21,7 @@ from pdb import pm
 
 from numpy import random, array, zeros, ndarray, nan, isnan
 
+import sys
 if sys.version_info[0] == 3:
     if sys.version_info[1] <= 7:
         from time import gmtime, strftime, time, sleep, clock
@@ -73,9 +74,9 @@ class Server(PVGroup):
     sample_pressure = pvproperty(value=0.0, read_only = True, dtype = float, precision = 3)
     target_pressure = pvproperty(value=0.0, read_only = True, dtype = float, precision = 3)
 
-    pump_counter = pvproperty(value=0)
-    valves_per_pump_current = pvproperty(value=1.0, precision = 2)
-    valves_per_pump_total = pvproperty(value=1.0, precision = 2)
+    pump_counter = pvproperty(value=0) #done
+    valves_per_pump_current = pvproperty(value=1.0, precision = 2) #done
+    valves_per_pump_total = pvproperty(value=1.0, precision = 2) #done
 
     ctrl_operating_mode = pvproperty(value=1)
     ctrl_shutdown_state = pvproperty(value=0,dtype = int)

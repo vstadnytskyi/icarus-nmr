@@ -82,13 +82,11 @@ class Server(PVGroup):
                 elif key == 'd':
                     await self.d.write(io_dict[key])
 
-    @dio.startup
-    async def dio(self, instance, async_lib):
-        await self.dio.write(self.device.DIO)
+
     @dio.putter
     async def dio(self, instance, value):
         print('Received update for the {}, sending new value {}'.format('dio',value))
-        self.device.set_DIO(value = value)
+        self.device.set_outside_DIO(value = value)
         return value
     @dio.getter
     async def dio(self, instance):

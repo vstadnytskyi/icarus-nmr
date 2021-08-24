@@ -17,7 +17,7 @@ class DAQ(object):
     running = False
     def __init__(self, client):
         self.running = True
-        self.buffer_shape = (2560000, 10)#8192000)
+        self.buffer_shape = (25600, 10)#8192000)
         self.client = client
 
     def init(self):
@@ -27,7 +27,7 @@ class DAQ(object):
         self.packet_shape = client.packet_shape.read().data
         self.packet_length = self.packet_shape[0]
         self.freq = int(client.freq.read().data[0])
-        self.packet_buffer_size = int(self.buffer_shape[0]/self.packet_length)
+        self.packet_buffer_length = int(self.buffer_shape[0]/self.packet_length)
         self.start_time = None
 
 
@@ -62,15 +62,15 @@ class DAQ(object):
     def get_packet_ij(self,i,j): #return from i to j
         if j >= i:
             #print(i,j)
-            result = self.circular_buffer.get_N((j-i+1)*self.packet_length,(j+1)*self.packet_length-1)
+            result = self.circular_buffer.get_N_global((j-i+1)*self.packet_length,(j+1)*self.packet_length-1)
         else:
             result = nan
         return result
 
     def get_ring_buffer_N(self,N,pointer):
-        #print('input: N= %r ; pointer = %r )' % (N, pointer))
-        if pointer > (self.packet_buffer_size+1)*self.packet_length:
-            pointer = int(pointer - ((self.packet_buffer_size+1)*self.packet_length)-1)
+        print('input: N= %r ; pointer = %r )' % (N, pointer))
+        while pointer >= (self.circular_buffer.shape[0]):
+            pointer = int(pointer - self.circular_buffer.shape[0])
         # try:
             #print(' try: N= %r ; pointer = %r' % (N, pointer))
         res = self.circular_buffer.get_N(N, pointer)
@@ -79,6 +79,4 @@ class DAQ(object):
         return res
 
 if __name__ == '__main__':
-    daq.device = {b'ip_address':'127.0.0.1',b'port':2031}
-    daq.packet_buffer_size = 1
-    daq.packet_size = 128
+    pass

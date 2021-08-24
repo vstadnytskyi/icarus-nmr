@@ -147,19 +147,20 @@ class Handler(object):
     slow_leak_threshold = -20.0
     slow_leak_threshold_counter =5
 
-    def __init__(self, daq):
+    def __init__(self, daq, client = None):
         """
         to create an instance
         """
         self.name = prefix + 'EventDetector'
         self.daq = daq
+        self.client = client
         self.logging_state = 0
         self.save_trace_to_a_file = False
         bit_to_kbar_coeff = 2**-15*10**5*6.894756709891046e-05
         kbar_to_ul_coeff = (0.500/2.5) # 0.500 mL / 2.5kbar
         self.cooling_coefficient = 4000*60*60*bit_to_kbar_coeff*kbar_to_ul_coeff
         # 4000 ticks/second * 60 seconds/min * 60 min/hour * 500 uL / 2.5 kbar
-        self.buffer_shape = (256000,10)#8192000)
+        self.buffer_shape = (25600,10)#8192000)
 
         self.io_push_queue = None
         self.io_pull_queue = None
@@ -188,7 +189,7 @@ class Handler(object):
 
         self.circular_buffer = CircularBuffer(shape = self.buffer_shape, dtype = 'int16')
 
-        self.packet_buffer_size = int(self.buffer_shape[1]/self.daq .packet_length)
+        self.packet_buffer_length = int(self.buffer_shape[0]/self.daq .packet_length)
         self.event_buffer_shape = (1000,3) #100000 will be ~ 2 weeks assuming 5 events per sequence(1 min).
         self.event_buffer = CircularBuffer(shape = self.event_buffer_shape, dtype = 'int64')
         self.history_buffer_size = 500000 #the length of history buffers
@@ -1231,13 +1232,6 @@ class Handler(object):
                 self.counters_global[b'period'] += 1
                 self.counters_current[b'period'] += 1
                 temp_dic[b'period'] = self.last_event_width[b'period']
-                if self.save_data_period and (self.logging_state == 1 or self.logging_state == 11):
-                    self.data_log_to_file(data, name = 'period')
-                # #self.logging_event_append(dic = temp_dic,
-                #                           event_code = 200,
-                #                           global_pointer = dic[b'global_index'],
-                #                           period_idx = event_detector.counters_current[b'period']
-                #                           )
                 self.push_new_period(value = self.period_event)
 
             elif dic[b'channel'] == 'periodic_update':
@@ -1248,7 +1242,7 @@ class Handler(object):
 
                 self.push_target_pressure()
                 self.push_sample_pressure()
-                #self.push_states()
+                self.push_digital_state()
 
             elif dic[b'channel'] == 'periodic_update_cooling':
                 self.last_event_width[b'periodic_update_cooling'] =  (dic[b'global_index'] - self.last_event_index[b'A301'])/self.daq.freq
@@ -1374,6 +1368,7 @@ class Handler(object):
             to_point = self.last_event_index[b'A300']
 
             data = copy(self.get_ring_buffer_N(N = 400, pointer = from_point))
+
             target_pressure = scipy.stats.mode(data[:,0])[0][0]
             value = target_pressure*self.coeff_target_pressure
         else:
@@ -1399,26 +1394,12 @@ class Handler(object):
         self.io_push(io_dict = {'sample_pressure':value})
 
     def push_depressurize_event(self):
+        """
+        function that aggregates all information needed
+        """
         import numpy as np
-        #from icarus_SL import icarus_SL
-
         if len(self.depressurize_data)>0:
             data = self.depressurize_data[0]
-            # dic[b'fallTime_0'] = nan
-            # dic[b'pulseWidthDepressure_0'] = nan
-            # dic[b'tSwitchDepressure_0'] = nan
-            # dic[b'pDepre_0'] = nan
-            # dic[b'gradientDepressure_0'] = nan
-            # dic[b'tSwitchDepressureEst_0'] = nan
-            # dic[b'gradientDepressureEst_0'] = nan
-            # dic[b'fallTime_1'] = nan
-            # dic[b'pulseWidthDepressure_1'] = nan
-            # dic[b'tSwitchDepressure_1'] = nan
-            # dic[b'pDepre_1'] = nan
-            # dic[b'gradientDepressure_1'] = nan
-            # dic[b'depressurize_data'] = zeros((10,4000), dtype = 'int16')
-
-            #self.io_push(io_dict = {'table_pulse_width_depre':data[b'pulseWidthDepressure_0']})
             self.io_push(io_dict = {'table_time_to_switch_depre':data[b'tSwitchDepressure_0']})
             self.io_push(io_dict = {'table_fall_slope':data[b'fallTime_0']})
 
@@ -1550,16 +1531,23 @@ class Handler(object):
             self.warning_status = {b'slow_leak':nan}
         else:
             self.warning_status = {b'slow_leak':value}
-        #icarus_sl.inds.warnings = 0
-        #
 
+    def push_digital_state(self, value = None):
+        import scipy
+        from numpy import nanmedian, median, copy
 
-
-
-    def push_states(self):
-        #from icarus_SL import icarus_SL
-        from time import time
-        #icarus_SL.inds.push_states = time()
+        if value is None:
+            beforeIdx = int(self.depressure_before_time*self.daq_freq/1000.0)
+            from_point = self.last_event_index[b'A300']-3
+            to_point = self.last_event_index[b'A300']
+            data = copy(self.get_ring_buffer_N(N = 3, pointer = from_point))
+            value = data[-1,9]
+        else:
+            value = value
+        if self.client is None:
+            pass
+        else:
+            self.client.set_dio(value)
 
     def push_new_period(self, value):
         #from icarus_SL import icarus_SL
@@ -1835,6 +1823,14 @@ class Handler(object):
         except:
             error(traceback.format_exc())
             flag, idx_min, grad_min = False, 0, 0
+            import numpy as np
+            print(f'{data.shape}')
+            print(f'{self.packet_pointer},{self.g_packet_pointer},{self.daq_packet_length}')
+            packet_pointer = self.packet_pointer
+            g_packet_pointer = self.g_packet_pointer
+            new_packet = np.copy(self.get_daq_packet_ij(packet_pointer,packet_pointer+1)[:self.daq_packet_length+1,:])
+            print(new_packet.shape)
+
         return flag, idx_min, grad_min
 
     def analyse_depressure_event(self, data , channel = 0, test = False, plot = False, precision = True, freq = 4000):
