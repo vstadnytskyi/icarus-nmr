@@ -2,6 +2,7 @@
 ./_images/data-acquisition-loop.png
 ./_images/device_level_diagram.png
 ./_images/overview_block_diagram.png
+./_images/overview_instrument_schematics.jpg
 ./_modules/icarus_nmr/analysis.html
 ./_modules/icarus_nmr/device_daq.html
 ./_modules/icarus_nmr/driver_mock.html

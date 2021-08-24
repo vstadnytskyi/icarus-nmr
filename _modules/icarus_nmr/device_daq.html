@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>icarus_nmr.device_daq &mdash; Icarus Pressure Jump for NMR 0.post50+gd9fa674 documentation</title>
+  <title>icarus_nmr.device_daq &mdash; Icarus Pressure Jump for NMR 0.1.0 documentation</title>
   
 
   
@@ -68,7 +68,7 @@
             
             
               <div class="version">
-                0.post50+gd9fa674
+                0.1.0
               </div>
             
           
@@ -95,7 +95,7 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Introduction and Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../driver.html">Driver Level</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../mock-driver.html">Mock Driver Level</a></li>
@@ -531,6 +531,26 @@
             <span class="n">value</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">set_digital</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">io_push</span><span class="p">({</span><span class="s1">&#39;dio&#39;</span><span class="p">:</span><span class="n">value</span><span class="p">})</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;set DIO inside device daq library&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DI4108_DL.set_outside_DIO"><a class="viewcode-back" href="../../device.html#icarus_nmr.device_daq.DI4108_DL.set_outside_DIO">[docs]</a>    <span class="k">def</span> <span class="nf">set_outside_DIO</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s1">&#39;00000000&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        sets digital input/output state</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        value :: string</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; device.DIO = 127</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span><span class="nb">str</span><span class="p">):</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">set_digital</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;set DIO inside device daq library&#39;</span><span class="p">)</span></div>
 
 

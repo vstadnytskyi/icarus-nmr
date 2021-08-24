@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Device Level &mdash; Icarus Pressure Jump for NMR 0.post50+gd9fa674 documentation</title>
+  <title>Device Level &mdash; Icarus Pressure Jump for NMR 0.1.0 documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                0.post50+gd9fa674
+                0.1.0
               </div>
             
           
@@ -97,7 +97,7 @@
             
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Introduction and Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="driver.html">Driver Level</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mock-driver.html">Mock Driver Level</a></li>
@@ -806,6 +806,23 @@ It is run in a separate thread(See main priogram)</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="icarus_nmr.device_daq.DI4108_DL.set_DIO">
 <span class="sig-name descname"><span class="pre">set_DIO</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'00000000'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/device_daq.html#DI4108_DL.set_DIO"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.device_daq.DI4108_DL.set_DIO" title="Permalink to this definition">¶</a></dt>
+<dd><p>sets digital input/output state</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>value :: string</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">device</span><span class="o">.</span><span class="n">DIO</span> <span class="o">=</span> <span class="mi">127</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="icarus_nmr.device_daq.DI4108_DL.set_outside_DIO">
+<span class="sig-name descname"><span class="pre">set_outside_DIO</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'00000000'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/device_daq.html#DI4108_DL.set_outside_DIO"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.device_daq.DI4108_DL.set_outside_DIO" title="Permalink to this definition">¶</a></dt>
 <dd><p>sets digital input/output state</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
