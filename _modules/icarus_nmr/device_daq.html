@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>icarus_nmr.device_daq &mdash; Icarus Pressure Jump for NMR 0.1.0.post6+g986568e documentation</title>
+  <title>icarus_nmr.device_daq &mdash; Icarus Pressure Jump for NMR 0.1.0.post7+g9e54514 documentation</title>
   
 
   
@@ -68,7 +68,7 @@
             
             
               <div class="version">
-                0.1.0.post6+g986568e
+                0.1.0.post7+g9e54514
               </div>
             
           
@@ -273,6 +273,9 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">io_push_queue</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">io_put_queue</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">curr_dio</span> <span class="o">=</span> <span class="mi">127</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user_set_dio</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">curr_dio</span>
 
     <span class="k">def</span> <span class="nf">first_time_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pr_AI_channels</span> <span class="o">=</span> <span class="mi">8</span>
