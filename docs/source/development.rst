@@ -17,3 +17,22 @@ Fork and Clone GitHub Repository
 -----------------------------------
 
 Second, you need to `fork <https://docs.github.com/en/get-started/quickstart/fork-a-repo>`_ the repository and later `clone <https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository-from-github/cloning-a-repository>`_ it to your local drive.
+
+Installing local repository
+-----------------------------------
+
+Now, after cloning the repository, we can install it with PIP. Change directory to the folder with the repository and run.
+
+.. code-block:: python
+
+  pip3 install -e .
+
+This install the local repository as a library in Python. Next, start python, import library and check version.
+
+.. code-block:: python
+
+  python3
+  import icarus_nmr #or import icarus_nmr as inmr
+  icarus_nmr.__version__ #inmr.__version__
+
+  >> '0.1.0.post2.dev0+g5214016'
