@@ -31,10 +31,14 @@ import sys
 import traceback
 
 import sys
-if sys.version_info[0] ==3:
-    from time import time,sleep,clock
+if sys.version_info[0] == 3:
+    if sys.version_info[1] <= 7:
+        from time import gmtime, strftime, time, sleep, clock
+    else:
+        from time import gmtime, strftime, time, sleep
+        from time import perf_counter as clock
 else:
-    from time import time,sleep,perf_counter
+    from time import gmtime, strftime, time, sleep, clock
 
 from logging import debug,info,warn,error
 from numpy import nan, std, inf, nanmean, nanstd, nonzero, zeros, nanargmax, nanargmin, nanmin, nanmax, asarray

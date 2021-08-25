@@ -2,11 +2,12 @@
 import sys
 if sys.version_info[0] == 3:
     if sys.version_info[1] <= 7:
-        from time import gmtime, strftime, time, sleep
+        from time import gmtime, strftime, time, sleep, clock
     else:
-        from time import gmtime, strftime, clock, sleep
+        from time import gmtime, strftime, time, sleep
+        from time import perf_counter as clock
 else:
-    from time import gmtime, strftime, time, sleep
+    from time import gmtime, strftime, time, sleep, clock
 
 from numpy import nan
 

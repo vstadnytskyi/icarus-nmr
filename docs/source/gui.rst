@@ -1,6 +1,6 @@
-==================
-Application Level
-==================
+==========================
+Graphical User Interface
+==========================
 
 .. image:: ../files/application-level-gui.png
   :width: 600

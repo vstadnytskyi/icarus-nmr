@@ -362,9 +362,6 @@ class Handler():
         be generated properly.
         important parameters: trigger: 0 manual, 1 -internal; 2 - external
         """
-        from time import clock, time
-
-
         #preparation of the while true loop
         self.set_DIO(self.object.ctrls.DIO_default)
         sleep(0.3)

@@ -18,7 +18,7 @@ Icarus Pressure Jump for NMR Documentation
    server-caproto
    event-analyser
    logging
-   application-level
+   gui
    data-analysis
    development
    release-history
