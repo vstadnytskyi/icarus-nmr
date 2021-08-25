@@ -17,3 +17,210 @@ Fork and Clone GitHub Repository
 -----------------------------------
 
 Second, you need to `fork <https://docs.github.com/en/get-started/quickstart/fork-a-repo>`_ the repository and later `clone <https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository-from-github/cloning-a-repository>`_ it to your local drive.
+
+Installing local repository
+-----------------------------------
+
+Now, after cloning the repository, we can install it with PIP. Change directory to the folder with the repository and run.
+
+.. code-block:: python
+
+  pip3 install -e .
+
+This install the local repository as a library in Python. Next, start python, import library and check version.
+
+.. code-block:: python
+
+  python3
+  import icarus_nmr #or import icarus_nmr as inmr
+  icarus_nmr.__version__ #inmr.__version__
+
+  >> '0.1.0.post2.dev0+g5214016'
+
+
+Launch Software
+-----------------------------------
+
+Before getting into detailed operation of the software, we can launch all processes. To do so, we need to open terminal window and open four different tabs. Change directory in each tab to the location of the code and go two directories dipper.
+
+.. code-block:: shell
+
+  cd /location_of_the_repository/icarus_nmr/scripts
+
+Now in each tab run the following commands in this sequence.
+
+first tab, command:
+
+.. code-block:: shell
+
+  user13:scripts user-13$ python3 device_handler.py --list-pvs
+
+You get something like this
+
+.. code-block:: shell
+
+  /Users/user-13/All-Projects-on-user/LaserLab/Software/libraries/auxiliary/ubcs_auxiliary/threading.py:4: DeprecationWarning: The 'ubcs_auxiliary.threading' class was renamed to 'ubcs_auxiliary.multithreading' to make room for 'multithreading' and 'multiprocessing'
+    warnings.warn("The 'ubcs_auxiliary.threading' class was renamed to 'ubcs_auxiliary.multithreading' to make room for 'multithreading' and 'multiprocessing'", DeprecationWarning )
+  /Users/user-13/All-Projects-on-user/LaserLab/Software/libraries/icarus-nmr/icarus_nmr/tests/test_data/mock_driver traces.py
+  set DIO inside device daq library
+  ['device_handler.py', '--list-pvs']
+  {'prefix': 'device_mock:', 'macros': {}}
+  {'module_name': 'caproto.asyncio.server', 'log_pv_names': True, 'interfaces': ['0.0.0.0']}
+  [I 14:32:19.159       server:  133] Asyncio server starting up...
+  INFO:caproto.ctx:Asyncio server starting up...
+  [I 14:32:19.164       server:  146] Listening on 0.0.0.0:5064
+  INFO:caproto.ctx:Listening on 0.0.0.0:5064
+  [I 14:32:19.165       server:  205] Server startup complete.
+  INFO:caproto.ctx:Server startup complete.
+  [I 14:32:19.165       server:  207] PVs available:
+    device_mock:freq
+    device_mock:dio
+    device_mock:queue_length
+    device_mock:data
+    device_mock:peek_data
+    device_mock:packet_shape
+    device_mock:LIST
+  INFO:caproto.ctx:PVs available:
+  device_mock:freq
+  device_mock:dio
+  device_mock:queue_length
+  device_mock:data
+  device_mock:peek_data
+  device_mock:packet_shape
+  device_mock:LIST
+
+seconf tab, command:
+
+.. code-block:: shell
+
+  user:scripts user-13$ python3 dio_handler.py --list-pvs
+
+You get something like this
+
+.. code-block:: shell
+
+  [I 14:31:53.698       server:  133] Asyncio server starting up...
+  [I 14:31:53.698       server:  146] Listening on 0.0.0.0:50878
+  [I 14:31:53.699       server:  205] Server startup complete.
+  [I 14:31:53.699       server:  207] PVs available:
+      digital_handler_mock:dio
+      digital_handler_mock:bit0
+      digital_handler_mock:bit0_enable
+      digital_handler_mock:bit1
+      digital_handler_mock:bit1_enable
+      digital_handler_mock:bit2
+      digital_handler_mock:bit2_enable
+      digital_handler_mock:bit3
+      digital_handler_mock:bit3_enable
+      digital_handler_mock:bit4
+      digital_handler_mock:bit4_enable
+      digital_handler_mock:bit5
+      digital_handler_mock:bit5_enable
+      digital_handler_mock:bit6
+      digital_handler_mock:bit6_enable
+      digital_handler_mock:shutdown_state
+      digital_handler_mock:operating_mode
+
+third tab, command:
+
+.. code-block:: shell
+
+  user13:scripts user-13$ python3 event_handler.py --list-pvs
+
+You get something like this
+
+.. code-block:: shell
+
+  /Users/user-13/All-Projects-on-user/LaserLab/Software/libraries/auxiliary/ubcs_auxiliary/threading.py:4: DeprecationWarning: The 'ubcs_auxiliary.threading' class was renamed to 'ubcs_auxiliary.multithreading' to make room for 'multithreading' and 'multiprocessing'
+    warnings.warn("The 'ubcs_auxiliary.threading' class was renamed to 'ubcs_auxiliary.multithreading' to make room for 'multithreading' and 'multiprocessing'", DeprecationWarning )
+  [I 14:33:07.302       server:  133] Asyncio server starting up...
+  INFO:caproto.ctx:Asyncio server starting up...
+  [I 14:33:07.303       server:  146] Listening on 0.0.0.0:60959
+  INFO:caproto.ctx:Listening on 0.0.0.0:60959
+  [I 14:33:07.304       server:  205] Server startup complete.
+  INFO:caproto.ctx:Server startup complete.
+  [I 14:33:07.304       server:  207] PVs available:
+      event_handler_mock:image_logging
+      event_handler_mock:image_pre
+      event_handler_mock:image_depre
+      event_handler_mock:image_period
+      event_handler_mock:t1
+      event_handler_mock:dt
+      event_handler_mock:server_name
+      event_handler_mock:sample_pressure
+      event_handler_mock:target_pressure
+      event_handler_mock:pump_counter
+      event_handler_mock:valves_per_pump_current
+      event_handler_mock:valves_per_pump_total
+      event_handler_mock:ctrl_operating_mode
+      event_handler_mock:ctrl_shutdown_state
+      event_handler_mock:ctrl_pump_state
+      event_handler_mock:ctrl_disable_pump_state
+      event_handler_mock:ctrl_pre_state
+      event_handler_mock:ctrl_depre_state
+      event_handler_mock:table_pressure_after_pre
+      event_handler_mock:table_pressure_before_depre
+      event_handler_mock:table_time_to_switch_pre
+      event_handler_mock:table_time_to_switch_depre
+      event_handler_mock:table_rise_slope
+      event_handler_mock:table_fall_slope
+      event_handler_mock:table_pulse_width_pre
+      event_handler_mock:table_pulse_width_depre
+      event_handler_mock:table_delay
+      event_handler_mock:table_period
+      event_handler_mock:table_valve_counter_pre
+      event_handler_mock:table_valve_counter_depre
+      event_handler_mock:warning_text
+  INFO:caproto.ctx:PVs available:
+  event_handler_mock:image_logging
+  event_handler_mock:image_pre
+  event_handler_mock:image_depre
+  event_handler_mock:image_period
+  event_handler_mock:t1
+  event_handler_mock:dt
+  event_handler_mock:server_name
+  event_handler_mock:sample_pressure
+  event_handler_mock:target_pressure
+  event_handler_mock:pump_counter
+  event_handler_mock:valves_per_pump_current
+  event_handler_mock:valves_per_pump_total
+  event_handler_mock:ctrl_operating_mode
+  event_handler_mock:ctrl_shutdown_state
+  event_handler_mock:ctrl_pump_state
+  event_handler_mock:ctrl_disable_pump_state
+  event_handler_mock:ctrl_pre_state
+  event_handler_mock:ctrl_depre_state
+  event_handler_mock:table_pressure_after_pre
+  event_handler_mock:table_pressure_before_depre
+  event_handler_mock:table_time_to_switch_pre
+  event_handler_mock:table_time_to_switch_depre
+  event_handler_mock:table_rise_slope
+  event_handler_mock:table_fall_slope
+  event_handler_mock:table_pulse_width_pre
+  event_handler_mock:table_pulse_width_depre
+  event_handler_mock:table_delay
+  event_handler_mock:table_period
+  event_handler_mock:table_valve_counter_pre
+  event_handler_mock:table_valve_counter_depre
+  event_handler_mock:warning_text
+
+fourth tab, command:
+
+.. code-block:: shell
+
+    user13:scripts user-13$ python3 gui_main.py
+
+You get something like this
+
+.. code-block:: python
+
+  **** The executable "caRepeater" couldn't be located
+  **** because of errno = "No such file or directory".
+  **** You may need to modify your PATH environment variable.
+  **** Unable to start "CA Repeater" process.
+  CA.Client.Exception...............................................
+      Warning: "Identical process variable names on multiple servers"
+      Context: "Channel: "digital_handler_mock:bit0_enable", Connecting to: 10.177.115.77:50878, Ignored: user13.niddk.nih.gov:50878"
+      Source File: ../cac.cpp line 1320
+      Current Time: Wed Aug 25 2021 14:33:45.382095597
+  ..................................................................

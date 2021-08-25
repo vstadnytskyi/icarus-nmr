@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Development &mdash; Icarus Pressure Jump for NMR 0.1.0.post2+g5214016 documentation</title>
+  <title>Development &mdash; Icarus Pressure Jump for NMR 0.1.0.post5+ga99b897 documentation</title>
   
 
   
@@ -45,8 +45,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Release History" href="release-history.html" />
-    <link rel="prev" title="Data Analysis" href="data-analysis.html" /> 
+    <link rel="next" title="Introduction and Overview" href="overview.html" />
+    <link rel="prev" title="Installation" href="installation.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                0.1.0.post2+g5214016
+                0.1.0.post5+ga99b897
               </div>
             
           
@@ -97,7 +97,15 @@
             
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Development</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#create-github-account">Create GitHub Account</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fork-and-clone-github-repository">Fork and Clone GitHub Repository</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installing-local-repository">Installing local repository</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#launch-software">Launch Software</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Introduction and Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gui.html">Graphical User Interface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="driver.html">Driver Level</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mock-driver.html">Mock Driver Level</a></li>
@@ -105,13 +113,7 @@
 <li class="toctree-l1"><a class="reference internal" href="server-caproto.html">Channel Access Caproto Server</a></li>
 <li class="toctree-l1"><a class="reference internal" href="event-analyser.html">Event Analyser</a></li>
 <li class="toctree-l1"><a class="reference internal" href="logging.html">Logging</a></li>
-<li class="toctree-l1"><a class="reference internal" href="gui.html">Graphical User Interface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data-analysis.html">Data Analysis</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Development</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#create-github-account">Create GitHub Account</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#fork-and-clone-github-repository">Fork and Clone GitHub Repository</a></li>
-</ul>
-</li>
 <li class="toctree-l1"><a class="reference internal" href="release-history.html">Release History</a></li>
 <li class="toctree-l1"><a class="reference internal" href="min_versions.html">Minimum Version of Python and NumPy</a></li>
 </ul>
@@ -194,6 +196,189 @@
 <h2>Fork and Clone GitHub Repository<a class="headerlink" href="#fork-and-clone-github-repository" title="Permalink to this headline">¶</a></h2>
 <p>Second, you need to <a class="reference external" href="https://docs.github.com/en/get-started/quickstart/fork-a-repo">fork</a> the repository and later <a class="reference external" href="https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository-from-github/cloning-a-repository">clone</a> it to your local drive.</p>
 </div>
+<div class="section" id="installing-local-repository">
+<h2>Installing local repository<a class="headerlink" href="#installing-local-repository" title="Permalink to this headline">¶</a></h2>
+<p>Now, after cloning the repository, we can install it with PIP. Change directory to the folder with the repository and run.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pip3</span> <span class="n">install</span> <span class="o">-</span><span class="n">e</span> <span class="o">.</span>
+</pre></div>
+</div>
+<p>This install the local repository as a library in Python. Next, start python, import library and check version.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">python3</span>
+<span class="kn">import</span> <span class="nn">icarus_nmr</span> <span class="c1">#or import icarus_nmr as inmr</span>
+<span class="n">icarus_nmr</span><span class="o">.</span><span class="n">__version__</span> <span class="c1">#inmr.__version__</span>
+
+<span class="o">&gt;&gt;</span> <span class="s1">&#39;0.1.0.post2.dev0+g5214016&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="launch-software">
+<h2>Launch Software<a class="headerlink" href="#launch-software" title="Permalink to this headline">¶</a></h2>
+<p>Before getting into detailed operation of the software, we can launch all processes. To do so, we need to open terminal window and open four different tabs. Change directory in each tab to the location of the code and go two directories dipper.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> /location_of_the_repository/icarus_nmr/scripts
+</pre></div>
+</div>
+<p>Now in each tab run the following commands in this sequence.</p>
+<p>first tab, command:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>user13:scripts user-13$ python3 device_handler.py --list-pvs
+</pre></div>
+</div>
+<p>You get something like this</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>/Users/user-13/All-Projects-on-user/LaserLab/Software/libraries/auxiliary/ubcs_auxiliary/threading.py:4: DeprecationWarning: The <span class="s1">&#39;ubcs_auxiliary.threading&#39;</span> class was renamed to <span class="s1">&#39;ubcs_auxiliary.multithreading&#39;</span> to make room <span class="k">for</span> <span class="s1">&#39;multithreading&#39;</span> and <span class="s1">&#39;multiprocessing&#39;</span>
+  warnings.warn<span class="o">(</span><span class="s2">&quot;The &#39;ubcs_auxiliary.threading&#39; class was renamed to &#39;ubcs_auxiliary.multithreading&#39; to make room for &#39;multithreading&#39; and &#39;multiprocessing&#39;&quot;</span>, DeprecationWarning <span class="o">)</span>
+/Users/user-13/All-Projects-on-user/LaserLab/Software/libraries/icarus-nmr/icarus_nmr/tests/test_data/mock_driver traces.py
+<span class="nb">set</span> DIO inside device daq library
+<span class="o">[</span><span class="s1">&#39;device_handler.py&#39;</span>, <span class="s1">&#39;--list-pvs&#39;</span><span class="o">]</span>
+<span class="o">{</span><span class="s1">&#39;prefix&#39;</span>: <span class="s1">&#39;device_mock:&#39;</span>, <span class="s1">&#39;macros&#39;</span>: <span class="o">{}}</span>
+<span class="o">{</span><span class="s1">&#39;module_name&#39;</span>: <span class="s1">&#39;caproto.asyncio.server&#39;</span>, <span class="s1">&#39;log_pv_names&#39;</span>: True, <span class="s1">&#39;interfaces&#39;</span>: <span class="o">[</span><span class="s1">&#39;0.0.0.0&#39;</span><span class="o">]}</span>
+<span class="o">[</span>I <span class="m">14</span>:32:19.159       server:  <span class="m">133</span><span class="o">]</span> Asyncio server starting up...
+INFO:caproto.ctx:Asyncio server starting up...
+<span class="o">[</span>I <span class="m">14</span>:32:19.164       server:  <span class="m">146</span><span class="o">]</span> Listening on <span class="m">0</span>.0.0.0:5064
+INFO:caproto.ctx:Listening on <span class="m">0</span>.0.0.0:5064
+<span class="o">[</span>I <span class="m">14</span>:32:19.165       server:  <span class="m">205</span><span class="o">]</span> Server startup complete.
+INFO:caproto.ctx:Server startup complete.
+<span class="o">[</span>I <span class="m">14</span>:32:19.165       server:  <span class="m">207</span><span class="o">]</span> PVs available:
+  device_mock:freq
+  device_mock:dio
+  device_mock:queue_length
+  device_mock:data
+  device_mock:peek_data
+  device_mock:packet_shape
+  device_mock:LIST
+INFO:caproto.ctx:PVs available:
+device_mock:freq
+device_mock:dio
+device_mock:queue_length
+device_mock:data
+device_mock:peek_data
+device_mock:packet_shape
+device_mock:LIST
+</pre></div>
+</div>
+<p>seconf tab, command:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>user:scripts user-13$ python3 dio_handler.py --list-pvs
+</pre></div>
+</div>
+<p>You get something like this</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="o">[</span>I <span class="m">14</span>:31:53.698       server:  <span class="m">133</span><span class="o">]</span> Asyncio server starting up...
+<span class="o">[</span>I <span class="m">14</span>:31:53.698       server:  <span class="m">146</span><span class="o">]</span> Listening on <span class="m">0</span>.0.0.0:50878
+<span class="o">[</span>I <span class="m">14</span>:31:53.699       server:  <span class="m">205</span><span class="o">]</span> Server startup complete.
+<span class="o">[</span>I <span class="m">14</span>:31:53.699       server:  <span class="m">207</span><span class="o">]</span> PVs available:
+    digital_handler_mock:dio
+    digital_handler_mock:bit0
+    digital_handler_mock:bit0_enable
+    digital_handler_mock:bit1
+    digital_handler_mock:bit1_enable
+    digital_handler_mock:bit2
+    digital_handler_mock:bit2_enable
+    digital_handler_mock:bit3
+    digital_handler_mock:bit3_enable
+    digital_handler_mock:bit4
+    digital_handler_mock:bit4_enable
+    digital_handler_mock:bit5
+    digital_handler_mock:bit5_enable
+    digital_handler_mock:bit6
+    digital_handler_mock:bit6_enable
+    digital_handler_mock:shutdown_state
+    digital_handler_mock:operating_mode
+</pre></div>
+</div>
+<p>third tab, command:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>user13:scripts user-13$ python3 event_handler.py --list-pvs
+</pre></div>
+</div>
+<p>You get something like this</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>/Users/user-13/All-Projects-on-user/LaserLab/Software/libraries/auxiliary/ubcs_auxiliary/threading.py:4: DeprecationWarning: The <span class="s1">&#39;ubcs_auxiliary.threading&#39;</span> class was renamed to <span class="s1">&#39;ubcs_auxiliary.multithreading&#39;</span> to make room <span class="k">for</span> <span class="s1">&#39;multithreading&#39;</span> and <span class="s1">&#39;multiprocessing&#39;</span>
+  warnings.warn<span class="o">(</span><span class="s2">&quot;The &#39;ubcs_auxiliary.threading&#39; class was renamed to &#39;ubcs_auxiliary.multithreading&#39; to make room for &#39;multithreading&#39; and &#39;multiprocessing&#39;&quot;</span>, DeprecationWarning <span class="o">)</span>
+<span class="o">[</span>I <span class="m">14</span>:33:07.302       server:  <span class="m">133</span><span class="o">]</span> Asyncio server starting up...
+INFO:caproto.ctx:Asyncio server starting up...
+<span class="o">[</span>I <span class="m">14</span>:33:07.303       server:  <span class="m">146</span><span class="o">]</span> Listening on <span class="m">0</span>.0.0.0:60959
+INFO:caproto.ctx:Listening on <span class="m">0</span>.0.0.0:60959
+<span class="o">[</span>I <span class="m">14</span>:33:07.304       server:  <span class="m">205</span><span class="o">]</span> Server startup complete.
+INFO:caproto.ctx:Server startup complete.
+<span class="o">[</span>I <span class="m">14</span>:33:07.304       server:  <span class="m">207</span><span class="o">]</span> PVs available:
+    event_handler_mock:image_logging
+    event_handler_mock:image_pre
+    event_handler_mock:image_depre
+    event_handler_mock:image_period
+    event_handler_mock:t1
+    event_handler_mock:dt
+    event_handler_mock:server_name
+    event_handler_mock:sample_pressure
+    event_handler_mock:target_pressure
+    event_handler_mock:pump_counter
+    event_handler_mock:valves_per_pump_current
+    event_handler_mock:valves_per_pump_total
+    event_handler_mock:ctrl_operating_mode
+    event_handler_mock:ctrl_shutdown_state
+    event_handler_mock:ctrl_pump_state
+    event_handler_mock:ctrl_disable_pump_state
+    event_handler_mock:ctrl_pre_state
+    event_handler_mock:ctrl_depre_state
+    event_handler_mock:table_pressure_after_pre
+    event_handler_mock:table_pressure_before_depre
+    event_handler_mock:table_time_to_switch_pre
+    event_handler_mock:table_time_to_switch_depre
+    event_handler_mock:table_rise_slope
+    event_handler_mock:table_fall_slope
+    event_handler_mock:table_pulse_width_pre
+    event_handler_mock:table_pulse_width_depre
+    event_handler_mock:table_delay
+    event_handler_mock:table_period
+    event_handler_mock:table_valve_counter_pre
+    event_handler_mock:table_valve_counter_depre
+    event_handler_mock:warning_text
+INFO:caproto.ctx:PVs available:
+event_handler_mock:image_logging
+event_handler_mock:image_pre
+event_handler_mock:image_depre
+event_handler_mock:image_period
+event_handler_mock:t1
+event_handler_mock:dt
+event_handler_mock:server_name
+event_handler_mock:sample_pressure
+event_handler_mock:target_pressure
+event_handler_mock:pump_counter
+event_handler_mock:valves_per_pump_current
+event_handler_mock:valves_per_pump_total
+event_handler_mock:ctrl_operating_mode
+event_handler_mock:ctrl_shutdown_state
+event_handler_mock:ctrl_pump_state
+event_handler_mock:ctrl_disable_pump_state
+event_handler_mock:ctrl_pre_state
+event_handler_mock:ctrl_depre_state
+event_handler_mock:table_pressure_after_pre
+event_handler_mock:table_pressure_before_depre
+event_handler_mock:table_time_to_switch_pre
+event_handler_mock:table_time_to_switch_depre
+event_handler_mock:table_rise_slope
+event_handler_mock:table_fall_slope
+event_handler_mock:table_pulse_width_pre
+event_handler_mock:table_pulse_width_depre
+event_handler_mock:table_delay
+event_handler_mock:table_period
+event_handler_mock:table_valve_counter_pre
+event_handler_mock:table_valve_counter_depre
+event_handler_mock:warning_text
+</pre></div>
+</div>
+<p>fourth tab, command:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>user13:scripts user-13$ python3 gui_main.py
+</pre></div>
+</div>
+<p>You get something like this</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">****</span> <span class="n">The</span> <span class="n">executable</span> <span class="s2">&quot;caRepeater&quot;</span> <span class="n">couldn</span><span class="s1">&#39;t be located</span>
+<span class="o">****</span> <span class="n">because</span> <span class="n">of</span> <span class="n">errno</span> <span class="o">=</span> <span class="s2">&quot;No such file or directory&quot;</span><span class="o">.</span>
+<span class="o">****</span> <span class="n">You</span> <span class="n">may</span> <span class="n">need</span> <span class="n">to</span> <span class="n">modify</span> <span class="n">your</span> <span class="n">PATH</span> <span class="n">environment</span> <span class="n">variable</span><span class="o">.</span>
+<span class="o">****</span> <span class="n">Unable</span> <span class="n">to</span> <span class="n">start</span> <span class="s2">&quot;CA Repeater&quot;</span> <span class="n">process</span><span class="o">.</span>
+<span class="n">CA</span><span class="o">.</span><span class="n">Client</span><span class="o">.</span><span class="n">Exception</span><span class="o">...............................................</span>
+    <span class="ne">Warning</span><span class="p">:</span> <span class="s2">&quot;Identical process variable names on multiple servers&quot;</span>
+    <span class="n">Context</span><span class="p">:</span> <span class="s2">&quot;Channel: &quot;</span><span class="n">digital_handler_mock</span><span class="p">:</span><span class="n">bit0_enable</span><span class="s2">&quot;, Connecting to: 10.177.115.77:50878, Ignored: user13.niddk.nih.gov:50878&quot;</span>
+    <span class="n">Source</span> <span class="n">File</span><span class="p">:</span> <span class="o">../</span><span class="n">cac</span><span class="o">.</span><span class="n">cpp</span> <span class="n">line</span> <span class="mi">1320</span>
+    <span class="n">Current</span> <span class="n">Time</span><span class="p">:</span> <span class="n">Wed</span> <span class="n">Aug</span> <span class="mi">25</span> <span class="mi">2021</span> <span class="mi">14</span><span class="p">:</span><span class="mi">33</span><span class="p">:</span><span class="mf">45.382095597</span>
+<span class="o">..................................................................</span>
+</pre></div>
+</div>
+</div>
 </div>
 
 
@@ -202,8 +387,8 @@
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="release-history.html" class="btn btn-neutral float-right" title="Release History" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="data-analysis.html" class="btn btn-neutral float-left" title="Data Analysis" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="overview.html" class="btn btn-neutral float-right" title="Introduction and Overview" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>
