@@ -1,4 +1,4 @@
-#from icarus_SL import icarus_SL#!/bin/env python
+#!/bin/env python
 """
 The Event Detector LL for the High Pressure Apparatus
 author: Valentyn Stadnytskyi
@@ -881,6 +881,7 @@ class Handler(object):
         freq = self.daq.freq
         units = self.userUnits[self.selectedPressureUnits]
 
+        # stepping through events and analysing them one by one.
         for dic in self.events_list:
             temp_dic = {}
             array[0] = dic[b'index']
@@ -888,7 +889,25 @@ class Handler(object):
             array[2] = dic[b'evt_code']
             self.event_buffer.append(data = array)
 
-            if dic[b'channel'] == 'D1' and dic[b'value'] == 'low': #Depressurize event D1 goes low
+            if dic[b'channel'] == 'D0' and dic[b'value'] == 'low':
+
+                self.counters_global[b'pump'] += 1
+                self.counters_current[b'pump'] += 1
+                self.last_event_index[b'D0'] = dic[b'global_index']
+                #this event is not used for anything but still gets identified
+                #to keep the code more transparent
+
+
+            elif dic[b'channel'] == 'D0' and dic[b'value'] == 'high':
+                self.last_event_index[b'D1'] = dic[b'global_index']
+
+                self.last_event_width[b'pump'] =  (dic[b'global_index'] -self.last_event_index[b'D0'])/self.daq.freq
+
+                #this event is not used for anything but still gets identified
+                #to keep the code more transparent
+
+
+            elif dic[b'channel'] == 'D1' and dic[b'value'] == 'low': #Depressurize event D1 goes low
                 self.counters_global[b'depressurize'] += 1
                 self.counters_current[b'depressurize'] += 1
                 self.last_event_index[b'D10'] = dic[b'global_index']
@@ -1149,37 +1168,20 @@ class Handler(object):
                 self.set_logging_state(value = 0)  # 10 stands for False but created by pulling the pin high
 
 
-            elif dic[b'channel'] == 'D0' and dic[b'value'] == 'low':
-
-                self.counters_global[b'pump'] += 1
-                self.counters_current[b'pump'] += 1
-                self.last_event_index[b'D0'] = dic[b'global_index']
-                #this event is not used for anything but still gets identified
-                #to keep the code more transparent
-                pass
-
-            elif dic[b'channel'] == 'D0' and dic[b'value'] == 'high':
-                self.last_event_index[b'D1'] = dic[b'global_index']
-
-                self.last_event_width[b'pump'] =  (dic[b'global_index'] -self.last_event_index[b'D0'])/self.daq.freq
-
-                #this event is not used for anything but still gets identified
-                #to keep the code more transparent
-                pass
             elif dic[b'channel'] == 'D5' and dic[b'value'] == 'low':
                 self.counters_global[b'D5'] += 1
                 self.counters_current[b'D5'] += 1
                 self.last_event_index[b'D50'] = dic[b'global_index']
                 #this event is not used for anything but still gets identified
                 #to keep the code more transparent
-                pass
+
             elif dic[b'channel'] == 'D5' and dic[b'value'] == 'high':
                 self.last_event_index[b'D51'] = dic[b'global_index']
                 self.last_event_width[b'D5'] =  (dic[b'global_index'] -self.last_event_index[b'D50'])/self.daq.freq
 
                 #this event is not used for anything but still gets identified
                 #to keep the code more transparent
-                pass
+
             elif dic[b'channel'] == 'D6' and dic[b'value'] == 'low':
                 self.counters_global[b'D6'] += 1
                 self.counters_current[b'D6'] += 1
@@ -1238,6 +1240,7 @@ class Handler(object):
                 self.counters_global[b'period'] += 1
                 self.counters_current[b'period'] += 1
                 temp_dic[b'period'] = self.last_event_width[b'period']
+                self.period_event[b'period'] = self.last_event_width[b'period']
                 self.push_new_period(value = self.period_event)
 
             elif dic[b'channel'] == 'periodic_update':
@@ -1317,6 +1320,8 @@ class Handler(object):
 
         self.update_counters_for_persistent_property() #makes this code competable with Friedrich's persistent_property module that doesn't support dictionaries
         self.events_list = []
+
+
 
 
 
@@ -1408,7 +1413,7 @@ class Handler(object):
             data = self.depressurize_data[0]
             self.io_push(io_dict = {'table_time_to_switch_depre':data[b'tSwitchDepressure_0']})
             self.io_push(io_dict = {'table_fall_slope':data[b'fallTime_0']})
-
+            self.io_push(io_dict = {'table_valve_counter_depre':self.counters_global[b'depressurize']})
             def chart_one(x,y):
                 """
                 charting function that takes x and y
@@ -1476,6 +1481,7 @@ class Handler(object):
             #self.io_push(io_dict = {'table_pulse_width_depre':data[b'pulseWidthDepressure_0']})
             self.io_push(io_dict = {'table_time_to_switch_pre':data[b'tSwitchPressure_0']})
             self.io_push(io_dict = {'table_rise_slope':data[b'riseTime_0']})
+            self.io_push(io_dict = {'table_valve_counter_pre':self.counters_global[b'pressurize']})
 
             def chart_one(x,y):
                 """
@@ -1521,6 +1527,7 @@ class Handler(object):
             self.io_push(io_dict = {'image_pre':arr})
 
 
+
     def push_pump_event(self):
         #from icarus_SL import icarus_SL
         self.valve_per_pump_value = self.valve_per_pump(counters = self.counters_global, counters_current = self.counters_current)
@@ -1558,9 +1565,60 @@ class Handler(object):
             self.current_dio = value
 
     def push_new_period(self, value):
-        #from icarus_SL import icarus_SL
-        #icarus_SL.inds.period_event = value
-        pass
+        import numpy as np
+        data = value
+        # b'period': nan, b'delay': nan, b'pressurize_width': nan, b'depressurize_width': nan, b'pump_width': nan,
+        def chart_one(x,y):
+            """
+            charting function that takes x and y
+            """
+            xs_font = 10
+            s_font = 12
+            m_font = 16
+            l_font = 24
+            xl_font = 32
+
+            import io
+            from matplotlib.figure import Figure
+            from matplotlib import pyplot
+            from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg
+            from scipy import stats
+            figure = Figure(figsize=(7.68,2.16),dpi=100)#figsize=(7,5))
+            axes = figure.add_subplot(1,1,1)
+
+            axes.plot(x,y, color = 'red' )
+
+            axes.set_title("Top subplot")
+            axes.set_xlabel("x (value)")
+            axes.set_ylabel("y (value)")
+            axes.tick_params(axis='y', which='both', labelleft=True, labelright=False)
+            axes.grid(True)
+            figure.tight_layout()
+            return figure
+
+        def figure_to_array(figure):
+            from io import BytesIO
+            from PIL.Image import open
+            from numpy import asarray
+            figure_buf = BytesIO()
+            figure.savefig(figure_buf, format='jpg')
+            figure_buf.seek(0)
+            image = asarray(open(figure_buf))
+            return image
+        x = data[b'data']['x']
+        y_min = data[b'data']['y_min']
+        y_max = data[b'data']['y_max']
+        y_mean = data[b'data']['y_mean']
+        arr = figure_to_array(chart_one(x=x,y=y_mean[6,:])).flatten()
+        dic = {}
+                # : nan, : nan, : nan, : nan, : nan,
+        dic['image_period'] = arr
+        dic['table_pulse_width_depre'] = data[b'depressurize_width']
+        dic['table_pulse_width_pre'] = data[b'pressurize_width']
+        dic['table_delay'] = data[b'delay']
+        dic['table_period'] = data[b'period']
+        dic[b'pump_width'] = 0
+        self.io_push(io_dict = dic)
 
 
 ##########################################################################################

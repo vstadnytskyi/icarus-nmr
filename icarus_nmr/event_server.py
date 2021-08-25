@@ -96,8 +96,8 @@ class Server(PVGroup):
     table_pulse_width_depre = pvproperty(value=1.0, precision = 3)
     table_delay = pvproperty(value=1.0, precision = 3)
     table_period = pvproperty(value=1.0, precision = 3)
-    table_valve_counter_pre = pvproperty(value=1.0, precision = 3)
-    table_valve_counter_depre = pvproperty(value=1.0, precision = 3)
+    table_valve_counter_pre = pvproperty(value=0, dtype = int)
+    table_valve_counter_depre = pvproperty(value=0, dtype = int)
 
     warning_text = pvproperty(value='this is a warning/faults field')
 
@@ -126,21 +126,40 @@ class Server(PVGroup):
                         await self.valves_per_pump_total.write(io_dict[key])
                 elif key == 'pump_counter':
                     await self.pump_counter.write(io_dict[key])
-                elif key == 'table_pulse_width_depre':
-                    await self.table_pulse_width_depre.write(io_dict[key])
+
+                #depressurization event
                 elif key == 'table_time_to_switch_depre':
                     await self.table_time_to_switch_depre.write(io_dict[key])
                 elif key == 'table_fall_slope':
                     await self.table_fall_slope.write(io_dict[key])
+                elif key == 'table_valve_counter_depre':
+                    await self.table_valve_counter_depre.write(io_dict[key])
                 elif key == 'image_depre':
                     await self.image_depre.write(io_dict[key])
 
+                #pressurization event
                 elif key == 'table_time_to_switch_pre':
                     await self.table_time_to_switch_pre.write(io_dict[key])
                 elif key == 'table_rise_slope':
                     await self.table_rise_slope.write(io_dict[key])
+                elif key == 'table_valve_counter_pre':
+                    await self.table_valve_counter_pre.write(io_dict[key])
                 elif key == 'image_pre':
                     await self.image_pre.write(io_dict[key])
+
+
+
+                #period event
+                elif key == 'image_period':
+                    await self.image_period.write(io_dict[key])
+                elif key == 'table_pulse_width_depre':
+                    await self.table_pulse_width_depre.write(io_dict[key])
+                elif key == 'table_pulse_width_pre':
+                    await self.table_pulse_width_pre.write(io_dict[key])
+                elif key == 'table_delay':
+                    await self.table_delay.write(io_dict[key])
+                elif key == 'table_period':
+                    await self.table_period.write(io_dict[key])
 
 
 if __name__ == '__main__':
