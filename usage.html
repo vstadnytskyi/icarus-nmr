@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Usage &mdash; Icarus Pressure Jump for NMR 0.1.0.post5+ga99b897 documentation</title>
+  <title>Usage &mdash; Icarus Pressure Jump for NMR 0.1.0.post6+g986568e documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                0.1.0.post5+ga99b897
+                0.1.0.post6+g986568e
               </div>
             
           
@@ -101,8 +101,8 @@
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Introduction and Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gui.html">Graphical User Interface</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Usage</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#data-analysis">Data Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#instrumentation">Instrumentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#data-analysis">Data Analysis</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="driver.html">Driver Level</a></li>
@@ -183,21 +183,6 @@
             
   <div class="section" id="usage">
 <h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h1>
-<p>Start by importing Icarus Pressure Jump for NMR.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">icarus_nmr</span>
-</pre></div>
-</div>
-<div class="section" id="data-analysis">
-<h2>Data Analysis<a class="headerlink" href="#data-analysis" title="Permalink to this headline">¶</a></h2>
-<p>The icarus analysis submodule allow easy and seamless access to the logged data from the pressure jump experiment. The instantiation of the Dataset class creates a link to a folder allowing easy access to the log file and traces.</p>
-<p>The Dataset class has
-log_header = None
-log_data = None
-log_length = 0
-description = ‘’
-trace_length
-trace_lists</p>
-</div>
 <div class="section" id="instrumentation">
 <h2>Instrumentation<a class="headerlink" href="#instrumentation" title="Permalink to this headline">¶</a></h2>
 <p>The library consists of five major modules that provide all necessary functionality. Software is written in a modular, hierarchical way and network delocalized way. There are multiple modules that are imported into scripts. Modules are located in the main directory and scripts are located in the /scripts/ subdirectory</p>
@@ -247,6 +232,17 @@ trace_lists</p>
 <li><p>driver MOCK (driver_mock.py)</p></li>
 <li><p>PyEpics (pyepics.py)</p></li>
 </ul>
+</div>
+<div class="section" id="data-analysis">
+<h2>Data Analysis<a class="headerlink" href="#data-analysis" title="Permalink to this headline">¶</a></h2>
+<p>The icarus analysis submodule allow easy and seamless access to the logged data from the pressure jump experiment. The instantiation of the Dataset class creates a link to a folder allowing easy access to the log file and traces.</p>
+<p>The Dataset class has
+log_header = None
+log_data = None
+log_length = 0
+description = ‘’
+trace_length
+trace_lists</p>
 </div>
 </div>
 
