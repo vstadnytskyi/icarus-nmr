@@ -12,6 +12,7 @@ Icarus Pressure Jump for NMR Documentation
    installation
    development
    overview
+   gui
    usage
    driver
    mock-driver
@@ -19,7 +20,7 @@ Icarus Pressure Jump for NMR Documentation
    server-caproto
    event-analyser
    logging
-   gui
+
    data-analysis
 
    release-history
