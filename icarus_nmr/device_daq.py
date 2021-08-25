@@ -98,6 +98,9 @@ class DI4108_DL():
         self.io_push_queue = None
         self.io_put_queue = None
 
+        self.curr_dio = 127
+        self.user_set_dio = self.curr_dio
+
     def first_time_setup(self):
         self.pr_AI_channels = 8
         self.pr_DI_channels = 1

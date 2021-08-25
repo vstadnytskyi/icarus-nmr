@@ -290,6 +290,9 @@ class Driver(object):
             flag = False
         return flag
 
+    def get_digital(self,  echo = False):
+        return self.sim_digital
+
     def set_analog(self, echo = False, filterN = 1):
         flag = True
         if echo:

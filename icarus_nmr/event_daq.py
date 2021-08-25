@@ -69,14 +69,11 @@ class DAQ(object):
         return result
 
     def get_ring_buffer_N(self,N,pointer):
-        print('input: N= %r ; pointer = %r )' % (N, pointer))
+        """
+        """
         while pointer >= (self.circular_buffer.shape[0]):
             pointer = int(pointer - self.circular_buffer.shape[0])
-        # try:
-            #print(' try: N= %r ; pointer = %r' % (N, pointer))
         res = self.circular_buffer.get_N(N, pointer)
-        # except:
-        #     res = nan
         return res
 
 if __name__ == '__main__':

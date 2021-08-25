@@ -20,10 +20,7 @@ from time import time,sleep
 SERVER_NAME = 'mock'
 
 if __name__ == '__main__':
-    # from tempfile import gettempdir
-    # dir = gettempdir()
-    # from caproto import config_caproto_logging
-    # config_caproto_logging(file=dir+'/device_mock.log', level='DEBUG')
+
 
     from caproto.server import pvproperty, PVGroup, ioc_arg_parser, run
     import caproto
@@ -56,10 +53,8 @@ if __name__ == '__main__':
         default_prefix=f'device_{SERVER_NAME}:',
         desc=dedent(Server.__doc__))
     ioc = Server(**ioc_options)
-    import sys
-    print(f'{sys.argv}')
-    print(f'{ioc_options}')
-    print(f'{run_options}')
+
+    # the device instance is shared with ioc.device instance which allows two moduled to talk to each other.
     ioc.device = device
 
     run(ioc.pvdb, **run_options)

@@ -29,11 +29,11 @@ class Server(PVGroup):
 
     dio = pvproperty(value=127, dtype = int)
     bit0 = pvproperty(value=0, dtype = int)
-    bit0_enable = pvproperty(value=0, dtype = int)
+    bit0_enable = pvproperty(value=1, dtype = int)
     bit1 = pvproperty(value=0, dtype = int)
-    bit1_enable = pvproperty(value=0, dtype = int)
+    bit1_enable = pvproperty(value=1, dtype = int)
     bit2 = pvproperty(value=0, dtype = int)
-    bit2_enable = pvproperty(value=0, dtype = int)
+    bit2_enable = pvproperty(value=1, dtype = int)
     bit3 = pvproperty(value=0, dtype = int)
     bit3_enable = pvproperty(value=0, dtype = int)
     bit4 = pvproperty(value=0, dtype = int)
@@ -124,7 +124,17 @@ class Server(PVGroup):
     @operating_mode.putter
     async def operating_mode(self, instance, value):
         print('Received update for the {}, sending new value {}'.format('operating_mode',value))
-        #self.device.set_DIO(value = value)
+        self.trigger_mode = value
+        if value == 0:
+            await self.bit1_enable.write(1)
+            await self.bit2_enable.write(1)
+        elif value == 1:
+            await self.bit1_enable.write(0)
+            await self.bit2_enable.write(0)
+        elif value == 2:
+            await self.bit1_enable.write(0)
+            await self.bit2_enable.write(0)
+
         return value
     @shutdown_state.putter
     async def shutdown_state(self, instance, value):

@@ -448,15 +448,12 @@ class Handler():
         """
         returns trigger mode from pulse_generator instance
         """
-        return self.object.ctrls.trigger_mode
+        return self.trigger_mode
     def set_trigger_mode(self,value = ''):
         """
         sets trigger mode either from CA monitor or manually via value variable
         """
-        value = int(value)
-        if value == 0 or value == 1 or value == 2 or value == 3:
-            curr_trigger_mode = self.trigger_mode
-            self.object.ctrls.trigger_mode = value
+        self.trigger_mode = value
     trigger_mode = property(get_trigger_mode,set_trigger_mode)
 
 

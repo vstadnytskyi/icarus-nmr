@@ -165,6 +165,8 @@ class Handler(object):
         # 4000 ticks/second * 60 seconds/min * 60 min/hour * 500 uL / 2.5 kbar
         self.buffer_shape = (25600,10)#8192000)
 
+        self.current_dio = 127
+
         self.io_push_queue = None
         self.io_pull_queue = None
 
@@ -515,7 +517,6 @@ class Handler(object):
 
         while self.running and self.daq_running:
            self.run_once()
-           sleep(self.daq_packet_length/(4*self.daq_freq))
         if self.daq_running == False:
             event_detector.stop()
 
@@ -534,12 +535,14 @@ class Handler(object):
                 distance = 0
             return distance
 
-        while distance(back = self.packet_pointer,front = self.daq_packet_pointer,size = self.daq_packet_buffer_length) > 6:
+        if distance(back = self.packet_pointer,front = self.daq_packet_pointer,size = self.daq_packet_buffer_length) > 6:
 
             self.run_once_once()
             if len(self.events_list) >0:
                 self.evaluate_events()
                 self.events_list = []
+        else:
+            self.daq.run_once()
 
 
     def run_once_once(self):
@@ -910,7 +913,7 @@ class Handler(object):
                     depressurize_dict[b'tSwitchDepressureEst_0'] = depressurize_dict[b'tSwitchDepressureEst_0']*1000.0/self.daq.freq
                     depressurize_dict[b'gradientDepressureEst_0'] = depressurize_dict[b'gradientDepressureEst_0']*units*(freq/1000.0)*self.coeff_sample_pressure*2.0**-15
 
-                except:
+                except Exception:
                     depressurize_dict[b'fallTime_0'] = nan
                     depressurize_dict[b'tSwitchDepressure_0'] = nan
                     depressurize_dict[b'pDepre_0'] = nan
@@ -929,8 +932,7 @@ class Handler(object):
                     depressurize_dict[b'pDepre_1'] = depressurize_dict[b'pDepre_1']*units*self.coeff_sample_pressure*2.0**-15
                     depressurize_dict[b'gradientDepressure_1'] = depressurize_dict[b'gradientDepressure_1']*units*(freq/1000.0)*self.coeff_sample_pressure*2.0**-15
 
-                except:
-
+                except Exception:
                     depressurize_dict[b'fallTime_1'] = nan
                     depressurize_dict[b'tSwitchDepressure_1'] = nan
                     depressurize_dict[b'pDepre_1'] = nan
@@ -1013,7 +1015,7 @@ class Handler(object):
                     pressurize_dict[b'gradientPressureEst_0'] = pressurize_dict[b'gradientPressureEst_0']*units*(freq/1000.0)*self.coeff_sample_pressure*2.0**-15
 
 
-                except:
+                except Exception:
                     error(traceback.format_exc())
                     pressurize_dict[b'riseTime_0'] = nan
                     pressurize_dict[b'tSwitchPressure_0'] = nan
@@ -1030,12 +1032,13 @@ class Handler(object):
                     pressurize_dict[b'tSwitchPressure_1'] = pressurize_dict[b'tSwitchPressure_1']*(1000/freq)
                     pressurize_dict[b'pPre_1'] = pressurize_dict[b'pPre_1']*units*(freq/1000.0)*self.coeff_sample_pressure*2.0**-15
                     pressurize_dict[b'gradientPressure_1'] = pressurize_dict[b'gradientPressure_1']*units*(freq/1000.0)*self.coeff_sample_pressure*2.0**-15
-                except:
+                except Exception:
+                    error(traceback.format_exc())
                     pressurize_dict[b'riseTime_1'] = nan
                     pressurize_dict[b'tSwitchPressure_1'] = nan
                     pressurize_dict[b'pPre_1'] = nan
                     pressurize_dict[b'gradientPressure_1'] = nan
-                    error(traceback.format_exc())
+
 
                 self.pressurize_data.append(pressurize_dict)
                 self.pressurize_data.pop(0)
@@ -1547,10 +1550,12 @@ class Handler(object):
             value = data[-1,9]
         else:
             value = value
-        if self.client is None:
-            pass
-        else:
-            self.client.set_dio(value)
+        if value != self.current_dio:
+            if self.client is None:
+                pass
+            else:
+                self.client.set_dio(value)
+            self.current_dio = value
 
     def push_new_period(self, value):
         #from icarus_SL import icarus_SL
@@ -1652,14 +1657,14 @@ class Handler(object):
             idx[b'depre start'] = int(period_event[0,argwhere(period_event[1,:] == 10)[-1][0]])
             idx[b'depre end'] = int(period_event[0,argwhere(period_event[1,:] == 11)[-1][0]])
         except:
-            debug(traceback.format_exc())
+            error(traceback.format_exc())
             idx[b'depre start'] = nan
             idx[b'depre end'] = nan
         try:
             idx[b'HP start'] = int(period_event[0,argwhere(period_event[1,:] == 0)[0][0]])
             idx[b'HP end'] = int(period_event[0,argwhere(period_event[1,:] == 1)[0][0]])
         except:
-            debug(traceback.format_exc())
+            error(traceback.format_exc())
             idx[b'HP start'] = nan
             idx[b'HP end'] = nan
         warn('period %r' % period_event)
