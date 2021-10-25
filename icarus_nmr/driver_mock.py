@@ -54,14 +54,14 @@ class Driver(object):
         self.sim_pressure_state = 1
         self.pump_freq = 1#0.99995
         self.sim_slow_leak_start_time = time()
-        self.sim_slow_leak_tau = 60000
+        self.sim_slow_leak_tau = 60000*1000000
 
         self.sim_flag = False
 
-        from icarus_nmr.tests.test_data.mock_driver import traces
+        from icarus_nmr.tests.test_data.test_dataset import traces
 
         self.lst_pre = traces.get_lst_pre_trace()
-        self.lst_depre = traces.get_lst_pre_trace()
+        self.lst_depre = traces.get_lst_depre_trace()
         self.lst_pump = traces.get_lst_pump_trace()
 
     def init(self):
@@ -70,6 +70,10 @@ class Driver(object):
         self.sim_pump_event_flag = False
         self.sim_pre_event_flag = False
         self.sim_depre_event_flag = False
+
+        self.sim_pump_event_idx = 0
+        self.sim_pre_event_idx = 0
+        self.sim_depre_event_idx = 0
 
         info("initialization of the driver is complete")
 
@@ -358,7 +362,7 @@ class Driver(object):
             if self.sim_pump_event_flag:
                 if self.sim_pump_event_idx<len(self.sim_pump_event_trace):
                     self.sim_analog[0] = self.sim_pump_event_trace[self.sim_pump_event_idx]
-                    self.sim_analog_std[0] = 1
+                    self.sim_analog_std[0] = 0
                     self.sim_pump_event_idx +=1
                 else:
                     self.sim_pump_event_flag = False
@@ -372,31 +376,29 @@ class Driver(object):
                 else:
                     self.sim_pump_event_flag = False
             if self.sim_pre_event_flag:
-                if self.sim_pre_event_idx<len(self.sim_pre_event_trace[5,:]):
-                    self.sim_analog[5] = self.sim_pre_event_trace[5,self.sim_pre_event_idx]
-                    self.sim_analog[6] = self.sim_pre_event_trace[6,self.sim_pre_event_idx]
-                    self.sim_analog_std[5] = 1
-                    self.sim_analog_std[6] = 1
+                if self.sim_pre_event_idx<len(self.sim_pre_event_trace[:,5]):
+                    for k in range(8):
+                        self.sim_analog[k] = self.sim_pre_event_trace[self.sim_pre_event_idx,k]
+                        self.sim_analog_std[k] = 0
                     self.sim_pre_event_idx +=1
                 else:
                     self.sim_pre_event_flag = False
-                    self.sim_analog_std[5] = 10
-                    self.sim_analog_std[6] = 10
+                    for k in range(8):
+                        self.sim_analog_std[k] = 10
             if self.sim_depre_event_flag:
-                if self.sim_depre_event_idx<len(self.sim_depre_event_trace[5,:]):
-                    self.sim_analog[5] = self.sim_depre_event_trace[5,self.sim_depre_event_idx]
-                    self.sim_analog[6] = self.sim_depre_event_trace[6,self.sim_depre_event_idx]
-                    self.sim_analog_std[5] = 1
-                    self.sim_analog_std[6] = 1
+                if self.sim_depre_event_idx<len(self.sim_depre_event_trace[:,5]):
+                    for k in range(8):
+                        self.sim_analog[k] = self.sim_depre_event_trace[self.sim_depre_event_idx,k]
+                        self.sim_analog_std[k] = 0
                     self.sim_depre_event_idx +=1
                 else:
                     self.sim_depre_event_flag = False
-                    self.sim_analog_std[5] = 10
-                    self.sim_analog_std[6] = 10
+                    for k in range(8):
+                        self.sim_analog_std[k] = 10
             for i in [0,1,2,3,4,7]:
-                res[i,j] = random.normal(self.sim_analog[i],self.sim_analog_std[i],1)[0]
+                res[i,j] = random.normal(self.sim_analog[i],self.sim_analog_std[i])
             for i in [5,6]:
-                res[i,j] = random.normal(self.sim_analog[i]*self.slow_leak(),self.sim_analog_std[i],1)[0]
+                res[i,j] = random.normal(self.sim_analog[i]*self.slow_leak(),self.sim_analog_std[i])
             res[9,j] = self.sim_digital
 
             # this section simulates continous data generation. It will sleep for ~16 ms every 64 points.
@@ -419,19 +421,19 @@ class Driver(object):
         N = int(random.uniform(0,len(self.lst_pre)-1))
         spl_list = self.lst_pre[N]
         x = arange(0,333,1)*0.25
-        data = zeros((10,333))
+        data = spl_list
 
-        data[5,:] = spl_list[5](x)
-        var_first = spl_list[5](x[0])
-        data[5,:] = data[5,:]-var_first
-        val_last = data[5,-1]
-        data[5,:] = data[5,:]*12000/val_last
-
-        data[6,:] = spl_list[6](x)
-        var_first = spl_list[6](x[0])
-        data[6,:] = data[6,:]-var_first
-        val_last = data[6,-1]
-        data[6,:] = data[6,:]*12000/val_last
+        # data[5,:] = spl_list[5]
+        # var_first = spl_list[5][0]
+        # data[5,:] = data[5,:]-var_first
+        # val_last = data[5,-1]
+        # data[5,:] = data[5,:]*12000/val_last
+        #
+        # data[6,:] = spl_list[6]
+        # var_first = spl_list[6][0]
+        # data[6,:] = data[6,:]-var_first
+        # val_last = data[6,-1]
+        # data[6,:] = data[6,:]*12000/val_last
         return data
 
     def get_depre_trace(self):
@@ -442,19 +444,19 @@ class Driver(object):
         N = int(random.uniform(0,len(self.lst_depre)-1))
         spl_list = self.lst_depre[N]
         x = arange(0,333,1)*0.25
-        data = zeros((10,333))
+        data = spl_list
 
-        data[5,:] = spl_list[5](x)
-        var_first = spl_list[5](x[-1])
-        data[5,:] = data[5,:]-var_first
-        val_last = data[5,0]
-        data[5,:] = data[5,:]*12000/val_last
-
-        data[6,:] = spl_list[6](x)
-        var_first = spl_list[6](x[-1])
-        data[6,:] = data[6,:]-var_first
-        val_last = data[6,0]
-        data[6,:] = data[6,:]*12000/val_last
+        # data[5,:] = spl_list[5]
+        # var_first = spl_list[5][-1]
+        # data[5,:] = data[5,:]-var_first
+        # val_last = data[5,0]
+        # data[5,:] = data[5,:]*12000/val_last
+        #
+        # data[6,:] = spl_list[6]
+        # var_first = spl_list[6][-1]
+        # data[6,:] = data[6,:]-var_first
+        # val_last = data[6,0]
+        # data[6,:] = data[6,:]*12000/val_last
         return data
 
     def get_pump_trace(self):
@@ -465,7 +467,7 @@ class Driver(object):
         N = int(random.uniform(0,len(self.lst_pump)-1))
         spl_list = self.lst_pump[N]
         x = arange(0,333,1)*0.25
-        data = spl_list(x)
+        data = spl_list
         return data
 
 ########################################################

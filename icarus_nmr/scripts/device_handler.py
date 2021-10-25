@@ -17,7 +17,7 @@ from pdb import pm
 from numpy import random, array, zeros, ndarray, nan, isnan
 from time import time,sleep
 
-SERVER_NAME = 'mock'
+SERVER_NAME = socket.gethostname()
 
 if __name__ == '__main__':
 
@@ -56,5 +56,4 @@ if __name__ == '__main__':
 
     # the device instance is shared with ioc.device instance which allows two moduled to talk to each other.
     ioc.device = device
-
     run(ioc.pvdb, **run_options)

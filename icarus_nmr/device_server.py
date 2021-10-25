@@ -113,7 +113,7 @@ class Server(PVGroup):
         await self.queue_length.write(self.device.queue.length)
     @queue_length.getter
     async def queue_length(self, instance):
-        print(f"getter: {'data'}, queue length {self.device.queue.length}")
+        print(f"getter: {'queue length'}: {self.device.queue.length}")
         value = self.device.queue.length
         return value
 

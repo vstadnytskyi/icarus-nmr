@@ -224,3 +224,22 @@ This starts the GUI process.
       Source File: ../cac.cpp line 1320
       Current Time: Wed Aug 25 2021 14:33:45.382095597
   ..................................................................
+
+Note, the communication protocol used in icarus monitoring and control software requires computer to have any kind of active ethernet connection, WiFi or Ethernet.
+
+
+Running test and creating documentation
+----------------------------------------
+
+To run all unit test
+
+.. code-block:: shell
+
+  pytest
+
+
+To generate documentation
+
+.. code-block:: shell
+
+  make -C docs html

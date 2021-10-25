@@ -61,9 +61,15 @@ class DAQ(object):
             self.run_once()
 
     def get_packet_ij(self,i,j): #return from i to j
+        length = self.circular_buffer.shape[0]
+        while i > length:
+            i-= length
+        while j > length:
+            j-= length
+
         if j >= i:
             #print(i,j)
-            result = self.circular_buffer.get_N_global((j-i+1)*self.packet_length,(j+1)*self.packet_length-1)
+            result = self.circular_buffer.get_N((j-i+1)*self.packet_length,(j+1)*self.packet_length-1)
         else:
             result = nan
         return result

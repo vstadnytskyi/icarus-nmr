@@ -17,8 +17,8 @@ from pdb import pm
 
 from numpy import random, array, zeros, ndarray, nan, isnan
 from time import time,sleep
-
-SERVER_NAME = 'mock'
+import socket
+SERVER_NAME = socket.gethostname()
 
 
 if __name__ == '__main__':

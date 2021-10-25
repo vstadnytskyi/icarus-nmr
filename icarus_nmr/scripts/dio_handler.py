@@ -32,11 +32,12 @@ if __name__ == '__main__':
     from icarus_nmr.dio_client import Client
     from icarus_nmr.dio_handler import Handler
 
-    client = Client(device_ca_server_prefix = 'device_mock:')
+    import socket
+    client = Client(device_ca_server_prefix = f'device_{socket.gethostname()}:')
     device = Handler(client)
 
     ioc_options, run_options = ioc_arg_parser(
-        default_prefix='digital_handler_mock:',
+        default_prefix=f'digital_handler_{socket.gethostname()}:',
         desc=dedent(Server.__doc__))
     ioc = Server(**ioc_options)
     ioc.device = device

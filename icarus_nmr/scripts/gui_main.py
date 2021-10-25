@@ -116,9 +116,11 @@ class GUI(wx.Frame):
 
 
         frame = wx.Frame.__init__(self, None, wx.ID_ANY, "High Pressure Control Panel")#, size = (192,108))#, style= wx.SYSTEM_MENU | wx.CAPTION)
+
         self.panel = wx.Panel(self, wx.ID_ANY, style=wx.BORDER_THEME)#, size = (1920,1080))
+        self.panel.Bind(wx.EVT_SIZE, self.on_size_change)
         self.SetBackgroundColour('white')
-        self.Bind(wx.EVT_CLOSE, self.onQuit)
+        self.Bind(wx.EVT_CLOSE, self.on_quit)
         self.statusbar = self.CreateStatusBar() # Will likely merge the two fields unless we can think of a reason to keep them split
         self.statusbar.SetStatusText('This goes field one')
         #self.statusbar.SetStatusText('Field 2 here!', 1)
@@ -138,7 +140,7 @@ class GUI(wx.Frame):
         menubar = wx.MenuBar()
         fileMenu = wx.Menu()
         file_item[0] = fileMenu.Append(wx.ID_EXIT, 'Quit', 'Quit application')
-        self.Bind(wx.EVT_MENU, self.onQuit, file_item[0])
+        self.Bind(wx.EVT_MENU, self.on_quit, file_item[0])
 
 
         aboutMenu = wx.Menu()
@@ -164,10 +166,8 @@ class GUI(wx.Frame):
         ###########################################################################
 
         ###########################################################################
-        ###FIGURE####
+        ###FIGUREs####
         ###########################################################################
-        #import gc
-        #gc.set_debug(gc.DEBUG_LEAK)
 
         self.sizers['graph0'] = wx.BoxSizer(wx.VERTICAL)
         self.labels['graph0']  = wx.StaticText(self.panel, label= 'Field 2 label', style = wx.ALIGN_CENTER)
@@ -456,15 +456,40 @@ class GUI(wx.Frame):
     #----------------------------------------------------------------------
 
 
+    def on_size_change(self,event):
+        """
+        method called when user changes the size of the window and underlying panel.
+        """
+        self.panel_width,self.panel_height = event.GetSize()
+        print ("Width =",self.panel_width,"Height =",self.panel_height)
+        w = self.panel_width
+        h = self.panel_height
+        try:
+            self.fields['graph0'].im_size_show = (int((w-384)/2),int(h/5))
+            self.fields['graph1'].im_size_show = (int((w-384)/2),int(h/5))
+            self.fields['graph2'].im_size_show = (int((w-384)/2),int(h/5))
+            self.fields['graph3'].im_size_show = (int((w-384)/2),int(h))
+        except:
+            pass
+
+        #self.panel.SetSizer(self.sizer_main)
+        #self.sizer_main.Fit(self)
+        self.Layout()
+        self.panel.Layout()
+        #self.panel.Fit()
+
 
     def _on_about(self,event):
+        """
+        method executed when a user click on "About" button in the menu.
+        """
         message = str(__doc__)
         wx.MessageBox(message,'About', wx.OK | wx.ICON_INFORMATION)
 
-    def onQuit(self,event):
-        #FIXIT uncomment all
-        #icarus_AL.GUI_running = False
-        #icarus_AL.kill()
+    def on_quit(self,event):
+        """
+        method executed when a user closes the window.
+        """
         del self
         os._exit(1)
 
@@ -474,10 +499,11 @@ if __name__ == "__main__":
     import logging
     from tempfile import gettempdir
     import sys
+    import socket
     if len(sys.argv)>1:
         caserver_name = sys.argv[2]
     else:
-        caserver_name = 'event_handler_mock'
+        caserver_name = f'event_handler_{socket.gethostname()}'
 
     app = wx.App(redirect=False)
     panel = GUI(caserver_name = caserver_name)

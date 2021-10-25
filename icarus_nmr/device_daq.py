@@ -62,6 +62,7 @@ from ubcs_auxiliary.advsleep import precision_sleep #home-made module for accura
 
 class DI4108_DL():
     db = DataBase(root = 'TEMP', name = 'DI4108_DL')
+    #: serial number, five character long string
     pr_serial_number = SavedProperty(db,'Serial Number', '00000').init()
     pr_AI_channels = SavedProperty(db,'Number of AI',8).init()
     pr_DI_channels = SavedProperty(db,'Number of DI',1).init()

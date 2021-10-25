@@ -13,6 +13,7 @@ class PVImage(wx.StaticBitmap, PVMixin):
         parameters
         """
     def __init__(self, parent, pv=None, style=None, im_size = None,
+                 im_size_show = None,
                  minor_alarm="DARKRED", major_alarm="RED",
                  invalid_alarm="ORANGERED", **kw):
         self.im_size = im_size
@@ -30,6 +31,7 @@ class PVImage(wx.StaticBitmap, PVMixin):
 
     def _SetValue(self, value):
         "set widget label"
+        import wx
         from PIL import Image
         from time import time
         import io
@@ -39,9 +41,13 @@ class PVImage(wx.StaticBitmap, PVMixin):
             raw_image = value
             im_mode = 'RGB'
             im_size = self.im_size
+            im_size_show = self.im_size_show
             img = Image.frombuffer(im_mode, im_size, raw_image, 'raw', im_mode, 0, 1)
             width, height = img.size
             bit_img = wx.Bitmap.FromBuffer(width, height, img.tobytes())
+            image = wx.ImageFromBitmap(bit_img)
+            image = image.Scale(im_size_show[0], im_size_show[1], wx.IMAGE_QUALITY_HIGH)
+            bit_img = wx.BitmapFromImage(image)
             t1 = time()
             self.SetBitmap(bit_img)
         else:

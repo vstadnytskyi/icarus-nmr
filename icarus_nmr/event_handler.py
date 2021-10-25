@@ -104,12 +104,18 @@ class Handler(object):
     pressure_before_time = 20.0
     pressure_after_time = 100.0
 
-    coeff_target_pressure = 0.92
+
+
+    selected_pressure_units = 'kbar'
+    user_units = {'kbar': 6.894756709891046e-05, 'atm': 1/14.696, 'psi': 1}
+    #self.selected_pressure_units = 'kbar'
+    scale_top_valve1 = (220./50)#(50/6.894756709891046e-05) #(1*6.894756709891046e-05)*(14267/8192) # 200 psi per 10 Volts per 2**15 bits
+    scale_bot_valve1 = (220./50)#(50/6.894756709891046e-05) # 200 psi per 10 Volts per 2**15 bits
+    scale_top_valve2 = (220./50)#(50/6.894756709891046e-05) # 200 psi per 10 Volts per 2**15 bits
+    scale_bot_valve2 = (220./50)#(50/6.894756709891046e-05) # 200 psi per 10 Volts per 2**15 bits
+
     coeff_sample_pressure = 100000.0
-    scaleTopValve1 = 100000.0
-    scaleBotValve1 = 100000.0
-    scaleTopValve2 = 100000.0
-    scaleBotValve2 = 100000.0
+    coeff_target_pressure = 0.92
 
     bit_HPpump = 0b1
     bit_valve1 = 0b10
@@ -120,8 +126,6 @@ class Handler(object):
     medium = 'none'
     tube_length = 100.0
 
-    selectedPressureUnits = 'kbar'
-    userUnits =  {'psi': 1, 'atm': 0.06804572672836146, 'kbar': 6.894756709891046e-05}
 
     counters_pump = 0
     counters_depressurize = 0
@@ -186,7 +190,7 @@ class Handler(object):
 
         Examples
         --------
-        >>> event_detector.init()
+        >>> self.init()
         """
         from numpy import zeros
         from circular_buffer_numpy.circular_buffer import CircularBuffer
@@ -197,7 +201,6 @@ class Handler(object):
         self.packet_buffer_length = int(self.buffer_shape[0]/self.daq .packet_length)
         self.event_buffer_shape = (1000,3) #100000 will be ~ 2 weeks assuming 5 events per sequence(1 min).
         self.event_buffer = CircularBuffer(shape = self.event_buffer_shape, dtype = 'int64')
-        self.history_buffer_size = 500000 #the length of history buffers
 
         self.events_list = [] #the list of events that need evaluation.
 
@@ -213,8 +216,8 @@ class Handler(object):
         self.packet_pointer = 0 #TODO What is this variable?
         self.g_packet_pointer = 0 #TODO What is this variable?
 
-        self.userUnits = {'kbar': 2/29007.55, 'atm': 1/14.696, 'psi': 1}
-        self.selectedPressureUnits = 'kbar'
+        self.user_units = {'kbar': 2/29007.55, 'atm': 1/14.696, 'psi': 1}
+        self.selected_pressure_units = 'kbar'
         #self.pumpCounter = 0
         #self.scaleTopValve1 = 50000
         #self.scaleBotValve1 = 50000
@@ -423,6 +426,8 @@ class Handler(object):
 
         self.bit3_meas_dic = {}
 
+        self.history_init()
+
         for i in range(10):
             self.daq.run_once()
 
@@ -438,7 +443,7 @@ class Handler(object):
 
         Examples
         --------
-        >>> event_detector.reset_to_factory_setting()
+        >>> self.reset_to_factory_setting()
         """
         self.ppLogFolder = 'log/'
         self.depressure_before_time = 5.0
@@ -452,8 +457,8 @@ class Handler(object):
         self.scaleTopValve2 = 200000.0
         self.scaleBotValve2 = 200000.0
 
-        self.userUnits = {'psi': 1, 'atm': 0.06804572672836146, 'kbar': 6.89475728e-5}
-        self.selectedPressureUnits = 'kbar'
+        self.user_units = {'psi': 1, 'atm': 0.06804572672836146, 'kbar': 6.89475728e-5}
+        self.selected_pressure_units = 'kbar'
         self.event_buffer_shape = (2,100)
         self.history_buffer_size = 100000
         self.save_trace_to_a_file = False
@@ -490,7 +495,7 @@ class Handler(object):
 
         Examples
         --------
-        >>> event_detector._start()
+        >>> self._start()
         """
         if self.running:
             warning('The event detector thread is already running')
@@ -509,7 +514,7 @@ class Handler(object):
 
         Examples
         --------
-        >>> event_detector._run()
+        >>> self._run()
         """
         from time import time
 
@@ -518,7 +523,7 @@ class Handler(object):
         while self.running and self.daq_running:
            self.run_once()
         if self.daq_running == False:
-            event_detector.stop()
+            self.stop()
 
     def run_once(self):
         from time import time
@@ -544,6 +549,8 @@ class Handler(object):
         else:
             self.daq.run_once()
 
+        #print(self.packet_pointer,self.daq_packet_pointer)
+
 
     def run_once_once(self):
 
@@ -556,12 +563,14 @@ class Handler(object):
         g_packet_pointer = self.g_packet_pointer
         self.daq.run_once()
         new_packet = np.copy(self.get_daq_packet_ij(packet_pointer,packet_pointer+1)[:self.daq_packet_length+1,:])
-
+        print(f'new packet shape {new_packet.shape}')
+        print(f'packet_pointer: {packet_pointer}')
+        print(f'packet_pointer: {self.daq_packet_length}')
 
         self.events_list += self.find_dio_events(data = new_packet)
-        self.events_list +=  self.find_aio_events(data= new_packet)
-        self.events_list +=  self.find_time_events(data= new_packet)
-        if self.packet_pointer == self.daq_packet_buffer_length:
+        self.events_list +=  self.find_aio_events(data = new_packet)
+        self.events_list +=  self.find_time_events(data = new_packet)
+        if self.packet_pointer == self.daq_packet_buffer_length-1:
             self.packet_pointer = 0
         else:
             self.packet_pointer += 1
@@ -591,7 +600,7 @@ class Handler(object):
 
         Examples
         --------
-        >>> event_detector.kill()
+        >>> self.kill()
         """
         del self
 
@@ -652,6 +661,7 @@ class Handler(object):
 
         ### ANALYSIS OF PUMP STROKE EVENT
         t = length - self.last_event_index[b'A100']- self.daq_freq*2
+        print('analog events data', data.shape)
         flag, index, value = self.analyse_pump_event(data = data)
         if t > 0:
             gated_on = True
@@ -789,6 +799,8 @@ class Handler(object):
 
         The digital events codes:
         DXY: X - channel; Y - 0(down) 1(up)
+
+        A special period event is generated when D2 goes low as well.
         """
         from numpy import std, zeros, isnan, nan,nonzero, nanstd, sum
         lst_result = []
@@ -879,7 +891,7 @@ class Handler(object):
         from time import time
         array = zeros((3,1))
         freq = self.daq.freq
-        units = self.userUnits[self.selectedPressureUnits]
+        units = self.user_units[self.selected_pressure_units]
 
         # stepping through events and analysing them one by one.
         for dic in self.events_list:
@@ -921,7 +933,7 @@ class Handler(object):
                 depressurize_dict[b'depressurize_data'] = data
 
                 try:
-                    units = self.userUnits[self.selectedPressureUnits]
+                    units = self.user_units[self.selected_pressure_units]
                     depressurize_dict = {**depressurize_dict,**self.analyse_depressure_event(data = data, channel = 0)}
                     debug('depressurize_dict channel 0 = %r' %(depressurize_dict))
                     ###convert to user friendly units
@@ -943,7 +955,7 @@ class Handler(object):
 
 
                 try:
-                    units = self.userUnits[self.selectedPressureUnits]
+                    units = self.user_units[self.selected_pressure_units]
                     depressurize_dict = {**depressurize_dict,**self.analyse_depressure_event(data = data, channel = 1)}
 
                     depressurize_dict[b'tSwitchDepressure_1'] = depressurize_dict[b'tSwitchDepressure_1']*1000.0/self.daq.freq
@@ -1000,7 +1012,7 @@ class Handler(object):
 
                 temp_dic = {b'depressure_pulse_width':self.last_event_width[b'depressurize']
                             }
-                #self.logging_event_append(dic= temp_dic,event_code = 11, global_pointer = dic[b'global_index'], period_idx = event_detector.counters_current[b'period'])
+                self.history_append(dic= temp_dic,event_code = 11, global_pointer = dic[b'global_index'], period_idx = self.counters_current[b'period'])
 
 
 
@@ -1077,7 +1089,7 @@ class Handler(object):
                             b'delay':self.last_event_width[b'delay'],
                             b'pressure_valve_counter':self.counters_global[b'pressurize']
                             }
-                #self.logging_event_append(dic= temp_dic,event_code = 20, global_pointer = dic[b'global_index'], period_idx = event_detector.counters_current[b'period'])
+                self.history_append(dic= temp_dic,event_code = 20, global_pointer = dic[b'global_index'], period_idx = self.counters_current[b'period'])
 
                 if self.save_trace_to_a_file and (self.logging_state == 1 or self.logging_state == 11):
                     self.data_log_to_file(data, name = 'pre')
@@ -1096,14 +1108,14 @@ class Handler(object):
 
 
                 data = self.get_ring_buffer_N(N = after_idx, pointer = dic[b'index']+after_idx+shift_idx)
-                units = self.userUnits[self.selectedPressureUnits]
+                units = self.user_units[self.selected_pressure_units]
                 after0 = mean(data[5,:])*units*self.coeff_sample_pressure*2.0**-15
                 after1 = mean(data[6,:])*units*self.coeff_sample_pressure*2.0**-15
                 temp_dic = {b'pPre_after_0':after0,
                             b'pPre_after_1':after1,
                             b'pressure_pulse_width':self.last_event_width[b'pressurize']}
 
-                #self.logging_event_append(dic= temp_dic,event_code = 21, global_pointer = dic[b'global_index'], period_idx = event_detector.counters_current[b'period'])
+                self.history_append(dic= temp_dic,event_code = 21, global_pointer = dic[b'global_index'], period_idx = self.counters_current[b'period'])
                 self.counters_global[b'periodic_update'] = 0
                 self.counters_current[b'periodic_update'] = 0
 
@@ -1133,11 +1145,11 @@ class Handler(object):
 
                 #log into a log file
                 temp_dic[b'meanbit3'] = mean(data[5,:])
-                # #self.logging_event_append(dic = temp_dic,
-                #                           event_code = 31,
-                #                           global_pointer = dic[b'global_index'],
-                #                           period_idx = event_detector.counters_current[b'period']
-                #                           )
+                self.history_append(dic = temp_dic,
+                                          event_code = 31,
+                                          global_pointer = dic[b'global_index'],
+                                          period_idx = self.counters_current[b'period']
+                                          )
                 #save to a file
                 if self.save_trace_to_a_file and (self.logging_state == 1 or self.logging_state == 11):
                     self.data_log_to_file(data, name = 'meanbit3')
@@ -1225,10 +1237,10 @@ class Handler(object):
 
 
 
-                # #self.logging_event_append(dic= {b'pump_stroke':self.counters_global[b'pump_stroke']},
-                #                           event_code = 100,
-                #                           global_pointer = dic[b'global_index'],
-                #                           period_idx = event_detector.counters_current[b'period'])
+                self.history_append(dic= {b'pump_stroke':self.counters_global[b'pump_stroke']},
+                                          event_code = 100,
+                                          global_pointer = dic[b'global_index'],
+                                          period_idx = self.counters_current[b'period'])
 
 
 
@@ -1241,6 +1253,9 @@ class Handler(object):
                 self.counters_current[b'period'] += 1
                 temp_dic[b'period'] = self.last_event_width[b'period']
                 self.period_event[b'period'] = self.last_event_width[b'period']
+                self.period_event[b'pressurize_width'] = self.last_event_width[b'pressurize']
+                self.period_event[b'depressurize_width'] = self.last_event_width[b'depressurize']
+                self.period_event[b'delay'] = self.last_event_width[b'delay']
                 self.push_new_period(value = self.period_event)
 
             elif dic[b'channel'] == 'periodic_update':
@@ -1282,7 +1297,7 @@ class Handler(object):
                 before_idx = int(self.pressure_before_time*self.daq_freq/1000.0)
                 after_idx = int(self.pressure_after_time*self.daq_freq/1000.0)
                 data = self.get_ring_buffer_N(N = after_idx, pointer = dic[b'index']+after_idx)
-                units = self.userUnits[self.selectedPressureUnits]
+                units = self.user_units[self.selected_pressure_units]
                 after0 = mean(data[5,:])*units*self.coeff_sample_pressure*2.0**-15
                 after1 = mean(data[6,:])*units*self.coeff_sample_pressure*2.0**-15
                 #before0 = #self.history_buffers[b'pPre_after_0'].buffer[3,self.history_buffers[b'pPre_after_0'].pointer]
@@ -1312,11 +1327,11 @@ class Handler(object):
 
 
 
-                # #self.logging_event_append(dic = temp_dic,
-                #                           event_code = 999,
-                #                           global_pointer = dic[b'global_index'],
-                #                           period_idx = event_detector.counters_current[b'period']
-                #                           )
+                self.history_append(dic = temp_dic,
+                                          event_code = 999,
+                                          global_pointer = dic[b'global_index'],
+                                          period_idx = self.counters_current[b'period']
+                                          )
 
         self.update_counters_for_persistent_property() #makes this code competable with Friedrich's persistent_property module that doesn't support dictionaries
         self.events_list = []
@@ -1431,14 +1446,51 @@ class Handler(object):
                 from scipy import stats
                 figure = Figure(figsize=(7.68,2.16),dpi=100)#figsize=(7,5))
                 axes = figure.add_subplot(1,1,1)
+                t1 = time()
+                from numpy import nonzero, zeros,nan, ones, argwhere, mean, nanmean, arange
+                from scipy import stats
 
-                axes.plot(x,y, color = 'red' )
+                units = self.user_units[self.selected_pressure_units]
+                dataPlot = y.T
+                x = (arange(len(dataPlot[0,:])))/(4000/1000.0)
+                samplePre0 = dataPlot[5,:] #sample0
+                samplePre1 = dataPlot[6,:] #sample1
+                depreLower=dataPlot[1,:] #depressure lower
+                depreUpper=dataPlot[2,:] #depressure upper
+                target=dataPlot[0,:]
+                pulse = zeros((len(dataPlot[9,:]),))
+                pulse_light = zeros((len(dataPlot[9,:]),))
+                for i in range(len(pulse)):
+                    if dataPlot[9,i] & BIT_VALVE1 != 0:
+                        pulse[i] = 1
+                    else:
+                        pulse[i] = 0
+                for i in range(len(pulse_light)):
+                    if dataPlot[9,i] & BIT_VALVE2 != 0:
+                        pulse_light[i] = 1
+                    else:
+                        pulse_light[i] = 0
 
-                axes.set_title("Top subplot")
-                axes.set_xlabel("x (value)")
-                axes.set_ylabel("y (value)")
-                axes.tick_params(axis='y', which='both', labelleft=True, labelright=False)
+                target = target*0 + stats.mode(dataPlot[0,:]).mode
+
+
+                axes.plot(x,units*self.coeff_sample_pressure*samplePre0*2.0**-15, color = 'red', marker = 'o', markersize = 3 )
+                # if icarus_AL.advance_view_flag:
+                #     axes.plot(x,units*icarus_AL.coeff_sample_pressure*samplePre1*2.0**-15, color = 'orangered', marker = 'o', markersize = 3 )
+                axes.plot(x,units*42860.0*pulse_light,color = 'lightblue')
+                axes.plot(x,units*42860.0*pulse,color = 'g')
+                axes.plot(x,self.scale_top_valve1*depreUpper*2.0**-15, color = 'darkcyan')
+                axes.plot(x,self.scale_bot_valve1*depreLower*2.0**-15, color = 'darkmagenta')
+                axes.plot(x,units*79600.0*target*self.coeff_target_pressure*2.0**-15,color = 'black',linestyle = '--')
+                #axes[0].legend(loc=1,fontsize='x-small')
+
+                axes.set_title("Last Depressurize Event",fontsize=m_font, color = 'g')
+                axes.set_xlabel("Time (ms)",fontsize=m_font)
+                axes.set_ylabel("Pressure ("+self.selected_pressure_units+")",fontsize=m_font)
+                axes.tick_params(axis='y', which='both', labelleft=True, labelright=False, labelsize = m_font)
+
                 axes.grid(True)
+
                 figure.tight_layout()
                 return figure
 
@@ -1453,7 +1505,7 @@ class Handler(object):
                 return image
             length = data[b'depressurize_data'].shape[0]
             x = np.arange(0,length,1)
-            y = data[b'depressurize_data'][:,6]
+            y = data[b'depressurize_data']
             arr = figure_to_array(chart_one(x=x,y=y)).flatten()
             self.io_push(io_dict = {'image_depre':arr})
 
@@ -1498,16 +1550,52 @@ class Handler(object):
                 from matplotlib import pyplot
                 from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg
                 from scipy import stats
+                from numpy import nonzero, zeros,nan, ones, argwhere, mean, nanmean, arange
+
                 figure = Figure(figsize=(7.68,2.16),dpi=100)#figsize=(7,5))
                 axes = figure.add_subplot(1,1,1)
 
-                axes.plot(x,y, color = 'red' )
+                dataPlot = y.T
+                x = (arange(len(dataPlot[0,:])))*(1000.0/4000)#(DAQ.pr_rate/1000.0)
+                samplePre0 = dataPlot[5,:] #sample0
+                samplePre1 = dataPlot[6,:] #sample1
+                preLower=dataPlot[3,:] #pressure lower
+                preUpper=dataPlot[4,:] #pressure upper
+                target=dataPlot[0,:]
+                pulse = zeros((len(dataPlot[9,:]),))
+                pulse_light = zeros((len(dataPlot[9,:]),))
+                for i in range(len(pulse)):
+                    if dataPlot[9,i] & BIT_VALVE2 != 0:
+                        pulse[i] = 1
+                    else:
+                        pulse[i] = 0
+                for i in range(len(pulse_light)):
+                    if dataPlot[9,i] & BIT_VALVE1 != 0:
+                        pulse_light[i] = 1
+                    else:
+                        pulse_light[i] = 0
 
-                axes.set_title("Top subplot")
-                axes.set_xlabel("x (value)")
-                axes.set_ylabel("y (value)")
-                axes.tick_params(axis='y', which='both', labelleft=True, labelright=False)
+                target = target*0 + stats.mode(dataPlot[0,:]).mode
+
+                units = self.user_units[self.selected_pressure_units]
+                axes.plot(x,units*self.coeff_sample_pressure*samplePre0*2.0**-15, color = 'red', marker = 'o', markersize = 3 ) # EventDetector.scaleValve1
+                # if icarus_AL.advance_view_flag:
+                #     axes.plot(x,units*icarus_AL.coeffSamplePressure*samplePre1*2.0**-15, color = 'orangered', marker = 'o', markersize = 3 ) # EventDetector.scaleValve2
+                axes.plot(x,units*42860.0*pulse_light,color = 'lightgreen')
+                axes.plot(x,units*42860.0*pulse,color = 'blue')
+                axes.plot(x,self.scale_top_valve2*preUpper*2.0**-15, color = 'darkcyan')
+                axes.plot(x,self.scale_bot_valve2*preLower*2.0**-15, color = 'darkmagenta')
+                axes.set_ylabel("Pressure ("+self.selected_pressure_units+")",fontsize=m_font)
+                #self.axes[dic['axis']].tick_params(axis='y', which='left', labelleft=True)
+                axes.plot(x,units*79600.0*target*self.coeff_target_pressure*2.0**-15, color = 'black',linestyle = '--')
+                #axes[dic['axis']].legend(loc=1,fontsize='x-small')
+                axes.set_title("Last Pressurize Event",fontsize=m_font, color = 'blue')
+                axes.set_xlabel("Time (ms)",fontsize=m_font)
+                #self.axes[dic['axis']].tick_params(axis='y', which='right', labelright=True)
+                axes.tick_params(axis='y', which='both', labelleft=True, labelright=False, labelsize = m_font)
+                #self.axes[dic['axis']].set_yticklabels([-25,0,25,50,75,100,125,150])
                 axes.grid(True)
+
                 figure.tight_layout()
                 return figure
 
@@ -1522,7 +1610,7 @@ class Handler(object):
                 return image
             length = data[b'pressurize_data'].shape[0]
             x = np.arange(0,length,1)
-            y = data[b'pressurize_data'][:,6]
+            y = data[b'pressurize_data']
             arr = figure_to_array(chart_one(x=x,y=y)).flatten()
             self.io_push(io_dict = {'image_pre':arr})
 
@@ -1567,6 +1655,7 @@ class Handler(object):
     def push_new_period(self, value):
         import numpy as np
         data = value
+        #print(data)
         # b'period': nan, b'delay': nan, b'pressurize_width': nan, b'depressurize_width': nan, b'pump_width': nan,
         def chart_one(x,y):
             """
@@ -1781,7 +1870,7 @@ class Handler(object):
 
         last_period_analysis = {}
         meas = {}
-        units = self.userUnits[self.selectedPressureUnits]
+        units = self.user_units[self.selected_pressure_units]
         #pressure
         meas[b'ppulse_width'] = (idx[b'pre end'] - idx[b'pre start'])*1.0/freq
         last_period_analysis[b'pPre_0'] = dic_pre[b'pPre_0']*units*self.coeff_sample_pressure*2.0**-15
@@ -1870,32 +1959,28 @@ class Handler(object):
 
         Examples
         --------
-        >>> event_detector.analyse_pump_event.(data,freq = 4000,pressure_threshold = 1000, gradient_threshold = -400*1000)
+        >>> self.analyse_pump_event.(data,freq = 4000,pressure_threshold = 1000, gradient_threshold = -400*1000)
         """
         from numpy import gradient, nanmedian, nan, isnan ,argmin,argwhere
         from logging import error
-
-
+        print(f'analyse_pump_event data shape: {data.shape}')
         try:
             target = data[:,0]
             grad = gradient(target)
             grad_min = nanmin(grad)
             idx_min = argmin(grad)
-
             if grad_min < (gradient_threshold/freq) and nanmedian(target) > pressure_threshold:
                 flag = True
             else:
                 flag = False
         except:
+            print(f'except data shape: {data.shape}')
+            target = data[:,0]
+            print(target)
             error(traceback.format_exc())
             flag, idx_min, grad_min = False, 0, 0
-            import numpy as np
-            print(f'{data.shape}')
-            print(f'{self.packet_pointer},{self.g_packet_pointer},{self.daq_packet_length}')
-            packet_pointer = self.packet_pointer
-            g_packet_pointer = self.g_packet_pointer
-            new_packet = np.copy(self.get_daq_packet_ij(packet_pointer,packet_pointer+1)[:self.daq_packet_length+1,:])
-            print(new_packet.shape)
+
+
 
         return flag, idx_min, grad_min
 
@@ -1931,12 +2016,33 @@ class Handler(object):
 
         Returns
         -------
-        flag, idx_min, grad_min :: tuple
-            returns tuple with a boolean flag, index of the event if happened in the input data and the magnitude of the event.
+        dic  :: dictionary
+            returns dictionary with the following keys
+             b't1Pressure_0' -
+             b'pDepre_0' - pressure before depressurization
+             b'pressure0_0' - pressure at 0 time
+             b'pressure10_0': 1001.19,
+             b'pressure50_0': 5869.95,
+             b'pressure90_0': 10738.71,
+             b'pressure100_0': 11955.9,
+             b'time90_0': 139.81000000000756,
+             b'time50_0': 143.04000000000923,
+             b'time10_0': 147.57000000001153,
+             b'time0_0': 326,
+             b'time100_0': 125.24000000000012,
+             b'fallTime_0': 7.76000000000397,
+             b'tSwitchDepressure_0': 64.04000000000923,
+             b'tSwitchDepressureEst_0': 75.95997000000924,
+             b'gradientDepressure_0'
+             b'gradientDepressureEst_0'
+             b'gradientDepressureCubic_0'
+             b'gradientDepressureCubicEst_0'
 
         Examples
         --------
-        >>> event_detector.analyse_pump_event.(data,freq = 4000,pressure_threshold = 1000, gradient_threshold = -400*1000)
+        >>> from icarus_nmr.tests.test_data.test_dataset import traces
+        >>> data = lst_depre = traces.get_lst_depre_trace()[0]
+        >>> dic = handler.analyse_depressure_event(data)
         """
         from numpy import size, where, gradient,median, \
              nanmedian, nan, zeros, isnan, nonzero, \
@@ -1958,6 +2064,7 @@ class Handler(object):
         diff = data2-data1
         t1 = nan
         t2 = inf
+        t0 = nan
         pulse_width = nan
         if nanstd(diff) != 0 and ~isnan(nanstd(diff)):
             indices = nonzero(diff!=0)
@@ -2109,9 +2216,6 @@ class Handler(object):
     def analyse_pressure_event(self, data, channel = 1, test = False, plot = False, precision = True, freq = 4000):
         """
         takes input data and analyze it
-        """
-        """
-        takes input data and analyze it
         1) find index where digital bit 1 goes low: called t1Pressure
         2) calculates median of all data up to t1Depressure index: called pStart
         3) finds 2 points where pressure is higher and lower than midpoint pressure (0.5*pStart)
@@ -2131,22 +2235,51 @@ class Handler(object):
         ----------
         data ::  numpy array
             numpy array of the input data. The shape of the array is 10xN, where N is the size of the packet. The actual length of the array doesn't matter.
+        channel :: integer
+            an interger value selecting different channels to analyze: channel 0 or channel 1
+        test :: boolean
+            a flag used when the function is run in analysis state
+        plot :: boolean
+            boolean flag used to plot data in case of debuging
+        precision :: boolean
+            a flag for precision calcuylations
         freq :: float
             float number describing the data acquisiion frequency
-        pressure_threshold :: float
-            the pressure threashold defines the lower limit above which pump events are concidered
-        gradient_threshold :: float
-            defines the slope of the pressure vs time which triggers pump stroke event.
-
 
         Returns
         -------
-        flag, idx_min, grad_min :: tuple
-            returns tuple with a boolean flag, index of the event if happened in the input data and the magnitude of the event.
+        dic :: dictionary
+            returns a dictionary with key corresponding to results of the analysis.
+
+            dic = {}
+            #timing results
+            dic[b't1Pressure'+suffix] = t0
+            #pressure results
+            dic[b'pDepre'+suffix] = pressure100
+            dic[b'pressure0'+suffix] = pressure0
+            dic[b'pressure10'+suffix] = pressure10
+            dic[b'pressure50'+suffix] = pressure50
+            dic[b'pressure90'+suffix] = pressure90
+            dic[b'pressure100'+suffix] = pressure100
+
+            #pressure jump results
+            dic[b'time90'+suffix] = time90
+            dic[b'time50'+suffix] = time50
+            dic[b'time10'+suffix] = time10
+            dic[b'time0'+suffix] = time0
+            dic[b'time100'+suffix] = time100
+            dic[b'fallTime'+suffix] = fallTime
+            dic[b'tSwitchDepressure'+suffix] = tSwitchDepressure
+            dic[b'tSwitchDepressureEst'+suffix] = self.estimate_values_at_sample(dic = {b'tSwitchDepressure'+suffix:dic[b'tSwitchDepressure'+suffix]}, tube_length = self.tube_length, pressure = pressure100)
+            dic[b'gradientDepressure'+suffix] = abs(grad_min_value)
+            dic[b'gradientDepressureEst'+suffix] = self.estimate_values_at_sample(dic = {b'gradientDepressure'+suffix:dic[b'gradientDepressure'+suffix]}, tube_length = self.tube_length, pressure = pressure100)
+            debug('grad_min_value = %r' %grad_min_value)
+            dic[b'gradientDepressureCubic'+suffix] = abs(grad_min_precision_value)
+            dic[b'gradientDepressureCubicEst'+suffix] = self.estimate_values_at_sample(dic = {b'gradientDepressureCubic'+suffix:dic[b'gradientDepressureCubic'+suffix]}, tube_length = self.tube_length, pressure = pressure100)
 
         Examples
         --------
-        >>> event_detector.analyse_pump_event.(data,freq = 4000,pressure_threshold = 1000, gradient_threshold = -400*1000)
+        >>> self.analyse_pump_event.(data,freq = 4000,pressure_threshold = 1000, gradient_threshold = -400*1000)
         """
         from numpy import size, where, gradient,median, nanmedian, nan, zeros, isnan, nonzero, argmax,argmin
         from numpy import argwhere,nanstd, std, mean, nanmean, arange
@@ -2336,8 +2469,8 @@ class Handler(object):
         data = self.slow_leak_buffer.buffer[:self.slow_leak_buffer.pointer+1,:]
 
         if self.slow_leak_buffer.pointer != -1:
-            if event_detector.last_event_index[b'A200'] > event_detector.last_event_index[b'D20']:
-                data[:,0] = data[:,0]+event_detector.last_event_index[b'D21']
+            if self.last_event_index[b'A200'] > self.last_event_index[b'D20']:
+                data[:,0] = data[:,0]+self.last_event_index[b'D21']
             from_idx = data[0,0]
             to_idx = data[-1,0]
             value = self.estimate_leak_value(data = data,from_idx = from_idx,to_idx = to_idx)[b'value']
@@ -2490,7 +2623,7 @@ class Handler(object):
 
         Examples
         --------
-        >>> event_detector.analyse_pump_event.(data,freq = 4000,pressure_threshold = 1000, gradient_threshold = -400*1000)
+        >>> self.analyse_pump_event.(data,freq = 4000,pressure_threshold = 1000, gradient_threshold = -400*1000)
         """
         from numpy import isnan,nan
         dy = (pEnd-pStart) # change in y
@@ -2591,7 +2724,7 @@ class Handler(object):
         integral = 0.0*array[:,29];
         chi = 0.0*array[:,29];
         for i in range(number):
-            chi[i] = event_detector.standard_error(pStart = array[i,4], pEnd = array[i,5])
+            chi[i] = self.standard_error(pStart = array[i,4], pEnd = array[i,5])
 
         integral[0] = 0
         for i in range(1,len(array[:,5])):
@@ -2990,7 +3123,7 @@ class Handler(object):
         try:
             res  = self.daq.circular_buffer.shape[0]/self.daq.packet_length
         except:
-            error('event_detector_LL.py @ get_daq_packet_buffer_length',traceback.format_exc())
+            error('self_LL.py @ get_daq_packet_buffer_length',traceback.format_exc())
             res = nan
         return res
     daq_packet_buffer_length = property(get_daq_packet_buffer_length)
@@ -2998,23 +3131,23 @@ class Handler(object):
 
     def reset_counter(self, pvname = '',value = '', char_val = ''):
         if pvname == socket_server.CAS_prefix+'reset_valve2':
-            old_value = str(event_detector.counters[b'pre_valve2'])
-            event_detector.counters[b'pre_valve2'] = int(value)
-            event_detector.pulsePressureCounter = event_detector.counters[b'pre_valve2']
-            msg = 'PVname %r received counter pre_valve2 was reset to %r -> %r' %(pvname,old_value,str(event_detector.counters[b'pre_valve2']))
+            old_value = str(self.counters[b'pre_valve2'])
+            self.counters[b'pre_valve2'] = int(value)
+            self.pulsePressureCounter = self.counters[b'pre_valve2']
+            msg = 'PVname %r received counter pre_valve2 was reset to %r -> %r' %(pvname,old_value,str(self.counters[b'pre_valve2']))
             self.append_permanent_log(message = msg)
-            old_value = event_detector.counters[b'depre_valve1']
+            old_value = self.counters[b'depre_valve1']
         elif pvname == socket_server.CAS_prefix+'reset_valve1':
-            old_value = str(event_detector.counters[b'depre_valve1'])
-            event_detector.counters[b'depre_valve1'] = int(value)
-            event_detector.pulseDepressureCounter = event_detector.counters[b'depre_valve1']
-            msg = 'PVname %r received counter depre_valve1 was reset to %r -> %r' %(pvname,old_value,str(event_detector.counters[b'depre_valve1']))
+            old_value = str(self.counters[b'depre_valve1'])
+            self.counters[b'depre_valve1'] = int(value)
+            self.pulseDepressureCounter = self.counters[b'depre_valve1']
+            msg = 'PVname %r received counter depre_valve1 was reset to %r -> %r' %(pvname,old_value,str(self.counters[b'depre_valve1']))
             self.append_permanent_log(message = msg)
         elif pvname == socket_server.CAS_prefix+'reset_HP_pump':
-            old_value = str(event_detector.counters[b'pump'])
-            event_detector.counters[b'pump'] = int(value)
-            event_detector.pumpCounter = event_detector.counters[b'pump']
-            msg = 'PVname %r received counter pump was reset to %r -> %r' %(pvname,old_value,str(event_detector.counters[b'pump']))
+            old_value = str(self.counters[b'pump'])
+            self.counters[b'pump'] = int(value)
+            self.pumpCounter = self.counters[b'pump']
+            msg = 'PVname %r received counter pump was reset to %r -> %r' %(pvname,old_value,str(self.counters[b'pump']))
             self.append_permanent_log(message = msg)
 
     def get_coeff_target_pressure(self,value = None):
@@ -3118,6 +3251,98 @@ class Handler(object):
         from ubcs_auxiliary.numerical import bin_data
         return bin_data(data  = data, x = x_in, axis = axis, num_of_bins = num_of_bins, dtype = 'int')
 
+    def history_init(self):
+        """
+        initializes logging at the very beginning. Creates all necessary variables and objects.
+        Has to be run once at the beginning of the server initialization
+        """
+        from os import makedirs, path
+        from time import strftime, localtime, time
+        from datetime import datetime
+        from circular_buffer_numpy.circular_buffer import CircularBuffer
+
+        self.history_buffers_list = [b'pPre_0',
+                                     b'pDepre_0',
+                                     b'pPre_after_0',
+                                     b'pDiff_0',
+                                     b'tSwitchDepressure_0',
+                                     b'tSwitchDepressureEst_0',
+                                     b'tSwitchPressure_0',
+                                     b'tSwitchPressureEst_0',
+                                     b'gradientPressure_0',
+                                     b'gradientDepressure_0',
+                                     b'gradientPressureEst_0',
+                                     b'gradientDepressureEst_0',
+                                     b'riseTime_0',
+                                     b'fallTime_0',
+                                     b'pPre_1',
+                                     b'pDepre_1',
+                                     b'pPre_after_1',
+                                     b'pDiff_1',
+                                     b'tSwitchDepressure_1',
+                                     b'tSwitchPressure_1',
+                                     b'gradientPressure_1',
+                                     b'gradientDepressure_1',
+                                     b'fallTime_1',
+                                     b'riseTime_1',
+                                     b'period',
+                                     b'delay',
+                                     b'pressure_pulse_width',
+                                     b'depressure_pulse_width',
+                                     b'pump_stroke',
+                                     b'depressure_valve_counter',
+                                     b'pressure_valve_counter',
+                                     b'leak_value',
+                                     b'meanbit3'
+                                     ]
+        self.history_buffers = {}
+        for key in self.history_buffers_list:
+            self.history_buffers[key] = CircularBuffer(shape = (4,self.history_buffer_size), dtype = 'float64')
+        #                 arr[0,0] = period_idx
+        #                 arr[1,0] = event_code
+        #                 arr[2,0] = global_pointer
+        #                 arr[3,0] = value
+
+    def history_append(self, dic = {},event_code = 0, global_pointer = 0, period_idx = 0):
+        """
+        appends values to circular buffers with keys according to the input dictionary(dic)
+        """
+        from numpy import zeros
+        arr = zeros((4,1))
+        t = time()
+        for key, value in dic.items():
+            if key in self.history_buffers_list:
+                arr[0,0] = period_idx
+                arr[1,0] = event_code #value[b'evt_code']
+                arr[2,0] = global_pointer# value[b'global_pointer']
+                arr[3,0] = value
+                self.history_buffers[key].append(arr)
+
+    def history_reset(self, pvname = '',value = '', char_val = ''):
+        from os import makedirs, path
+        from time import strftime, localtime, time
+        from datetime import datetime
+        ###reset counters by grabbing local parameters from global
+        self.counters_current = {b'pump':0,
+            b'depressurize':0,
+            b'pressurize':0,
+            b'valve3':0,
+            b'logging':0,
+            b'D5':0,
+            b'D6':0,
+            b'period':0,
+            b'delay':0,
+            b'timeout':0,
+            b'pump_stroke':0,
+            b'periodic_update':0,
+            b'periodic_update_cooling':0,
+            b'emergency': 0} #emergency counter for leak detection
+        #clear history buffers
+        for key, values in self.history_buffers.items():
+            self.history_buffers[key].clear()
+
+
+
 ##########################################################################################
 ###  test functions
 ##########################################################################################
@@ -3209,7 +3434,7 @@ if __name__ == "__main__":
     logging.basicConfig(filename=gettempdir()+'/di4108_DL.log',
                         level=logging.INFO, format="%(asctime)s %(levelname)s: %(message)s")
 
-    event_detector.init()
+    self.init()
     from numpy import array
     self = event_detector
     temp_lst = {b'tSwitchPressure_0':1,b'tSwitchPressure_1':2,b'tSwitchPressureEst_0':3,b'gradientPressure_0':4,b'gradientPressure_1':5,b'gradientPressureEst_0':6}
