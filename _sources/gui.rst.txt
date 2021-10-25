@@ -24,7 +24,7 @@ the right column, from top to bottom:
 * message field for faults and warnings
 
 
-Modern monitors should have more than HD (1920x1080) resolution. Hence, I propose to use HD resolution as a standard to create the icarus application level GUI. The GUI showed in the picture above is divided into 3 sections and the ration is roughly 2\2\1. Given this the columns should be 768\768\384 pixels wide. Vertically we have 1080 pixels. The middle logging graphs should occupy all vertical space (1080 pixels) and left should be divided into 4 sections with ratio of 1/1/1/2 (1 for figures and 2 for the table)
+Modern monitors should have more than HD (1920x1080) resolution. Hence, I propose to use HD resolution as a standard to create the icarus application level GUI. The GUI showed in the picture above is divided into 3 sections and the ration is roughly 2/2/1. Given this the columns should be 768/768/384 pixels wide. Vertically we have 1080 pixels. The middle logging graphs should occupy all vertical space (1080 pixels) and left should be divided into 4 sections with ratio of 1/1/1/2 (1 for figures and 2 for the table)
 
 
 
