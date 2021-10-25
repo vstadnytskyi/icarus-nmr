@@ -37,7 +37,7 @@ if __name__ == '__main__':
     device = Handler(client)
 
     ioc_options, run_options = ioc_arg_parser(
-        default_prefix=f'digital_handler_{socket.gethostname()}:',
+        default_prefix=f'dio_{socket.gethostname()}:',
         desc=dedent(Server.__doc__))
     ioc = Server(**ioc_options)
     ioc.device = device

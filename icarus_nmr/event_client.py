@@ -60,16 +60,14 @@ class Client():
         self.ctx = Context()
         self.ca_name = device_ca_server_prefix
         self.dio_ca_name = dio_ca_server_prefix
-        self.dio,self.data,self.peek_data,self.queue_length,self.packet_shape,self.freq = self.ctx.get_pvs(f'{self.ca_name}dio',
+        self.dio,self.data,self.peek_data,self.queue_length,self.packet_shape,self.freq = self.ctx.get_pvs(f'{self.dio_ca_name}dio',
             f'{self.ca_name}data',
             f'{self.ca_name}peek_data',
             f'{self.ca_name}queue_length',
             f'{self.ca_name}packet_shape',
             f'{self.ca_name}freq',)
 
-        self.dio,= self.ctx.get_pvs(f'{self.dio_ca_name}dio',)
-
-    def get_dio(self, value):
+    def get_dio(self):
         return self.dio.read().data[0]
     def set_dio(self, value):
         self.dio.write(value)

@@ -274,7 +274,7 @@ class GUI(wx.Frame):
 
         # CONTROLS RIGHT Panel
         import socket
-        digital_ca = f'digital_handler_{socket.gethostname()}:'
+        digital_ca = f'dio_{socket.gethostname()}:'
 
         self.fields['operating_mode_rbox_Manual'] = epics.wx.PVRadioButton(self.panel, pv = f"{digital_ca}operating_mode", pvValue = 0, label = 'Manual')
         self.fields['operating_mode_rbox_Pulsed'] = epics.wx.PVRadioButton(self.panel, pv = f"{digital_ca}operating_mode", pvValue = 1, label = 'Pulsed')
