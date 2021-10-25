@@ -273,32 +273,34 @@ class GUI(wx.Frame):
         self.box_sizer[b'measurements'].Add(self.sizers[b'valves_per_pump_current'],0)
 
         # CONTROLS RIGHT Panel
+        import socket
+        digital_ca = f'digital_handler_{socket.gethostname()}:'
 
-        self.fields['operating_mode_rbox_Manual'] = epics.wx.PVRadioButton(self.panel, pv = f"{'digital_handler_mock'}:operating_mode", pvValue = 0, label = 'Manual')
-        self.fields['operating_mode_rbox_Pulsed'] = epics.wx.PVRadioButton(self.panel, pv = f"{'digital_handler_mock'}:operating_mode", pvValue = 1, label = 'Pulsed')
-        self.fields['operating_mode_rbox_Console'] = epics.wx.PVRadioButton(self.panel, pv = f"{'digital_handler_mock'}:operating_mode", pvValue = 2, label = 'Console')
+        self.fields['operating_mode_rbox_Manual'] = epics.wx.PVRadioButton(self.panel, pv = f"{digital_ca}operating_mode", pvValue = 0, label = 'Manual')
+        self.fields['operating_mode_rbox_Pulsed'] = epics.wx.PVRadioButton(self.panel, pv = f"{digital_ca}operating_mode", pvValue = 1, label = 'Pulsed')
+        self.fields['operating_mode_rbox_Console'] = epics.wx.PVRadioButton(self.panel, pv = f"{digital_ca}operating_mode", pvValue = 2, label = 'Console')
         self.sizers['operating_mode_rbox'] = wx.BoxSizer(wx.HORIZONTAL)
         self.sizers['operating_mode_rbox'].Add(self.fields['operating_mode_rbox_Manual'],0)
         self.sizers['operating_mode_rbox'].Add(self.fields['operating_mode_rbox_Pulsed'],0)
         self.sizers['operating_mode_rbox'].Add(self.fields['operating_mode_rbox_Console'],0)
 
-        self.fields[b'shutdown_state'] = epics.wx.PVButton(self.panel, pv=f"{'digital_handler_mock'}:shutdown_state", pushValue = 1, size = (200,200),label="Shutdown")
+        self.fields[b'shutdown_state'] = epics.wx.PVButton(self.panel, pv=f"{digital_ca}shutdown_state", pushValue = 1, size = (200,200),label="Shutdown")
 
         self.sizers[b'pump_state'] = wx.BoxSizer(wx.VERTICAL)
-        self.fields[b'pump_state_low'] = epics.wx.PVButton(self.panel, pv=f"{'digital_handler_mock'}:bit0", pushValue = 0, size = (200,50),label="Pump Low", disablePV=f"{'digital_handler_mock'}:bit0_enable",disableValue=0)
-        self.fields[b'pump_state_high'] = epics.wx.PVButton(self.panel, pv=f"{'digital_handler_mock'}:bit0", pushValue = 1, size = (200,50),label="Pump High", disablePV=f"{'digital_handler_mock'}:bit0_enable",disableValue=0)
+        self.fields[b'pump_state_low'] = epics.wx.PVButton(self.panel, pv=f"{digital_ca}bit0", pushValue = 0, size = (200,50),label="Pump Low", disablePV=f"{digital_ca}bit0_enable",disableValue=0)
+        self.fields[b'pump_state_high'] = epics.wx.PVButton(self.panel, pv=f"{digital_ca}bit0", pushValue = 1, size = (200,50),label="Pump High", disablePV=f"{digital_ca}bit0_enable",disableValue=0)
         self.sizers[b'pump_state'].Add(self.fields[b'pump_state_low'],0)
         self.sizers[b'pump_state'].Add(self.fields[b'pump_state_high'],0)
 
         self.sizers[b'depre_state'] = wx.BoxSizer(wx.VERTICAL)
-        self.fields[b'depre_state_low'] = epics.wx.PVButton(self.panel, pv=f"{'digital_handler_mock'}:bit1", pushValue = 0, size = (200,50),label="Depre Low", disablePV=f"{'digital_handler_mock'}:bit1_enable",disableValue=0)
-        self.fields[b'depre_state_high'] = epics.wx.PVButton(self.panel, pv=f"{'digital_handler_mock'}:bit1", pushValue = 1, size = (200,50),label="Depre High", disablePV=f"{'digital_handler_mock'}:bit1_enable",disableValue=0)
+        self.fields[b'depre_state_low'] = epics.wx.PVButton(self.panel, pv=f"{digital_ca}bit1", pushValue = 0, size = (200,50),label="Depre Low", disablePV=f"{digital_ca}bit1_enable",disableValue=0)
+        self.fields[b'depre_state_high'] = epics.wx.PVButton(self.panel, pv=f"{digital_ca}bit1", pushValue = 1, size = (200,50),label="Depre High", disablePV=f"{digital_ca}bit1_enable",disableValue=0)
         self.sizers[b'depre_state'].Add(self.fields[b'depre_state_low'],0)
         self.sizers[b'depre_state'].Add(self.fields[b'depre_state_high'],0)
 
         self.sizers[b'pre_state'] = wx.BoxSizer(wx.VERTICAL)
-        self.fields[b'pre_state_low'] = epics.wx.PVButton(self.panel, pv=f"{'digital_handler_mock'}:bit2", pushValue = 0, size = (200,50),label="Pre Low", disablePV=f"{'digital_handler_mock'}:bit2_enable",disableValue=0)
-        self.fields[b'pre_state_high'] = epics.wx.PVButton(self.panel, pv=f"{'digital_handler_mock'}:bit2", pushValue = 1, size = (200,50),label="Pre High", disablePV=f"{'digital_handler_mock'}:bit2_enable",disableValue=0)
+        self.fields[b'pre_state_low'] = epics.wx.PVButton(self.panel, pv=f"{digital_ca}bit2", pushValue = 0, size = (200,50),label="Pre Low", disablePV=f"{digital_ca}bit2_enable",disableValue=0)
+        self.fields[b'pre_state_high'] = epics.wx.PVButton(self.panel, pv=f"{digital_ca}bit2", pushValue = 1, size = (200,50),label="Pre High", disablePV=f"{digital_ca}bit2_enable",disableValue=0)
         self.sizers[b'pre_state'].Add(self.fields[b'pre_state_low'],0)
         self.sizers[b'pre_state'].Add(self.fields[b'pre_state_high'],0)
 
