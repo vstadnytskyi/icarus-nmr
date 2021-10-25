@@ -17,6 +17,8 @@ from pdb import pm
 from numpy import random, array, zeros, ndarray, nan, isnan
 from time import time,sleep
 
+import socket
+
 SERVER_NAME = socket.gethostname()
 
 if __name__ == '__main__':
