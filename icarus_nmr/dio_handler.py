@@ -534,3 +534,8 @@ class Handler():
                     pass
         if flag:
             self.set_trigger_mode(value = 0)
+
+
+
+
+#icarus_event_handler

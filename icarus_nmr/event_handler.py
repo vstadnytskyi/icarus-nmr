@@ -3427,14 +3427,20 @@ if __name__ == "__main__":
     import logging
     import matplotlib
     matplotlib.use('WxAgg')
+
+
+    import socket
+    SERVER_NAME = socket.gethostname()
+    client = Client(device_ca_server_prefix = f'device_{SERVER_NAME}:',dio_ca_server_prefix = f'dio_{SERVER_NAME}:')
+    from icarus.event_client import Client
+    from icarus_nmr.event_client import DAQ
+
     client = Client()
     daq = DAQ(client)
     daq.init()
-    event_detector = Event_Detector()
-    logging.basicConfig(filename=gettempdir()+'/di4108_DL.log',
-                        level=logging.INFO, format="%(asctime)s %(levelname)s: %(message)s")
 
-    self.init()
+    logging.basicConfig(filename=gettempdir()+'/icarus_event_handler.log',
+                        level=logging.INFO, format="%(asctime)s %(levelname)s: %(message)s")
     from numpy import array
-    self = event_detector
+
     temp_lst = {b'tSwitchPressure_0':1,b'tSwitchPressure_1':2,b'tSwitchPressureEst_0':3,b'gradientPressure_0':4,b'gradientPressure_1':5,b'gradientPressureEst_0':6}
