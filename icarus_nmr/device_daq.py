@@ -1,13 +1,11 @@
 """
 DATAQ 4108 Device Level code
-author: Valentyn Stadnytskyi
-Date: November 2017- November 2019
+
 
 fully python3 compatible.
 
-The main purpose of this module is to provide useful interface between DI-4108 and a server system level code that does all numbercrynching. This modules only job is to attend DI-4108 and insure that all data is collected and stored in a circular buffer.
+The main purpose of this module is to provide useful interface between DI-4108 and a server system level code that does all numbercrunching. This modules only job is to attend DI-4108 and insure that all data is collected and stored in a circular buffer.
 
-The communication in this module is done via XLI module developed by Valentyn Stadnytskyi. This module is based on python sockets.
 
 """
 
@@ -27,15 +25,12 @@ if sys.version_info[0] == 3:
 else:
     from time import gmtime, strftime, time, sleep, clock
 
-import os.path
-import struct
 from pdb import pm
 
 from logging import debug,info,warning,error
 
 from timeit import Timer, timeit
 from circular_buffer_numpy.queue import Queue
-from datetime import datetime
 
 from ubcs_auxiliary.saved_property import DataBase, SavedProperty
 from ubcs_auxiliary.threading import new_thread
@@ -137,7 +132,6 @@ class Device():
             self.config_DL(baserate = self.pr_baserate,dec = self.pr_dec, DOI_config = self.pr_DOI_config, DOI_set = self.pr_DOI_set)
         else:
             warning('The driver object in the device _init() is {}'.format(driver))
-        self.start()
 
     def start(self):
         """

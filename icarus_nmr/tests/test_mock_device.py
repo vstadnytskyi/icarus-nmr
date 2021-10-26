@@ -14,7 +14,7 @@ class MockTest(unittest.TestCase):
         driver = Driver()
         device = Device()
         device.bind_driver(driver)
-        device._init()
+        device.init()
         device.start()
         dic = {b'Device name': '4108',
                  b'Firmware version': 'VS',
@@ -37,7 +37,7 @@ class MockTest(unittest.TestCase):
         device = Device()
         device.pr_packet_size = 64
         device.bind_driver(Driver())
-        device._init()
+        device.init()
         device.run_once()
         #the line below does not work. Need to be investigated.
         #self.assertEqual(device.DIO, 127)

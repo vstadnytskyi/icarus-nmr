@@ -36,8 +36,8 @@ if __name__ == '__main__':
     from time import time, sleep
 
     # import device (DI_4108_DL) class and initiate device instance.
-    from icarus_nmr.device_daq import DI4108_DL
-    device = DI4108_DL()
+    from icarus_nmr.device_daq import Device
+    device = Device()
 
     #########
     # the driver binding section needs to be changed when using actual physical device instead of a mock device
