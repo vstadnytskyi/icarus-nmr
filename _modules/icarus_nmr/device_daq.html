@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>icarus_nmr.device_daq &mdash; Icarus Pressure Jump for NMR 0.1.0.post18+g6625f23 documentation</title>
+  <title>icarus_nmr.device_daq &mdash; Icarus Pressure Jump for NMR 0.1.0.post20+gd417687 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/plot_directive.css" type="text/css" />
@@ -31,7 +31,7 @@
             <a href="../../index.html" class="icon icon-home"> Icarus Pressure Jump for NMR
           </a>
               <div class="version">
-                0.1.0.post18+g6625f23
+                0.1.0.post20+gd417687
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -95,8 +95,6 @@
 <span class="sd">The communication in this module is done via XLI module developed by Valentyn Stadnytskyi. This module is based on python sockets.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;0.0.0&#39;</span>
-
 
 <span class="kn">import</span> <span class="nn">traceback</span>
 <span class="kn">import</span> <span class="nn">psutil</span><span class="o">,</span> <span class="nn">os</span>
@@ -114,30 +112,14 @@
 <span class="k">else</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">gmtime</span><span class="p">,</span> <span class="n">strftime</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">sleep</span><span class="p">,</span> <span class="n">clock</span>
 
-<span class="kn">import</span> <span class="nn">sys</span>
-<span class="c1">#sys.path.append(&#39;/Users/femto-13/All-Projects-on-femto/LaserLab/Software/&#39;)</span>
-
 <span class="kn">import</span> <span class="nn">os.path</span>
 <span class="kn">import</span> <span class="nn">struct</span>
 <span class="kn">from</span> <span class="nn">pdb</span> <span class="kn">import</span> <span class="n">pm</span>
 
 <span class="kn">from</span> <span class="nn">logging</span> <span class="kn">import</span> <span class="n">debug</span><span class="p">,</span><span class="n">info</span><span class="p">,</span><span class="n">warning</span><span class="p">,</span><span class="n">error</span>
-<span class="c1"># see https://vstadnytskyi.github.io/auxiliary/saved-property.html for details</span>
 
-
-<span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span><span class="mi">3</span><span class="p">:</span>
-    <span class="n">keyboard_input</span> <span class="o">=</span> <span class="nb">input</span>
-    <span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">process_time</span> <span class="k">as</span> <span class="n">clock</span>
-<span class="k">else</span><span class="p">:</span>
-    <span class="n">keyboard_input</span> <span class="o">=</span> <span class="n">raw_input</span>
-    <span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">clock</span>
-
-
-
-<span class="kn">from</span> <span class="nn">struct</span> <span class="kn">import</span> <span class="n">pack</span><span class="p">,</span> <span class="n">unpack</span>
 <span class="kn">from</span> <span class="nn">timeit</span> <span class="kn">import</span> <span class="n">Timer</span><span class="p">,</span> <span class="n">timeit</span>
 <span class="kn">from</span> <span class="nn">circular_buffer_numpy.queue</span> <span class="kn">import</span> <span class="n">Queue</span>
-<span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">Thread</span><span class="p">,</span> <span class="n">Event</span><span class="p">,</span> <span class="n">Timer</span><span class="p">,</span> <span class="n">Condition</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
 
 <span class="kn">from</span> <span class="nn">ubcs_auxiliary.saved_property</span> <span class="kn">import</span> <span class="n">DataBase</span><span class="p">,</span> <span class="n">SavedProperty</span>
@@ -145,7 +127,7 @@
 <span class="kn">from</span> <span class="nn">ubcs_auxiliary.advsleep</span> <span class="kn">import</span> <span class="n">precision_sleep</span> <span class="c1">#home-made module for accurate sleep</span>
 
 
-<div class="viewcode-block" id="DI4108_DL"><a class="viewcode-back" href="../../device.html#icarus_nmr.device_daq.DI4108_DL">[docs]</a><span class="k">class</span> <span class="nc">DI4108_DL</span><span class="p">():</span>
+<div class="viewcode-block" id="Device"><a class="viewcode-back" href="../../device.html#icarus_nmr.device_daq.Device">[docs]</a><span class="k">class</span> <span class="nc">Device</span><span class="p">():</span>
     <span class="n">db</span> <span class="o">=</span> <span class="n">DataBase</span><span class="p">(</span><span class="n">root</span> <span class="o">=</span> <span class="s1">&#39;TEMP&#39;</span><span class="p">,</span> <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;DI4108_DL&#39;</span><span class="p">)</span>
     <span class="c1">#: serial number, five character long string</span>
     <span class="n">pr_serial_number</span> <span class="o">=</span> <span class="n">SavedProperty</span><span class="p">(</span><span class="n">db</span><span class="p">,</span><span class="s1">&#39;Serial Number&#39;</span><span class="p">,</span> <span class="s1">&#39;00000&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
@@ -187,7 +169,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">curr_dio</span> <span class="o">=</span> <span class="mi">127</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">user_set_dio</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">curr_dio</span>
 
-    <span class="k">def</span> <span class="nf">first_time_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">threads</span> <span class="o">=</span> <span class="p">{}</span>
+
+<div class="viewcode-block" id="Device.first_time_setup"><a class="viewcode-back" href="../../device.html#icarus_nmr.device_daq.Device.first_time_setup">[docs]</a>    <span class="k">def</span> <span class="nf">first_time_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        set control variables to factory settings</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pr_AI_channels</span> <span class="o">=</span> <span class="mi">8</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pr_DI_channels</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pr_packet_size</span> <span class="o">=</span> <span class="mi">128</span>
@@ -196,10 +183,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">pr_rate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pr_baserate</span><span class="o">*</span><span class="mf">1.0</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">pr_dec</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pr_DOI_config</span> <span class="o">=</span> <span class="s1">&#39;1111111&#39;</span> <span class="c1">#all outputs</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pr_DOI_set</span> <span class="o">=</span> <span class="s1">&#39;1111111&#39;</span> <span class="c1">#all high</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">pressure_sensor_offset</span> <span class="o">=</span> <span class="p">[</span><span class="mf">69.5595</span><span class="p">,</span> <span class="mf">65.562</span><span class="p">,</span> <span class="mf">68.881375</span><span class="p">,</span> <span class="mf">84.2195</span><span class="p">,</span> <span class="mf">86.96075</span><span class="p">,</span> <span class="mf">17.248</span><span class="p">,</span> <span class="mf">17.322</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pressure_sensor_offset</span> <span class="o">=</span> <span class="p">[</span><span class="mf">69.5595</span><span class="p">,</span> <span class="mf">65.562</span><span class="p">,</span> <span class="mf">68.881375</span><span class="p">,</span> <span class="mf">84.2195</span><span class="p">,</span> <span class="mf">86.96075</span><span class="p">,</span> <span class="mf">17.248</span><span class="p">,</span> <span class="mf">17.322</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span></div>
 
-    <span class="k">def</span> <span class="nf">bind_driver</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">driver</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">driver</span> <span class="o">=</span> <span class="n">driver</span>
+<div class="viewcode-block" id="Device.bind_driver"><a class="viewcode-back" href="../../device.html#icarus_nmr.device_daq.Device.bind_driver">[docs]</a>    <span class="k">def</span> <span class="nf">bind_driver</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">driver</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        bind driver to device instance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">driver</span> <span class="o">=</span> <span class="n">driver</span></div>
 
     <span class="k">def</span> <span class="nf">_init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -229,7 +219,7 @@
             <span class="n">error</span><span class="p">(</span><span class="n">trace</span><span class="o">.</span><span class="n">format_exc</span><span class="p">())</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">proccess</span> <span class="o">=</span> <span class="n">p</span>
 
-<div class="viewcode-block" id="DI4108_DL.init"><a class="viewcode-back" href="../../device.html#icarus_nmr.device_daq.DI4108_DL.init">[docs]</a>    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg_in</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">client</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">driver</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Device.init"><a class="viewcode-back" href="../../device.html#icarus_nmr.device_daq.Device.init">[docs]</a>    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg_in</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">client</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">driver</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        initialize the DL program</span>
@@ -241,9 +231,9 @@
         <span class="n">err</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">return</span> <span class="n">flag</span><span class="p">,</span> <span class="n">buff</span><span class="p">,</span> <span class="n">err</span></div>
 
-<div class="viewcode-block" id="DI4108_DL.help"><a class="viewcode-back" href="../../device.html#icarus_nmr.device_daq.DI4108_DL.help">[docs]</a>    <span class="k">def</span> <span class="nf">help</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Device.help"><a class="viewcode-back" href="../../device.html#icarus_nmr.device_daq.Device.help">[docs]</a>    <span class="k">def</span> <span class="nf">help</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        returns helps string</span>
+<span class="sd">        return helps string</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -260,9 +250,9 @@
         <span class="n">response</span> <span class="o">+=</span> <span class="s1">&#39;Description of the Python Code&#39;</span> <span class="o">+</span> <span class="vm">__doc__</span>
         <span class="k">return</span> <span class="n">response</span></div>
 
-<div class="viewcode-block" id="DI4108_DL.close"><a class="viewcode-back" href="../../device.html#icarus_nmr.device_daq.DI4108_DL.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Device.close"><a class="viewcode-back" href="../../device.html#icarus_nmr.device_daq.Device.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        orderly closes the device program. just a wrapper for self.stop()</span>
+<span class="sd">        orderly close the device program. just a wrapper for self.stop()</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -274,13 +264,9 @@
 <span class="sd">        --------</span>
 <span class="sd">        &gt;&gt;&gt; device.abort()</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
-        <span class="n">flag</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="n">buff</span> <span class="o">=</span> <span class="n">nan</span>
-        <span class="n">err</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">return</span> <span class="n">flag</span><span class="p">,</span> <span class="n">buff</span><span class="p">,</span> <span class="n">err</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="DI4108_DL.abort"><a class="viewcode-back" href="../../device.html#icarus_nmr.device_daq.DI4108_DL.abort">[docs]</a>    <span class="k">def</span> <span class="nf">abort</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Device.abort"><a class="viewcode-back" href="../../device.html#icarus_nmr.device_daq.Device.abort">[docs]</a>    <span class="k">def</span> <span class="nf">abort</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        aborts. Currently not implemented</span>
 
@@ -298,7 +284,7 @@
 
 
 
-<div class="viewcode-block" id="DI4108_DL.snapshot"><a class="viewcode-back" href="../../device.html#icarus_nmr.device_daq.DI4108_DL.snapshot">[docs]</a>    <span class="k">def</span> <span class="nf">snapshot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Device.snapshot"><a class="viewcode-back" href="../../device.html#icarus_nmr.device_daq.Device.snapshot">[docs]</a>    <span class="k">def</span> <span class="nf">snapshot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        returns a hardcoded snapshot from the device instance. Currently does nothing.</span>
 
@@ -312,19 +298,19 @@
 <span class="sd">        --------</span>
 <span class="sd">        &gt;&gt;&gt; device.snapshot()</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">nan</span>
-        <span class="n">err</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
-        <span class="n">flag</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">response</span><span class="p">[</span><span class="sa">b</span><span class="s1">&#39;flag&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">flag</span>
-        <span class="n">response</span><span class="p">[</span><span class="sa">b</span><span class="s1">&#39;message&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">message</span>
-        <span class="n">response</span><span class="p">[</span><span class="sa">b</span><span class="s1">&#39;error&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">err</span>
-        <span class="k">return</span> <span class="n">response</span></div>
+        <span class="c1"># from numpy import nan</span>
+        <span class="c1"># err = &#39;&#39;</span>
+        <span class="c1"># flag = True</span>
+        <span class="c1"># message = &#39;&#39;</span>
+        <span class="c1"># response = {}</span>
+        <span class="c1"># response[b&#39;flag&#39;] = flag</span>
+        <span class="c1"># response[b&#39;message&#39;] = message</span>
+        <span class="c1"># response[b&#39;error&#39;] = err</span>
+        <span class="k">pass</span></div>
 
-<div class="viewcode-block" id="DI4108_DL.start"><a class="viewcode-back" href="../../device.html#icarus_nmr.device_daq.DI4108_DL.start">[docs]</a>    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Device.start"><a class="viewcode-back" href="../../device.html#icarus_nmr.device_daq.Device.start">[docs]</a>    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Creates a new thread and submits self.run for execution</span>
+<span class="sd">        Create a new thread and submits self.run for execution</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -337,9 +323,9 @@
 <span class="sd">        &gt;&gt;&gt; device.start()</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="kn">from</span> <span class="nn">ubcs_auxiliary.threading</span> <span class="kn">import</span> <span class="n">new_thread</span>
-        <span class="n">new_thread</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">threads</span><span class="p">[</span><span class="s1">&#39;running&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_thread</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="DI4108_DL.stop"><a class="viewcode-back" href="../../device.html#icarus_nmr.device_daq.DI4108_DL.stop">[docs]</a>    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Device.stop"><a class="viewcode-back" href="../../device.html#icarus_nmr.device_daq.Device.stop">[docs]</a>    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Orderly stop of the device code.</span>
 <span class="sd">        - stops data acquisiion</span>
@@ -364,7 +350,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">close_port</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="DI4108_DL.kill"><a class="viewcode-back" href="../../device.html#icarus_nmr.device_daq.DI4108_DL.kill">[docs]</a>    <span class="k">def</span> <span class="nf">kill</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Device.kill"><a class="viewcode-back" href="../../device.html#icarus_nmr.device_daq.Device.kill">[docs]</a>    <span class="k">def</span> <span class="nf">kill</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Orderly self-destruction. kills all threads and deletes the instance.</span>
 
@@ -381,9 +367,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
         <span class="k">del</span> <span class="bp">self</span></div>
 
-<div class="viewcode-block" id="DI4108_DL.config_DL"><a class="viewcode-back" href="../../device.html#icarus_nmr.device_daq.DI4108_DL.config_DL">[docs]</a>    <span class="k">def</span> <span class="nf">config_DL</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">baserate</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span><span class="n">dec</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">DOI_config</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">DOI_set</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Device.config_DL"><a class="viewcode-back" href="../../device.html#icarus_nmr.device_daq.Device.config_DL">[docs]</a>    <span class="k">def</span> <span class="nf">config_DL</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">baserate</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span><span class="n">dec</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">DOI_config</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">DOI_set</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        configures analog and digital channels, and rate via baserate and dec.</span>
+<span class="sd">        configure analog and digital channels, and rate via baserate and dec.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -394,7 +380,7 @@
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
-<span class="sd">        &gt;&gt;&gt; device.config_DIO(&#39;00000000&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; device.config_DL(baserate = 20000, dec = 5, DOI_config = &#39;1111111&#39;,DOI_set = &#39;1111111&#39;)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">debug</span><span class="p">(</span><span class="s1">&#39;DL: config DL start&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">config_channels</span><span class="p">(</span><span class="n">baserate</span> <span class="o">=</span> <span class="n">baserate</span><span class="p">,</span>
@@ -403,7 +389,7 @@
                                  <span class="n">set_digital</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">DOI_set</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
         <span class="n">debug</span><span class="p">(</span><span class="s1">&#39;DL: config DL end&#39;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="DI4108_DL.config_DIO"><a class="viewcode-back" href="../../device.html#icarus_nmr.device_daq.DI4108_DL.config_DIO">[docs]</a>    <span class="k">def</span> <span class="nf">config_DIO</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s1">&#39;00000000&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="Device.config_DIO"><a class="viewcode-back" href="../../device.html#icarus_nmr.device_daq.Device.config_DIO">[docs]</a>    <span class="k">def</span> <span class="nf">config_DIO</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s1">&#39;00000000&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        configure direction of digital IOs. It takes a string with 8 characters, &#39;0&#39; or &#39;1&#39; where</span>
 <span class="sd">        &#39;0&#39; -</span>
@@ -422,12 +408,14 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">running</span><span class="p">:</span>
             <span class="n">driver</span><span class="o">.</span><span class="n">config_digital</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">string</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+            <span class="n">reply</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">driver</span><span class="o">.</span><span class="n">config_digital</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">string</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="n">echo</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span></div>
+            <span class="n">reply</span> <span class="o">=</span> <span class="n">driver</span><span class="o">.</span><span class="n">config_digital</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">string</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="n">echo</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">reply</span></div>
 
-<div class="viewcode-block" id="DI4108_DL.set_DIO"><a class="viewcode-back" href="../../device.html#icarus_nmr.device_daq.DI4108_DL.set_DIO">[docs]</a>    <span class="k">def</span> <span class="nf">set_DIO</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s1">&#39;00000000&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="Device.set_DIO"><a class="viewcode-back" href="../../device.html#icarus_nmr.device_daq.Device.set_DIO">[docs]</a>    <span class="k">def</span> <span class="nf">set_DIO</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s1">&#39;00000000&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        sets digital input/output state</span>
+<span class="sd">        set digital input/output state</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -446,7 +434,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">io_push</span><span class="p">({</span><span class="s1">&#39;dio&#39;</span><span class="p">:</span><span class="n">value</span><span class="p">})</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;set DIO inside device daq library&#39;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="DI4108_DL.set_outside_DIO"><a class="viewcode-back" href="../../device.html#icarus_nmr.device_daq.DI4108_DL.set_outside_DIO">[docs]</a>    <span class="k">def</span> <span class="nf">set_outside_DIO</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s1">&#39;00000000&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="Device.set_outside_DIO"><a class="viewcode-back" href="../../device.html#icarus_nmr.device_daq.Device.set_outside_DIO">[docs]</a>    <span class="k">def</span> <span class="nf">set_outside_DIO</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s1">&#39;00000000&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        sets digital input/output state</span>
 
@@ -467,13 +455,18 @@
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;set DIO inside device daq library&#39;</span><span class="p">)</span></div>
 
 
-    <span class="k">def</span> <span class="nf">get_DIO</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">peek_last_N</span><span class="p">(</span><span class="mi">3</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">9</span><span class="p">])</span>
+<div class="viewcode-block" id="Device.get_DIO"><a class="viewcode-back" href="../../device.html#icarus_nmr.device_daq.Device.get_DIO">[docs]</a>    <span class="k">def</span> <span class="nf">get_DIO</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        get digital state from data queue</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">peek_last_N</span><span class="p">(</span><span class="mi">3</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">9</span><span class="p">])</span></div>
     <span class="n">DIO</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">get_DIO</span><span class="p">,</span><span class="n">set_DIO</span><span class="p">)</span>
+
+
     <span class="c1">### Advance function</span>
 
 
-<div class="viewcode-block" id="DI4108_DL.run"><a class="viewcode-back" href="../../device.html#icarus_nmr.device_daq.DI4108_DL.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Device.run"><a class="viewcode-back" href="../../device.html#icarus_nmr.device_daq.Device.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This is a main fuction that will execute run_once function on the while running loop. Usually it gets submitted to a separate thread.</span>
 
@@ -499,7 +492,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">run_once</span><span class="p">()</span>
         <span class="n">info</span><span class="p">(</span><span class="s1">&#39;data acquisition thread has stopped&#39;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="DI4108_DL.run_once"><a class="viewcode-back" href="../../device.html#icarus_nmr.device_daq.DI4108_DL.run_once">[docs]</a>    <span class="k">def</span> <span class="nf">run_once</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Device.run_once"><a class="viewcode-back" href="../../device.html#icarus_nmr.device_daq.Device.run_once">[docs]</a>    <span class="k">def</span> <span class="nf">run_once</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        the repeated block executed in while running loop in the main run() thread</span>
 
@@ -531,28 +524,8 @@
             <span class="n">info</span><span class="p">(</span><span class="s1">&#39;buffer overflow&#39;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">running</span> <span class="o">=</span> <span class="kc">False</span></div>
 
-
-<div class="viewcode-block" id="DI4108_DL.read_queue"><a class="viewcode-back" href="../../device.html#icarus_nmr.device_daq.DI4108_DL.read_queue">[docs]</a>    <span class="k">def</span> <span class="nf">read_queue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg_in</span> <span class="o">=</span> <span class="p">{</span><span class="sa">b</span><span class="s1">&#39;number&#39;</span><span class="p">:</span><span class="mi">0</span><span class="p">},</span> <span class="n">client</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        returns N points from the queue</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">flag</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="n">err</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">N</span> <span class="o">=</span> <span class="n">msg_in</span><span class="p">[</span><span class="sa">b</span><span class="s1">&#39;number&#39;</span><span class="p">]</span>
-        <span class="k">except</span><span class="p">:</span>
-            <span class="n">N</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="n">flag</span> <span class="o">=</span> <span class="kc">False</span>
-            <span class="n">err</span><span class="o">+=</span> <span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">()</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">dequeue</span><span class="p">(</span><span class="n">N</span> <span class="o">=</span> <span class="n">N</span><span class="p">)</span>
-        <span class="n">response</span><span class="p">[</span><span class="sa">b</span><span class="s1">&#39;message&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span>
-        <span class="n">response</span><span class="p">[</span><span class="sa">b</span><span class="s1">&#39;flag&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">flag</span>
-        <span class="n">response</span><span class="p">[</span><span class="sa">b</span><span class="s1">&#39;err&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">err</span>
-        <span class="k">return</span> <span class="n">response</span></div>
-
     <span class="c1">#####Auxiliary functions</span>
-<div class="viewcode-block" id="DI4108_DL.parse_binary"><a class="viewcode-back" href="../../device.html#icarus_nmr.device_daq.DI4108_DL.parse_binary">[docs]</a>    <span class="k">def</span> <span class="nf">parse_binary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+<div class="viewcode-block" id="Device.parse_binary"><a class="viewcode-back" href="../../device.html#icarus_nmr.device_daq.Device.parse_binary">[docs]</a>    <span class="k">def</span> <span class="nf">parse_binary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        takes an integer and converts it to 8 bit representation as an array.</span>
 <span class="sd">        If float number is passed, it will be converted to int.</span>
@@ -565,7 +538,7 @@
             <span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">binary</span><span class="p">[</span><span class="mi">9</span><span class="o">-</span><span class="n">i</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">arr</span></div>
 
-<div class="viewcode-block" id="DI4108_DL.unparse_binary"><a class="viewcode-back" href="../../device.html#icarus_nmr.device_daq.DI4108_DL.unparse_binary">[docs]</a>    <span class="k">def</span> <span class="nf">unparse_binary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">arr</span> <span class="o">=</span> <span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])):</span>
+<div class="viewcode-block" id="Device.unparse_binary"><a class="viewcode-back" href="../../device.html#icarus_nmr.device_daq.Device.unparse_binary">[docs]</a>    <span class="k">def</span> <span class="nf">unparse_binary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">arr</span> <span class="o">=</span> <span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        takes an integer and converts it to 8 bit representation as an array.</span>
 <span class="sd">        If float number is passed, it will be converted to int.</span>
@@ -576,22 +549,25 @@
             <span class="n">integer</span> <span class="o">+=</span> <span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">integer</span></div>
 
-<div class="viewcode-block" id="DI4108_DL.set_pressure_sensor_offset"><a class="viewcode-back" href="../../device.html#icarus_nmr.device_daq.DI4108_DL.set_pressure_sensor_offset">[docs]</a>    <span class="k">def</span> <span class="nf">set_pressure_sensor_offset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">N</span> <span class="o">=</span> <span class="mi">3</span><span class="p">):</span>
+<div class="viewcode-block" id="Device.set_pressure_sensor_offset"><a class="viewcode-back" href="../../device.html#icarus_nmr.device_daq.Device.set_pressure_sensor_offset">[docs]</a>    <span class="k">def</span> <span class="nf">set_pressure_sensor_offset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">dt</span> <span class="o">=</span> <span class="mi">3</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        set pressure sensor offset</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># wait for dt seconds</span>
+        <span class="c1"># calculated offset and standard deviation</span>
+        <span class="c1"># assisgn first 8 mean values(analog values) to</span>
+        <span class="c1"># self.pressure_sensor_offset</span>
         <span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
-        <span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">mean</span><span class="p">,</span> <span class="n">std</span>
-        <span class="n">sleep</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
-        <span class="n">offsets</span> <span class="o">=</span> <span class="n">mean</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">buffer</span><span class="p">[:,</span><span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">rear</span><span class="o">-</span><span class="mi">4000</span><span class="o">*</span><span class="n">N</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">rear</span><span class="p">],</span>\
-                       <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="n">stds</span> <span class="o">=</span> <span class="n">std</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">buffer</span><span class="p">[:,</span><span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">rear</span><span class="o">-</span><span class="mi">4000</span><span class="o">*</span><span class="n">N</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">rear</span><span class="p">],</span>\
-                       <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Pressure sensors offsets are </span><span class="si">%r</span><span class="s1"> and errors are </span><span class="si">%r</span><span class="s1"> &#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">offsets</span><span class="p">,</span><span class="n">stds</span><span class="p">))</span>
+        <span class="n">sleep</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
+        <span class="n">freq</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pr_rate</span><span class="p">)</span>
+        <span class="n">offsets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">peek_last_N</span><span class="p">(</span><span class="n">dt</span><span class="o">*</span><span class="n">freq</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">stds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">peek_last_N</span><span class="p">(</span><span class="n">dt</span><span class="o">*</span><span class="n">freq</span><span class="p">)</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">info</span><span class="p">(</span><span class="s1">&#39;Pressure sensors offsets are </span><span class="si">%r</span><span class="s1"> and errors are </span><span class="si">%r</span><span class="s1"> &#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">offsets</span><span class="p">,</span><span class="n">stds</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pressure_sensor_offset</span> <span class="o">=</span> <span class="n">offsets</span><span class="p">[:</span><span class="mi">8</span><span class="p">]</span></div>
 
 
     <span class="c1">### Input-Output controller section</span>
-<div class="viewcode-block" id="DI4108_DL.io_push"><a class="viewcode-back" href="../../device.html#icarus_nmr.device_daq.DI4108_DL.io_push">[docs]</a>    <span class="k">def</span> <span class="nf">io_push</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">io_dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Device.io_push"><a class="viewcode-back" href="../../device.html#icarus_nmr.device_daq.Device.io_push">[docs]</a>    <span class="k">def</span> <span class="nf">io_push</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">io_dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        a wrapper that takes care of write command to the io module</span>
 
@@ -610,77 +586,37 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">io_push_queue</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">io_push_queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">io_dict</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="DI4108_DL.io_pull"><a class="viewcode-back" href="../../device.html#icarus_nmr.device_daq.DI4108_DL.io_pull">[docs]</a>    <span class="k">def</span> <span class="nf">io_pull</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">io_dict</span><span class="p">):</span>
+<div class="viewcode-block" id="Device.io_pull"><a class="viewcode-back" href="../../device.html#icarus_nmr.device_daq.Device.io_pull">[docs]</a>    <span class="k">def</span> <span class="nf">io_pull</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">io_dict</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        a wrapper that takes care of &#39;read&#39; command to the io module</span>
+<span class="sd">        a wrapper that takes care of &#39;read&#39; command in the io module</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        name :: string</span>
-<span class="sd">            a string name of the variable</span>
-<span class="sd">        value :: object</span>
-<span class="sd">            the new value of the variable to be read from the io module</span>
-
+<span class="sd">        io_dict :: dictionary</span>
+<span class="sd">            a key-value pairs</span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
-<span class="sd">        &gt;&gt;&gt; self.io_pull()</span>
+<span class="sd">        &gt;&gt;&gt; self.io_pull(io_dict = {&#39;key&#39;:&#39;value&#39;})</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">io_push_queue</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">io_pull_queue</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">io_dict</span><span class="o">.</span><span class="n">items</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;received update to </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1"> to change to </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span></div>
-
-
-    <span class="c1"># tests in progress</span>
-
-    <span class="c1"># Old function with unknown purpose</span>
-<div class="viewcode-block" id="DI4108_DL.submit_DIO"><a class="viewcode-back" href="../../device.html#icarus_nmr.device_daq.DI4108_DL.submit_DIO">[docs]</a>    <span class="k">def</span> <span class="nf">submit_DIO</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">digital</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        set DIO command</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_DIO</span><span class="p">(</span><span class="n">digital</span><span class="p">)</span>
-        <span class="n">flag</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="n">buff</span> <span class="o">=</span> <span class="n">nan</span>
-        <span class="n">err</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">return</span> <span class="n">flag</span><span class="p">,</span> <span class="n">buff</span><span class="p">,</span> <span class="n">err</span></div>
-
-    <span class="k">def</span> <span class="nf">get_all_buffer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">flag</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="n">buff</span> <span class="o">=</span> <span class="n">nan</span>
-        <span class="n">err</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="n">buff</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ring_buffer</span><span class="o">.</span><span class="n">buffer</span>
-        <span class="k">return</span> <span class="n">flag</span><span class="p">,</span> <span class="n">buff</span><span class="p">,</span><span class="n">err</span>
-
-    <span class="k">def</span> <span class="nf">grab_buffer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">pointers</span> <span class="o">=</span> <span class="p">(</span><span class="n">nan</span><span class="p">,</span><span class="n">nan</span><span class="p">)):</span>
-        <span class="k">if</span> <span class="n">pointers</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">pointers</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ring_buffer</span><span class="o">.</span><span class="n">pointer</span>
-        <span class="n">array</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ring_buffer</span><span class="o">.</span><span class="n">buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span>
-        <span class="n">flag</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="n">err</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">buff</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ring_buffer</span><span class="o">.</span><span class="n">buffer</span><span class="p">[:,</span><span class="n">pointers</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">pointers</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
-            <span class="n">flag</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-            <span class="n">err</span> <span class="o">+=</span> <span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">()</span>
-            <span class="n">error</span><span class="p">(</span><span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">())</span>
-        <span class="k">return</span> <span class="n">flag</span><span class="p">,</span><span class="n">buff</span><span class="p">,</span><span class="n">err</span></div>
-
-
-
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;received update to </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1"> to change to </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span></div></div>
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span> <span class="c1">#for testing</span>
     <span class="kn">from</span> <span class="nn">tempfile</span> <span class="kn">import</span> <span class="n">gettempdir</span>
     <span class="kn">import</span> <span class="nn">logging</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">gettempdir</span><span class="p">()</span><span class="o">+</span><span class="s1">&#39;/di4108_device.log&#39;</span><span class="p">,</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">gettempdir</span><span class="p">()</span><span class="o">+</span><span class="s1">&#39;/icarus_device.log&#39;</span><span class="p">,</span>
                         <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%(asctime)s</span><span class="s2"> </span><span class="si">%(levelname)s</span><span class="s2">: </span><span class="si">%(message)s</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="kn">from</span> <span class="nn">icarus_nmr.device</span> <span class="kn">import</span> <span class="n">DI4108_DL</span>
-    <span class="n">device</span> <span class="o">=</span> <span class="n">DI4108_DL</span><span class="p">()</span>
-    <span class="kn">from</span> <span class="nn">icarus_nmr.mock_driver</span> <span class="kn">import</span> <span class="n">Driver</span>
+    <span class="kn">from</span> <span class="nn">icarus_nmr.device_daq</span> <span class="kn">import</span> <span class="n">Device</span>
+    <span class="n">device</span> <span class="o">=</span> <span class="n">Device</span><span class="p">()</span>
+    <span class="kn">from</span> <span class="nn">icarus_nmr.driver_mock</span> <span class="kn">import</span> <span class="n">Driver</span>
     <span class="n">driver</span> <span class="o">=</span> <span class="n">Driver</span><span class="p">()</span>
     <span class="n">device</span><span class="o">.</span><span class="n">bind_driver</span><span class="p">(</span><span class="n">driver</span><span class="p">)</span>
     <span class="n">device</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+    <span class="bp">self</span> <span class="o">=</span> <span class="n">device</span>
 </pre></div>
 
            </div>

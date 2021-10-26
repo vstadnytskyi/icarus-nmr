@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Device Level &mdash; Icarus Pressure Jump for NMR 0.1.0.post18+g6625f23 documentation</title>
+  <title>Device Level &mdash; Icarus Pressure Jump for NMR 0.1.0.post20+gd417687 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/plot_directive.css" type="text/css" />
@@ -34,7 +34,7 @@
             <a href="index.html" class="icon icon-home"> Icarus Pressure Jump for NMR
           </a>
               <div class="version">
-                0.1.0.post18+g6625f23
+                0.1.0.post20+gd417687
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -116,8 +116,8 @@
 <section id="id1">
 <h2>Device Level<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <p>Start by importing analysis submodule for Icarus Pressure Jump for NMR .</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">icarus_nmr.device_daq</span> <span class="kn">import</span> <span class="n">DI4108_DL</span>
-<span class="n">device</span> <span class="o">=</span> <span class="n">DI4108_DL</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">icarus_nmr.device_daq</span> <span class="kn">import</span> <span class="n">Device</span>
+<span class="n">device</span> <span class="o">=</span> <span class="n">Device</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>To import the mock driver instead of actual driver for the DI-4108</p>
@@ -170,11 +170,17 @@
 <section id="device-level-script">
 <h2>Device Level Script<a class="headerlink" href="#device-level-script" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="icarus_nmr.device_daq.DI4108_DL">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">icarus_nmr.device_daq.</span></span><span class="sig-name descname"><span class="pre">DI4108_DL</span></span><a class="reference internal" href="_modules/icarus_nmr/device_daq.html#DI4108_DL"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.device_daq.DI4108_DL" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py method">
-<dt class="sig sig-object py" id="icarus_nmr.device_daq.DI4108_DL.abort">
-<span class="sig-name descname"><span class="pre">abort</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/device_daq.html#DI4108_DL.abort"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.device_daq.DI4108_DL.abort" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="icarus_nmr.device_daq.Device">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">icarus_nmr.device_daq.</span></span><span class="sig-name descname"><span class="pre">Device</span></span><a class="reference internal" href="_modules/icarus_nmr/device_daq.html#Device"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.device_daq.Device" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py property">
+<dt class="sig sig-object py" id="icarus_nmr.device_daq.Device.DIO">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">DIO</span></span><a class="headerlink" href="#icarus_nmr.device_daq.Device.DIO" title="Permalink to this definition">¶</a></dt>
+<dd><p>get digital state from data queue</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="icarus_nmr.device_daq.Device.abort">
+<span class="sig-name descname"><span class="pre">abort</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/device_daq.html#Device.abort"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.device_daq.Device.abort" title="Permalink to this definition">¶</a></dt>
 <dd><p>aborts. Currently not implemented</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">device</span><span class="o">.</span><span class="n">abort</span><span class="p">()</span>
@@ -183,9 +189,15 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="icarus_nmr.device_daq.DI4108_DL.close">
-<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/device_daq.html#DI4108_DL.close"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.device_daq.DI4108_DL.close" title="Permalink to this definition">¶</a></dt>
-<dd><p>orderly closes the device program. just a wrapper for self.stop()</p>
+<dt class="sig sig-object py" id="icarus_nmr.device_daq.Device.bind_driver">
+<span class="sig-name descname"><span class="pre">bind_driver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">driver</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/device_daq.html#Device.bind_driver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.device_daq.Device.bind_driver" title="Permalink to this definition">¶</a></dt>
+<dd><p>bind driver to device instance</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="icarus_nmr.device_daq.Device.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/device_daq.html#Device.close"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.device_daq.Device.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>orderly close the device program. just a wrapper for self.stop()</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">device</span><span class="o">.</span><span class="n">abort</span><span class="p">()</span>
 </pre></div>
@@ -193,8 +205,8 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="icarus_nmr.device_daq.DI4108_DL.config_DIO">
-<span class="sig-name descname"><span class="pre">config_DIO</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'00000000'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/device_daq.html#DI4108_DL.config_DIO"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.device_daq.DI4108_DL.config_DIO" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="icarus_nmr.device_daq.Device.config_DIO">
+<span class="sig-name descname"><span class="pre">config_DIO</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'00000000'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/device_daq.html#Device.config_DIO"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.device_daq.Device.config_DIO" title="Permalink to this definition">¶</a></dt>
 <dd><p>configure direction of digital IOs. It takes a string with 8 characters, ‘0’ or ‘1’ where
 ‘0’ -
 ‘1’ -</p>
@@ -212,9 +224,9 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="icarus_nmr.device_daq.DI4108_DL.config_DL">
-<span class="sig-name descname"><span class="pre">config_DL</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">baserate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">DOI_config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">DOI_set</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/device_daq.html#DI4108_DL.config_DL"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.device_daq.DI4108_DL.config_DL" title="Permalink to this definition">¶</a></dt>
-<dd><p>configures analog and digital channels, and rate via baserate and dec.</p>
+<dt class="sig sig-object py" id="icarus_nmr.device_daq.Device.config_DL">
+<span class="sig-name descname"><span class="pre">config_DL</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">baserate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">DOI_config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">DOI_set</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/device_daq.html#Device.config_DL"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.device_daq.Device.config_DL" title="Permalink to this definition">¶</a></dt>
+<dd><p>configure analog and digital channels, and rate via baserate and dec.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
@@ -223,15 +235,27 @@
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">device</span><span class="o">.</span><span class="n">config_DIO</span><span class="p">(</span><span class="s1">&#39;00000000&#39;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">device</span><span class="o">.</span><span class="n">config_DL</span><span class="p">(</span><span class="n">baserate</span> <span class="o">=</span> <span class="mi">20000</span><span class="p">,</span> <span class="n">dec</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="n">DOI_config</span> <span class="o">=</span> <span class="s1">&#39;1111111&#39;</span><span class="p">,</span><span class="n">DOI_set</span> <span class="o">=</span> <span class="s1">&#39;1111111&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="icarus_nmr.device_daq.DI4108_DL.help">
-<span class="sig-name descname"><span class="pre">help</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/device_daq.html#DI4108_DL.help"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.device_daq.DI4108_DL.help" title="Permalink to this definition">¶</a></dt>
-<dd><p>returns helps string</p>
+<dt class="sig sig-object py" id="icarus_nmr.device_daq.Device.first_time_setup">
+<span class="sig-name descname"><span class="pre">first_time_setup</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/device_daq.html#Device.first_time_setup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.device_daq.Device.first_time_setup" title="Permalink to this definition">¶</a></dt>
+<dd><p>set control variables to factory settings</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="icarus_nmr.device_daq.Device.get_DIO">
+<span class="sig-name descname"><span class="pre">get_DIO</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/device_daq.html#Device.get_DIO"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.device_daq.Device.get_DIO" title="Permalink to this definition">¶</a></dt>
+<dd><p>get digital state from data queue</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="icarus_nmr.device_daq.Device.help">
+<span class="sig-name descname"><span class="pre">help</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/device_daq.html#Device.help"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.device_daq.Device.help" title="Permalink to this definition">¶</a></dt>
+<dd><p>return helps string</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">device</span><span class="o">.</span><span class="n">help</span><span class="p">()</span>
 </pre></div>
@@ -239,34 +263,34 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="icarus_nmr.device_daq.DI4108_DL.init">
-<span class="sig-name descname"><span class="pre">init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg_in</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">driver</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/device_daq.html#DI4108_DL.init"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.device_daq.DI4108_DL.init" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="icarus_nmr.device_daq.Device.init">
+<span class="sig-name descname"><span class="pre">init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg_in</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">driver</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/device_daq.html#Device.init"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.device_daq.Device.init" title="Permalink to this definition">¶</a></dt>
 <dd><p>initialize the DL program</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="icarus_nmr.device_daq.DI4108_DL.io_pull">
-<span class="sig-name descname"><span class="pre">io_pull</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">io_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/device_daq.html#DI4108_DL.io_pull"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.device_daq.DI4108_DL.io_pull" title="Permalink to this definition">¶</a></dt>
-<dd><p>a wrapper that takes care of ‘read’ command to the io module</p>
+<dt class="sig sig-object py" id="icarus_nmr.device_daq.Device.io_pull">
+<span class="sig-name descname"><span class="pre">io_pull</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">io_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/device_daq.html#Device.io_pull"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.device_daq.Device.io_pull" title="Permalink to this definition">¶</a></dt>
+<dd><p>a wrapper that takes care of ‘read’ command in the io module</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>name :: string</strong></dt><dd><p>a string name of the variable</p>
+<dt><strong>io_dict :: dictionary</strong></dt><dd><p>a key-value pairs</p>
 </dd>
-<dt><strong>value :: object</strong></dt><dd><p>the new value of the variable to be read from the io module</p>
-</dd>
+<dt><strong>Returns</strong></dt><dd></dd>
+<dt><strong>——-</strong></dt><dd></dd>
 </dl>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="bp">self</span><span class="o">.</span><span class="n">io_pull</span><span class="p">()</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="bp">self</span><span class="o">.</span><span class="n">io_pull</span><span class="p">(</span><span class="n">io_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;key&#39;</span><span class="p">:</span><span class="s1">&#39;value&#39;</span><span class="p">})</span>
 </pre></div>
 </div>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="icarus_nmr.device_daq.DI4108_DL.io_push">
-<span class="sig-name descname"><span class="pre">io_push</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">io_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/device_daq.html#DI4108_DL.io_push"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.device_daq.DI4108_DL.io_push" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="icarus_nmr.device_daq.Device.io_push">
+<span class="sig-name descname"><span class="pre">io_push</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">io_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/device_daq.html#Device.io_push"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.device_daq.Device.io_push" title="Permalink to this definition">¶</a></dt>
 <dd><p>a wrapper that takes care of write command to the io module</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -283,8 +307,8 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="icarus_nmr.device_daq.DI4108_DL.kill">
-<span class="sig-name descname"><span class="pre">kill</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/device_daq.html#DI4108_DL.kill"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.device_daq.DI4108_DL.kill" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="icarus_nmr.device_daq.Device.kill">
+<span class="sig-name descname"><span class="pre">kill</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/device_daq.html#Device.kill"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.device_daq.Device.kill" title="Permalink to this definition">¶</a></dt>
 <dd><p>Orderly self-destruction. kills all threads and deletes the instance.</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">device</span><span class="o">.</span><span class="n">kill</span><span class="p">()</span>
@@ -293,15 +317,15 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="icarus_nmr.device_daq.DI4108_DL.parse_binary">
-<span class="sig-name descname"><span class="pre">parse_binary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/device_daq.html#DI4108_DL.parse_binary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.device_daq.DI4108_DL.parse_binary" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="icarus_nmr.device_daq.Device.parse_binary">
+<span class="sig-name descname"><span class="pre">parse_binary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/device_daq.html#Device.parse_binary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.device_daq.Device.parse_binary" title="Permalink to this definition">¶</a></dt>
 <dd><p>takes an integer and converts it to 8 bit representation as an array.
 If float number is passed, it will be converted to int.</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="icarus_nmr.device_daq.DI4108_DL.pg_delay_width">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">pg_delay_width</span></span><a class="headerlink" href="#icarus_nmr.device_daq.DI4108_DL.pg_delay_width" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="icarus_nmr.device_daq.Device.pg_delay_width">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">pg_delay_width</span></span><a class="headerlink" href="#icarus_nmr.device_daq.Device.pg_delay_width" title="Permalink to this definition">¶</a></dt>
 <dd><p>getter for SavedProperty. returns saved value if it exists in the database, otherwise returns default_value</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -324,8 +348,8 @@ If float number is passed, it will be converted to int.</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="icarus_nmr.device_daq.DI4108_DL.pg_depre_pulse_width">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">pg_depre_pulse_width</span></span><a class="headerlink" href="#icarus_nmr.device_daq.DI4108_DL.pg_depre_pulse_width" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="icarus_nmr.device_daq.Device.pg_depre_pulse_width">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">pg_depre_pulse_width</span></span><a class="headerlink" href="#icarus_nmr.device_daq.Device.pg_depre_pulse_width" title="Permalink to this definition">¶</a></dt>
 <dd><p>getter for SavedProperty. returns saved value if it exists in the database, otherwise returns default_value</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -348,8 +372,8 @@ If float number is passed, it will be converted to int.</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="icarus_nmr.device_daq.DI4108_DL.pg_period">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">pg_period</span></span><a class="headerlink" href="#icarus_nmr.device_daq.DI4108_DL.pg_period" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="icarus_nmr.device_daq.Device.pg_period">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">pg_period</span></span><a class="headerlink" href="#icarus_nmr.device_daq.Device.pg_period" title="Permalink to this definition">¶</a></dt>
 <dd><p>getter for SavedProperty. returns saved value if it exists in the database, otherwise returns default_value</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -372,8 +396,8 @@ If float number is passed, it will be converted to int.</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="icarus_nmr.device_daq.DI4108_DL.pg_pre_pulse_width">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">pg_pre_pulse_width</span></span><a class="headerlink" href="#icarus_nmr.device_daq.DI4108_DL.pg_pre_pulse_width" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="icarus_nmr.device_daq.Device.pg_pre_pulse_width">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">pg_pre_pulse_width</span></span><a class="headerlink" href="#icarus_nmr.device_daq.Device.pg_pre_pulse_width" title="Permalink to this definition">¶</a></dt>
 <dd><p>getter for SavedProperty. returns saved value if it exists in the database, otherwise returns default_value</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -396,8 +420,8 @@ If float number is passed, it will be converted to int.</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="icarus_nmr.device_daq.DI4108_DL.pr_AI_channels">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">pr_AI_channels</span></span><a class="headerlink" href="#icarus_nmr.device_daq.DI4108_DL.pr_AI_channels" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="icarus_nmr.device_daq.Device.pr_AI_channels">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">pr_AI_channels</span></span><a class="headerlink" href="#icarus_nmr.device_daq.Device.pr_AI_channels" title="Permalink to this definition">¶</a></dt>
 <dd><p>getter for SavedProperty. returns saved value if it exists in the database, otherwise returns default_value</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -420,8 +444,8 @@ If float number is passed, it will be converted to int.</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="icarus_nmr.device_daq.DI4108_DL.pr_DI_channels">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">pr_DI_channels</span></span><a class="headerlink" href="#icarus_nmr.device_daq.DI4108_DL.pr_DI_channels" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="icarus_nmr.device_daq.Device.pr_DI_channels">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">pr_DI_channels</span></span><a class="headerlink" href="#icarus_nmr.device_daq.Device.pr_DI_channels" title="Permalink to this definition">¶</a></dt>
 <dd><p>getter for SavedProperty. returns saved value if it exists in the database, otherwise returns default_value</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -444,8 +468,8 @@ If float number is passed, it will be converted to int.</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="icarus_nmr.device_daq.DI4108_DL.pr_DOI_config">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">pr_DOI_config</span></span><a class="headerlink" href="#icarus_nmr.device_daq.DI4108_DL.pr_DOI_config" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="icarus_nmr.device_daq.Device.pr_DOI_config">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">pr_DOI_config</span></span><a class="headerlink" href="#icarus_nmr.device_daq.Device.pr_DOI_config" title="Permalink to this definition">¶</a></dt>
 <dd><p>getter for SavedProperty. returns saved value if it exists in the database, otherwise returns default_value</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -468,8 +492,8 @@ If float number is passed, it will be converted to int.</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="icarus_nmr.device_daq.DI4108_DL.pr_DOI_set">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">pr_DOI_set</span></span><a class="headerlink" href="#icarus_nmr.device_daq.DI4108_DL.pr_DOI_set" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="icarus_nmr.device_daq.Device.pr_DOI_set">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">pr_DOI_set</span></span><a class="headerlink" href="#icarus_nmr.device_daq.Device.pr_DOI_set" title="Permalink to this definition">¶</a></dt>
 <dd><p>getter for SavedProperty. returns saved value if it exists in the database, otherwise returns default_value</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -492,8 +516,8 @@ If float number is passed, it will be converted to int.</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="icarus_nmr.device_daq.DI4108_DL.pr_baserate">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">pr_baserate</span></span><a class="headerlink" href="#icarus_nmr.device_daq.DI4108_DL.pr_baserate" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="icarus_nmr.device_daq.Device.pr_baserate">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">pr_baserate</span></span><a class="headerlink" href="#icarus_nmr.device_daq.Device.pr_baserate" title="Permalink to this definition">¶</a></dt>
 <dd><p>getter for SavedProperty. returns saved value if it exists in the database, otherwise returns default_value</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -516,8 +540,8 @@ If float number is passed, it will be converted to int.</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="icarus_nmr.device_daq.DI4108_DL.pr_dec">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">pr_dec</span></span><a class="headerlink" href="#icarus_nmr.device_daq.DI4108_DL.pr_dec" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="icarus_nmr.device_daq.Device.pr_dec">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">pr_dec</span></span><a class="headerlink" href="#icarus_nmr.device_daq.Device.pr_dec" title="Permalink to this definition">¶</a></dt>
 <dd><p>getter for SavedProperty. returns saved value if it exists in the database, otherwise returns default_value</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -540,8 +564,8 @@ If float number is passed, it will be converted to int.</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="icarus_nmr.device_daq.DI4108_DL.pr_os_buffer">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">pr_os_buffer</span></span><a class="headerlink" href="#icarus_nmr.device_daq.DI4108_DL.pr_os_buffer" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="icarus_nmr.device_daq.Device.pr_os_buffer">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">pr_os_buffer</span></span><a class="headerlink" href="#icarus_nmr.device_daq.Device.pr_os_buffer" title="Permalink to this definition">¶</a></dt>
 <dd><p>getter for SavedProperty. returns saved value if it exists in the database, otherwise returns default_value</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -564,8 +588,8 @@ If float number is passed, it will be converted to int.</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="icarus_nmr.device_daq.DI4108_DL.pr_packet_buffer_size">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">pr_packet_buffer_size</span></span><a class="headerlink" href="#icarus_nmr.device_daq.DI4108_DL.pr_packet_buffer_size" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="icarus_nmr.device_daq.Device.pr_packet_buffer_size">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">pr_packet_buffer_size</span></span><a class="headerlink" href="#icarus_nmr.device_daq.Device.pr_packet_buffer_size" title="Permalink to this definition">¶</a></dt>
 <dd><p>getter for SavedProperty. returns saved value if it exists in the database, otherwise returns default_value</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -588,8 +612,8 @@ If float number is passed, it will be converted to int.</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="icarus_nmr.device_daq.DI4108_DL.pr_packet_size">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">pr_packet_size</span></span><a class="headerlink" href="#icarus_nmr.device_daq.DI4108_DL.pr_packet_size" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="icarus_nmr.device_daq.Device.pr_packet_size">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">pr_packet_size</span></span><a class="headerlink" href="#icarus_nmr.device_daq.Device.pr_packet_size" title="Permalink to this definition">¶</a></dt>
 <dd><p>getter for SavedProperty. returns saved value if it exists in the database, otherwise returns default_value</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -612,8 +636,8 @@ If float number is passed, it will be converted to int.</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="icarus_nmr.device_daq.DI4108_DL.pr_rate">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">pr_rate</span></span><a class="headerlink" href="#icarus_nmr.device_daq.DI4108_DL.pr_rate" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="icarus_nmr.device_daq.Device.pr_rate">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">pr_rate</span></span><a class="headerlink" href="#icarus_nmr.device_daq.Device.pr_rate" title="Permalink to this definition">¶</a></dt>
 <dd><p>getter for SavedProperty. returns saved value if it exists in the database, otherwise returns default_value</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -636,14 +660,14 @@ If float number is passed, it will be converted to int.</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="icarus_nmr.device_daq.DI4108_DL.pr_serial_number">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">pr_serial_number</span></span><a class="headerlink" href="#icarus_nmr.device_daq.DI4108_DL.pr_serial_number" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="icarus_nmr.device_daq.Device.pr_serial_number">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">pr_serial_number</span></span><a class="headerlink" href="#icarus_nmr.device_daq.Device.pr_serial_number" title="Permalink to this definition">¶</a></dt>
 <dd><p>serial number, five character long string</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="icarus_nmr.device_daq.DI4108_DL.pressure_sensor_offset">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">pressure_sensor_offset</span></span><a class="headerlink" href="#icarus_nmr.device_daq.DI4108_DL.pressure_sensor_offset" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="icarus_nmr.device_daq.Device.pressure_sensor_offset">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">pressure_sensor_offset</span></span><a class="headerlink" href="#icarus_nmr.device_daq.Device.pressure_sensor_offset" title="Permalink to this definition">¶</a></dt>
 <dd><p>getter for SavedProperty. returns saved value if it exists in the database, otherwise returns default_value</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -666,14 +690,8 @@ If float number is passed, it will be converted to int.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="icarus_nmr.device_daq.DI4108_DL.read_queue">
-<span class="sig-name descname"><span class="pre">read_queue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg_in</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{b'number':</span> <span class="pre">0}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/device_daq.html#DI4108_DL.read_queue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.device_daq.DI4108_DL.read_queue" title="Permalink to this definition">¶</a></dt>
-<dd><p>returns N points from the queue</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="icarus_nmr.device_daq.DI4108_DL.run">
-<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/device_daq.html#DI4108_DL.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.device_daq.DI4108_DL.run" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="icarus_nmr.device_daq.Device.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/device_daq.html#Device.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.device_daq.Device.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>This is a main fuction that will execute run_once function on the while running loop. Usually it gets submitted to a separate thread.</p>
 <p>This function collects data and puts it in the Ring Buffer.
 It is run in a separate thread(See main priogram)</p>
@@ -684,8 +702,8 @@ It is run in a separate thread(See main priogram)</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="icarus_nmr.device_daq.DI4108_DL.run_once">
-<span class="sig-name descname"><span class="pre">run_once</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/device_daq.html#DI4108_DL.run_once"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.device_daq.DI4108_DL.run_once" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="icarus_nmr.device_daq.Device.run_once">
+<span class="sig-name descname"><span class="pre">run_once</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/device_daq.html#Device.run_once"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.device_daq.Device.run_once" title="Permalink to this definition">¶</a></dt>
 <dd><p>the repeated block executed in while running loop in the main run() thread</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">device</span><span class="o">.</span><span class="n">run_once</span><span class="p">()</span>
@@ -694,8 +712,25 @@ It is run in a separate thread(See main priogram)</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="icarus_nmr.device_daq.DI4108_DL.set_DIO">
-<span class="sig-name descname"><span class="pre">set_DIO</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'00000000'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/device_daq.html#DI4108_DL.set_DIO"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.device_daq.DI4108_DL.set_DIO" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="icarus_nmr.device_daq.Device.set_DIO">
+<span class="sig-name descname"><span class="pre">set_DIO</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'00000000'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/device_daq.html#Device.set_DIO"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.device_daq.Device.set_DIO" title="Permalink to this definition">¶</a></dt>
+<dd><p>set digital input/output state</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>value :: string</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">device</span><span class="o">.</span><span class="n">DIO</span> <span class="o">=</span> <span class="mi">127</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="icarus_nmr.device_daq.Device.set_outside_DIO">
+<span class="sig-name descname"><span class="pre">set_outside_DIO</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'00000000'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/device_daq.html#Device.set_outside_DIO"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.device_daq.Device.set_outside_DIO" title="Permalink to this definition">¶</a></dt>
 <dd><p>sets digital input/output state</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -711,30 +746,14 @@ It is run in a separate thread(See main priogram)</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="icarus_nmr.device_daq.DI4108_DL.set_outside_DIO">
-<span class="sig-name descname"><span class="pre">set_outside_DIO</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'00000000'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/device_daq.html#DI4108_DL.set_outside_DIO"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.device_daq.DI4108_DL.set_outside_DIO" title="Permalink to this definition">¶</a></dt>
-<dd><p>sets digital input/output state</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>value :: string</strong></dt><dd></dd>
-</dl>
-</dd>
-</dl>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">device</span><span class="o">.</span><span class="n">DIO</span> <span class="o">=</span> <span class="mi">127</span>
-</pre></div>
-</div>
+<dt class="sig sig-object py" id="icarus_nmr.device_daq.Device.set_pressure_sensor_offset">
+<span class="sig-name descname"><span class="pre">set_pressure_sensor_offset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/device_daq.html#Device.set_pressure_sensor_offset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.device_daq.Device.set_pressure_sensor_offset" title="Permalink to this definition">¶</a></dt>
+<dd><p>set pressure sensor offset</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="icarus_nmr.device_daq.DI4108_DL.set_pressure_sensor_offset">
-<span class="sig-name descname"><span class="pre">set_pressure_sensor_offset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">N</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/device_daq.html#DI4108_DL.set_pressure_sensor_offset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.device_daq.DI4108_DL.set_pressure_sensor_offset" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="icarus_nmr.device_daq.DI4108_DL.snapshot">
-<span class="sig-name descname"><span class="pre">snapshot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/device_daq.html#DI4108_DL.snapshot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.device_daq.DI4108_DL.snapshot" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="icarus_nmr.device_daq.Device.snapshot">
+<span class="sig-name descname"><span class="pre">snapshot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/device_daq.html#Device.snapshot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.device_daq.Device.snapshot" title="Permalink to this definition">¶</a></dt>
 <dd><p>returns a hardcoded snapshot from the device instance. Currently does nothing.</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">device</span><span class="o">.</span><span class="n">snapshot</span><span class="p">()</span>
@@ -743,9 +762,9 @@ It is run in a separate thread(See main priogram)</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="icarus_nmr.device_daq.DI4108_DL.start">
-<span class="sig-name descname"><span class="pre">start</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/device_daq.html#DI4108_DL.start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.device_daq.DI4108_DL.start" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates a new thread and submits self.run for execution</p>
+<dt class="sig sig-object py" id="icarus_nmr.device_daq.Device.start">
+<span class="sig-name descname"><span class="pre">start</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/device_daq.html#Device.start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.device_daq.Device.start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new thread and submits self.run for execution</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">device</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 </pre></div>
@@ -753,8 +772,8 @@ It is run in a separate thread(See main priogram)</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="icarus_nmr.device_daq.DI4108_DL.stop">
-<span class="sig-name descname"><span class="pre">stop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/device_daq.html#DI4108_DL.stop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.device_daq.DI4108_DL.stop" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="icarus_nmr.device_daq.Device.stop">
+<span class="sig-name descname"><span class="pre">stop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/device_daq.html#Device.stop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.device_daq.Device.stop" title="Permalink to this definition">¶</a></dt>
 <dd><p>Orderly stop of the device code.
 - stops data acquisiion
 - erases all data from USB buffers
@@ -767,14 +786,8 @@ It is run in a separate thread(See main priogram)</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="icarus_nmr.device_daq.DI4108_DL.submit_DIO">
-<span class="sig-name descname"><span class="pre">submit_DIO</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">digital</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/device_daq.html#DI4108_DL.submit_DIO"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.device_daq.DI4108_DL.submit_DIO" title="Permalink to this definition">¶</a></dt>
-<dd><p>set DIO command</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="icarus_nmr.device_daq.DI4108_DL.unparse_binary">
-<span class="sig-name descname"><span class="pre">unparse_binary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">array([1,</span> <span class="pre">1,</span> <span class="pre">1,</span> <span class="pre">1,</span> <span class="pre">1,</span> <span class="pre">1,</span> <span class="pre">1])</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/device_daq.html#DI4108_DL.unparse_binary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.device_daq.DI4108_DL.unparse_binary" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="icarus_nmr.device_daq.Device.unparse_binary">
+<span class="sig-name descname"><span class="pre">unparse_binary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">array([1,</span> <span class="pre">1,</span> <span class="pre">1,</span> <span class="pre">1,</span> <span class="pre">1,</span> <span class="pre">1,</span> <span class="pre">1])</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/device_daq.html#Device.unparse_binary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.device_daq.Device.unparse_binary" title="Permalink to this definition">¶</a></dt>
 <dd><p>takes an integer and converts it to 8 bit representation as an array.
 If float number is passed, it will be converted to int.</p>
 </dd></dl>

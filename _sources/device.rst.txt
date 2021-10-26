@@ -51,8 +51,8 @@ Start by importing analysis submodule for Icarus Pressure Jump for NMR .
 
 .. code-block:: python
 
-  from icarus_nmr.device_daq import DI4108_DL
-  device = DI4108_DL()
+  from icarus_nmr.device_daq import Device
+  device = Device()
 
 To import the mock driver instead of actual driver for the DI-4108
 
@@ -118,5 +118,5 @@ Device Level Script
 
 
 
-.. autoclass:: icarus_nmr.device_daq.DI4108_DL
+.. autoclass:: icarus_nmr.device_daq.Device
   :members:
