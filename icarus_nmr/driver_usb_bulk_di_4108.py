@@ -31,12 +31,14 @@ from struct import pack, unpack
 from timeit import Timer
 from logging import info,warn, debug, error
 import traceback
-__version__ = '1.0.1'
+
 
 class Driver(object):
 
     def __init__(self):
-        #tested dec 17, 2017
+        """
+        
+        """
         self.available_ports = []
         self.dev = None
 

@@ -10,8 +10,6 @@ The main purpose of this module is to provide useful interface between DI-4108 a
 The communication in this module is done via XLI module developed by Valentyn Stadnytskyi. This module is based on python sockets.
 
 """
-__version__ = '0.0.0'
-
 
 import traceback
 import psutil, os
@@ -29,30 +27,14 @@ if sys.version_info[0] == 3:
 else:
     from time import gmtime, strftime, time, sleep, clock
 
-import sys
-#sys.path.append('/Users/femto-13/All-Projects-on-femto/LaserLab/Software/')
-
 import os.path
 import struct
 from pdb import pm
 
 from logging import debug,info,warning,error
-# see https://vstadnytskyi.github.io/auxiliary/saved-property.html for details
 
-
-if sys.version_info[0] ==3:
-    keyboard_input = input
-    from time import process_time as clock
-else:
-    keyboard_input = raw_input
-    from time import clock
-
-
-
-from struct import pack, unpack
 from timeit import Timer, timeit
 from circular_buffer_numpy.queue import Queue
-from threading import Thread, Event, Timer, Condition
 from datetime import datetime
 
 from ubcs_auxiliary.saved_property import DataBase, SavedProperty
@@ -60,7 +42,7 @@ from ubcs_auxiliary.threading import new_thread
 from ubcs_auxiliary.advsleep import precision_sleep #home-made module for accurate sleep
 
 
-class DI4108_DL():
+class Device():
     db = DataBase(root = 'TEMP', name = 'DI4108_DL')
     #: serial number, five character long string
     pr_serial_number = SavedProperty(db,'Serial Number', '00000').init()
@@ -102,7 +84,12 @@ class DI4108_DL():
         self.curr_dio = 127
         self.user_set_dio = self.curr_dio
 
+        self.threads = {}
+
     def first_time_setup(self):
+        """
+        set control variables to factory settings
+        """
         self.pr_AI_channels = 8
         self.pr_DI_channels = 1
         self.pr_packet_size = 128
@@ -114,6 +101,9 @@ class DI4108_DL():
         self.pressure_sensor_offset = [69.5595, 65.562, 68.881375, 84.2195, 86.96075, 17.248, 17.322, 0]
 
     def bind_driver(self, driver = None):
+        """
+        bind driver to device instance
+        """
         self.driver = driver
 
     def _init(self):
@@ -158,7 +148,7 @@ class DI4108_DL():
 
     def help(self):
         """
-        returns helps string
+        return helps string
 
         Parameters
         ----------
@@ -177,7 +167,7 @@ class DI4108_DL():
 
     def close(self):
         """
-        orderly closes the device program. just a wrapper for self.stop()
+        orderly close the device program. just a wrapper for self.stop()
 
         Parameters
         ----------
@@ -190,10 +180,6 @@ class DI4108_DL():
         >>> device.abort()
         """
         self.stop()
-        flag = True
-        buff = nan
-        err = None
-        return flag, buff, err
 
     def abort(self):
         """
@@ -227,19 +213,19 @@ class DI4108_DL():
         --------
         >>> device.snapshot()
         """
-        from numpy import nan
-        err = ''
-        flag = True
-        message = ''
-        response = {}
-        response[b'flag'] = flag
-        response[b'message'] = message
-        response[b'error'] = err
-        return response
+        # from numpy import nan
+        # err = ''
+        # flag = True
+        # message = ''
+        # response = {}
+        # response[b'flag'] = flag
+        # response[b'message'] = message
+        # response[b'error'] = err
+        pass
 
     def start(self):
         """
-        Creates a new thread and submits self.run for execution
+        Create a new thread and submits self.run for execution
 
         Parameters
         ----------
@@ -252,7 +238,7 @@ class DI4108_DL():
         >>> device.start()
         """
         from ubcs_auxiliary.threading import new_thread
-        new_thread(self.run)
+        self.threads['running'] = new_thread(self.run)
 
     def stop(self):
         """
@@ -298,7 +284,7 @@ class DI4108_DL():
 
     def config_DL(self,baserate = None,dec = None, DOI_config = None, DOI_set = None):
         """
-        configures analog and digital channels, and rate via baserate and dec.
+        configure analog and digital channels, and rate via baserate and dec.
 
         Parameters
         ----------
@@ -309,7 +295,7 @@ class DI4108_DL():
 
         Examples
         --------
-        >>> device.config_DIO('00000000')
+        >>> device.config_DL(baserate = 20000, dec = 5, DOI_config = '1111111',DOI_set = '1111111')
         """
         debug('DL: config DL start')
         self.driver.config_channels(baserate = baserate,
@@ -337,12 +323,14 @@ class DI4108_DL():
         """
         if self.running:
             driver.config_digital(int(string,2))
+            reply = None
         else:
-            driver.config_digital(int(string,2), echo = True)
+            reply = driver.config_digital(int(string,2), echo = True)
+        return reply
 
     def set_DIO(self, value = '00000000'):
         """
-        sets digital input/output state
+        set digital input/output state
 
         Parameters
         ----------
@@ -383,8 +371,13 @@ class DI4108_DL():
 
 
     def get_DIO(self):
+        """
+        get digital state from data queue
+        """
         return int(self.queue.peek_last_N(3)[-1,9])
     DIO = property(get_DIO,set_DIO)
+
+
     ### Advance function
 
 
@@ -446,26 +439,6 @@ class DI4108_DL():
             info('buffer overflow')
             self.running = False
 
-
-    def read_queue(self, msg_in = {b'number':0}, client = None):
-        """
-        returns N points from the queue
-        """
-        response = {}
-        flag = True
-        err = ''
-        try:
-            N = msg_in[b'number']
-        except:
-            N = 0
-            flag = False
-            err+= traceback.format_exc()
-        data = self.queue.dequeue(N = N)
-        response[b'message'] = data
-        response[b'flag'] = flag
-        response[b'err'] = err
-        return response
-
     #####Auxiliary functions
     def parse_binary(self,value = 0):
         """
@@ -491,17 +464,20 @@ class DI4108_DL():
             integer += arr[i]*2**(i)
         return integer
 
-    def set_pressure_sensor_offset(self,N = 3):
+    def set_pressure_sensor_offset(self,dt = 3):
         """
+        set pressure sensor offset
         """
+        # wait for dt seconds
+        # calculated offset and standard deviation
+        # assisgn first 8 mean values(analog values) to
+        # self.pressure_sensor_offset
         from time import sleep
-        from numpy import mean, std
-        sleep(N)
-        offsets = mean(self.object.queue.buffer[:,self.object.queue.rear-4000*N:self.object.queue.rear],\
-                       axis = 1)
-        stds = std(self.object.queue.buffer[:,self.object.queue.rear-4000*N:self.object.queue.rear],\
-                       axis = 1)
-        print('Pressure sensors offsets are %r and errors are %r ' %(offsets,stds))
+        sleep(dt)
+        freq = int(self.pr_rate)
+        offsets = self.queue.peek_last_N(dt*freq).mean(axis = 0)
+        stds = self.queue.peek_last_N(dt*freq).std(axis = 0)
+        info('Pressure sensors offsets are %r and errors are %r ' %(offsets,stds))
         self.pressure_sensor_offset = offsets[:8]
 
 
@@ -527,72 +503,32 @@ class DI4108_DL():
 
     def io_pull(self, io_dict):
         """
-        a wrapper that takes care of 'read' command to the io module
+        a wrapper that takes care of 'read' command in the io module
 
         Parameters
         ----------
-        name :: string
-            a string name of the variable
-        value :: object
-            the new value of the variable to be read from the io module
-
+        io_dict :: dictionary
+            a key-value pairs
         Returns
         -------
 
         Examples
         --------
-        >>> self.io_pull()
+        >>> self.io_pull(io_dict = {'key':'value'})
         """
-        if self.io_push_queue is not None:
+        if self.io_pull_queue is not None:
             for key, value in io_dict.items:
                 print(f'received update to {key} to change to {value}')
-
-
-    # tests in progress
-
-    # Old function with unknown purpose
-    def submit_DIO(self,digital):
-        """
-        set DIO command
-        """
-        self.set_DIO(digital)
-        flag = True
-        buff = nan
-        err = None
-        return flag, buff, err
-
-    def get_all_buffer(self):
-        flag = True
-        buff = nan
-        err = None
-        buff = self.ring_buffer.buffer
-        return flag, buff,err
-
-    def grab_buffer(self,pointers = (nan,nan)):
-        if pointers[1] == 0:
-            pointers[1] = self.ring_buffer.pointer
-        array = self.ring_buffer.buffer[0,:]
-        flag = False
-        err = ''
-        try:
-            buff = self.ring_buffer.buffer[:,pointers[0]:pointers[1]]
-            flag = True
-        except Exception:
-            err += traceback.format_exc()
-            error(traceback.format_exc())
-        return flag,buff,err
-
-
-
 
 if __name__ == "__main__": #for testing
     from tempfile import gettempdir
     import logging
-    logging.basicConfig(filename=gettempdir()+'/di4108_device.log',
+    logging.basicConfig(filename=gettempdir()+'/icarus_device.log',
                         level=logging.INFO, format="%(asctime)s %(levelname)s: %(message)s")
-    from icarus_nmr.device import DI4108_DL
-    device = DI4108_DL()
-    from icarus_nmr.mock_driver import Driver
+    from icarus_nmr.device_daq import Device
+    device = Device()
+    from icarus_nmr.driver_mock import Driver
     driver = Driver()
     device.bind_driver(driver)
     device.init()
+    self = device

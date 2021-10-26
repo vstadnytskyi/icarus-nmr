@@ -17,11 +17,13 @@ class DAQ(object):
     freq = nan
     running = False
     def __init__(self, client):
-        self.running = True
-        self.buffer_shape = (25600, 10)#8192000)
+        self.buffer_shape = (25600, 10)
         self.client = client
 
     def init(self):
+        """
+        initialize class, create all necessary varibles and isntances.
+        """
         from circular_buffer_numpy.circular_buffer import CircularBuffer
         client = self.client
         self.circular_buffer = CircularBuffer(shape = self.buffer_shape, dtype = 'int16')
@@ -30,16 +32,30 @@ class DAQ(object):
         self.freq = int(client.freq.read().data[0])
         self.packet_buffer_length = int(self.buffer_shape[0]/self.packet_length)
         self.start_time = None
+        self.threads = {}
 
 
     def start(self):
-        from _thread import start_new_thread
-        start_new_thread(self.run,())
+        """
+        start function self.run in new thread
+        """
+        # use auxiliary library new_thread wrapper
+        # create new thread with self.run
+        # add the thread pointer to self.threads for further inspection
+        from ubcs_auxiliary.multithreading import new_thread
+        self.threads['running'] = new_thread(self.run,)
 
     def stop(self):
+        """
+        stop function self.run that is running in a separate thread
+        """
         self.running = False
 
     def run_once(self):
+        """
+        execute code for while True loop once
+        """
+        from time import time
         data = self.get_data()
         if self.start_time == None:
             self.start_time = time() - data.shape[1]/self.freq
@@ -49,6 +65,13 @@ class DAQ(object):
         self.g_packet_pointer = int(((self.circular_buffer.g_pointer+1)/self.packet_length)-1)
 
     def get_data(self):
+        """
+        return data from DAQ server via a client class
+        """
+        # if the queue on device side is shorter than 128, wait
+        # read on packet of data from the client
+        # return acquire data
+        from time import sleep
         client = self.client
         while client.queue_length.read().data < 128:
             sleep(0.1)
@@ -56,11 +79,18 @@ class DAQ(object):
         return data
 
     def run(self):
+        """
+        execute run_once function in a while self.running loop indefinitely.
+        """
         from time import sleep
         while self.running:
             self.run_once()
 
     def get_packet_ij(self,i,j): #return from i to j
+        """
+        return data from circular buffer between packets i and j
+        """
+        from numpy import nan
         length = self.circular_buffer.shape[0]
         while i > length:
             i-= length
@@ -76,6 +106,7 @@ class DAQ(object):
 
     def get_ring_buffer_N(self,N,pointer):
         """
+        return N entries before pointer from circular buffer
         """
         while pointer >= (self.circular_buffer.shape[0]):
             pointer = int(pointer - self.circular_buffer.shape[0])
