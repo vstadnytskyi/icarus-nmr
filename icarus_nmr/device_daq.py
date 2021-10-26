@@ -1,13 +1,11 @@
 """
 DATAQ 4108 Device Level code
-author: Valentyn Stadnytskyi
-Date: November 2017- November 2019
+
 
 fully python3 compatible.
 
-The main purpose of this module is to provide useful interface between DI-4108 and a server system level code that does all numbercrynching. This modules only job is to attend DI-4108 and insure that all data is collected and stored in a circular buffer.
+The main purpose of this module is to provide useful interface between DI-4108 and a server system level code that does all numbercrunching. This modules only job is to attend DI-4108 and insure that all data is collected and stored in a circular buffer.
 
-The communication in this module is done via XLI module developed by Valentyn Stadnytskyi. This module is based on python sockets.
 
 """
 
