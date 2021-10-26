@@ -22,6 +22,8 @@ from pdb import pm
 from numpy import random, array, zeros, ndarray, nan, isnan
 from time import time, sleep, ctime
 
+from logging import debug, info, warning, error
+
 arr_shape = (64,10)
 class Server(PVGroup):
     """
@@ -29,12 +31,16 @@ class Server(PVGroup):
 
     Scalar PVs
     ----------
-    CPU
-    MEMORY
-    BATTERY
+    freq
+    dio
+    queue_length
 
     Vectors PVs
     -----------
+    data
+    peek_data
+    packet_shape
+    LIST
 
     """
 
@@ -117,32 +123,22 @@ class Server(PVGroup):
         value = self.device.queue.length
         return value
 
-    # @ai_offset.startup
-    # async def ai_offset(self, instance, async_lib):
-    #     await self.ai_offset.write(self.device.pressure_sensor_offset)
-    # @ai_offset.putter
-    # async def ai_offset(self, instance, value):
-    #     print(f"Received update for the {'dio'}, sending new value {value}")
-    #     self.device.pressure_sensor_offset = value
-    #     return value
-    # @ai_offset.getter
-    # async def ai_offset(self, instance):
-    #     print(f"getter: {'ai_offset'}, new value ")
-    #     value = self.device.pressure_sensor_offset
-    #     return value
-
 
 if __name__ == '__main__':
-    from icarus_nmr.device_daq import DI4108_DL
-    device = DI4108_DL()
-    device.pr_buffer_size =  (6400,10)
-    from icarus_nmr.mock_driver import Driver
+    import socket
+    SERVER_NAME = socket.gethostname()
+
+    from icarus_nmr.device_daq import Device
+    device = Device()
+    device.pr_buffer_size = (6400,10)
+    from icarus_nmr.driver_mock import Driver
     driver = Driver()
     device.bind_driver(driver)
     device.init()
+    device.start()
 
     ioc_options, run_options = ioc_arg_parser(
-        default_prefix='device_dl:',
+        default_prefix=f'device_{SERVER_NAME}:',
         desc=dedent(Server.__doc__))
     ioc = Server(**ioc_options)
     device.pr_pracket_size = 128
