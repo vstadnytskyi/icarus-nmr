@@ -106,15 +106,6 @@ class Device():
         """
         self.driver = driver
 
-    def _init(self):
-        if self.driver is not None:
-            self.driver.init()
-            self.device_info = {**self.driver.get_hardware_information(),**self.device_info}
-            self.stop()
-            self.config_DL(baserate = self.pr_baserate,dec = self.pr_dec, DOI_config = self.pr_DOI_config, DOI_set = self.pr_DOI_set)
-        else:
-            warning('The driver object in the device _init() is {}'.format(driver))
-
     def _set_priority(self):
         import traceback
         import platform #https://stackoverflow.com/questions/110362/how-can-i-find-the-current-os-in-python
@@ -134,94 +125,19 @@ class Device():
             error(trace.format_exc())
         self.proccess = p
 
-    def init(self, msg_in = None, client = None, driver = None):
+    def init(self):
 
         """
         initialize the DL program
         """
-        self._init()
+        if self.driver is not None:
+            self.driver.init()
+            self.device_info = {**self.driver.get_hardware_information(),**self.device_info}
+            self.stop()
+            self.config_DL(baserate = self.pr_baserate,dec = self.pr_dec, DOI_config = self.pr_DOI_config, DOI_set = self.pr_DOI_set)
+        else:
+            warning('The driver object in the device _init() is {}'.format(driver))
         self.start()
-        flag = True
-        buff = nan
-        err = None
-        return flag, buff, err
-
-    def help(self):
-        """
-        return helps string
-
-        Parameters
-        ----------
-
-        Returns
-        -------
-
-        Examples
-        --------
-        >>> device.help()
-        """
-        response = ''
-        response += 'This is DI-4108 Data Acquisition Unit python server. \n'
-        response += 'Description of the Python Code' + __doc__
-        return response
-
-    def close(self):
-        """
-        orderly close the device program. just a wrapper for self.stop()
-
-        Parameters
-        ----------
-
-        Returns
-        -------
-
-        Examples
-        --------
-        >>> device.abort()
-        """
-        self.stop()
-
-    def abort(self):
-        """
-        aborts. Currently not implemented
-
-        Parameters
-        ----------
-
-        Returns
-        -------
-
-        Examples
-        --------
-        >>> device.abort()
-        """
-        pass
-
-
-
-    def snapshot(self):
-        """
-        returns a hardcoded snapshot from the device instance. Currently does nothing.
-
-        Parameters
-        ----------
-
-        Returns
-        -------
-
-        Examples
-        --------
-        >>> device.snapshot()
-        """
-        # from numpy import nan
-        # err = ''
-        # flag = True
-        # message = ''
-        # response = {}
-        # response[b'flag'] = flag
-        # response[b'message'] = message
-        # response[b'error'] = err
-        pass
 
     def start(self):
         """
