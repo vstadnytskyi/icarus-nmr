@@ -4,8 +4,8 @@ Simple code to create an instance of the device level class in a terminal, bind 
 The toggle_valves() function opens and closes depressurization and pressurization valves
 """
 
-from icarus_nmr.device_daq import DI4108_DL
-device = DI4108_DL()
+from icarus_nmr.device_daq import Device
+device = Device()
 from icarus_nmr.driver_mock import Driver
 driver = Driver()
 device.bind_driver(driver)
