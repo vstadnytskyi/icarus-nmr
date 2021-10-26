@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>icarus_nmr.device_daq &mdash; Icarus Pressure Jump for NMR 0.1.0.post20+gd417687 documentation</title>
+  <title>icarus_nmr.device_daq &mdash; Icarus Pressure Jump for NMR 0.1.0.post21+gb71323d documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/plot_directive.css" type="text/css" />
@@ -31,7 +31,7 @@
             <a href="../../index.html" class="icon icon-home"> Icarus Pressure Jump for NMR
           </a>
               <div class="version">
-                0.1.0.post20+gd417687
+                0.1.0.post21+gb71323d
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -191,15 +191,6 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">driver</span> <span class="o">=</span> <span class="n">driver</span></div>
 
-    <span class="k">def</span> <span class="nf">_init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">device_info</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">get_hardware_information</span><span class="p">(),</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">device_info</span><span class="p">}</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">config_DL</span><span class="p">(</span><span class="n">baserate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pr_baserate</span><span class="p">,</span><span class="n">dec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pr_dec</span><span class="p">,</span> <span class="n">DOI_config</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pr_DOI_config</span><span class="p">,</span> <span class="n">DOI_set</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pr_DOI_set</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">warning</span><span class="p">(</span><span class="s1">&#39;The driver object in the device _init() is </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">driver</span><span class="p">))</span>
-
     <span class="k">def</span> <span class="nf">_set_priority</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="kn">import</span> <span class="nn">traceback</span>
         <span class="kn">import</span> <span class="nn">platform</span> <span class="c1">#https://stackoverflow.com/questions/110362/how-can-i-find-the-current-os-in-python</span>
@@ -219,94 +210,19 @@
             <span class="n">error</span><span class="p">(</span><span class="n">trace</span><span class="o">.</span><span class="n">format_exc</span><span class="p">())</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">proccess</span> <span class="o">=</span> <span class="n">p</span>
 
-<div class="viewcode-block" id="Device.init"><a class="viewcode-back" href="../../device.html#icarus_nmr.device_daq.Device.init">[docs]</a>    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg_in</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">client</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">driver</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Device.init"><a class="viewcode-back" href="../../device.html#icarus_nmr.device_daq.Device.init">[docs]</a>    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        initialize the DL program</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_init</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-        <span class="n">flag</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="n">buff</span> <span class="o">=</span> <span class="n">nan</span>
-        <span class="n">err</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">return</span> <span class="n">flag</span><span class="p">,</span> <span class="n">buff</span><span class="p">,</span> <span class="n">err</span></div>
-
-<div class="viewcode-block" id="Device.help"><a class="viewcode-back" href="../../device.html#icarus_nmr.device_daq.Device.help">[docs]</a>    <span class="k">def</span> <span class="nf">help</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        return helps string</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-
-<span class="sd">        Examples</span>
-<span class="sd">        --------</span>
-<span class="sd">        &gt;&gt;&gt; device.help()</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
-        <span class="n">response</span> <span class="o">+=</span> <span class="s1">&#39;This is DI-4108 Data Acquisition Unit python server. </span><span class="se">\n</span><span class="s1">&#39;</span>
-        <span class="n">response</span> <span class="o">+=</span> <span class="s1">&#39;Description of the Python Code&#39;</span> <span class="o">+</span> <span class="vm">__doc__</span>
-        <span class="k">return</span> <span class="n">response</span></div>
-
-<div class="viewcode-block" id="Device.close"><a class="viewcode-back" href="../../device.html#icarus_nmr.device_daq.Device.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        orderly close the device program. just a wrapper for self.stop()</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-
-<span class="sd">        Examples</span>
-<span class="sd">        --------</span>
-<span class="sd">        &gt;&gt;&gt; device.abort()</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span></div>
-
-<div class="viewcode-block" id="Device.abort"><a class="viewcode-back" href="../../device.html#icarus_nmr.device_daq.Device.abort">[docs]</a>    <span class="k">def</span> <span class="nf">abort</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        aborts. Currently not implemented</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-
-<span class="sd">        Examples</span>
-<span class="sd">        --------</span>
-<span class="sd">        &gt;&gt;&gt; device.abort()</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">pass</span></div>
-
-
-
-<div class="viewcode-block" id="Device.snapshot"><a class="viewcode-back" href="../../device.html#icarus_nmr.device_daq.Device.snapshot">[docs]</a>    <span class="k">def</span> <span class="nf">snapshot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        returns a hardcoded snapshot from the device instance. Currently does nothing.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-
-<span class="sd">        Examples</span>
-<span class="sd">        --------</span>
-<span class="sd">        &gt;&gt;&gt; device.snapshot()</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># from numpy import nan</span>
-        <span class="c1"># err = &#39;&#39;</span>
-        <span class="c1"># flag = True</span>
-        <span class="c1"># message = &#39;&#39;</span>
-        <span class="c1"># response = {}</span>
-        <span class="c1"># response[b&#39;flag&#39;] = flag</span>
-        <span class="c1"># response[b&#39;message&#39;] = message</span>
-        <span class="c1"># response[b&#39;error&#39;] = err</span>
-        <span class="k">pass</span></div>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">device_info</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">get_hardware_information</span><span class="p">(),</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">device_info</span><span class="p">}</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">config_DL</span><span class="p">(</span><span class="n">baserate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pr_baserate</span><span class="p">,</span><span class="n">dec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pr_dec</span><span class="p">,</span> <span class="n">DOI_config</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pr_DOI_config</span><span class="p">,</span> <span class="n">DOI_set</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pr_DOI_set</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">warning</span><span class="p">(</span><span class="s1">&#39;The driver object in the device _init() is </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">driver</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Device.start"><a class="viewcode-back" href="../../device.html#icarus_nmr.device_daq.Device.start">[docs]</a>    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
