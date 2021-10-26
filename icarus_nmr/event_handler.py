@@ -3427,17 +3427,23 @@ if __name__ == "__main__":
     import logging
     import matplotlib
     matplotlib.use('WxAgg')
-
-
     import socket
     SERVER_NAME = socket.gethostname()
-    client = Client(device_ca_server_prefix = f'device_{SERVER_NAME}:',dio_ca_server_prefix = f'dio_{SERVER_NAME}:')
-    from icarus.event_client import Client
-    from icarus_nmr.event_client import DAQ
 
-    client = Client()
+    from icarus_nmr.event_handler import Handler
+    from icarus_nmr.event_daq import DAQ
+    from icarus_nmr.event_client import Client
+    from icarus_nmr.event_server import Server
+
+    client = Client(device_ca_server_prefix = f'device_{SERVER_NAME}:',dio_ca_server_prefix = f'dio_{SERVER_NAME}:')
     daq = DAQ(client)
     daq.init()
+    #daq.start()
+
+    handler = Handler(daq, client)
+    handler.init()
+    handler.fault_detection_init()
+    handler.start()
 
     logging.basicConfig(filename=gettempdir()+'/icarus_event_handler.log',
                         level=logging.INFO, format="%(asctime)s %(levelname)s: %(message)s")
