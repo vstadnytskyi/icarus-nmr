@@ -134,7 +134,6 @@ class Device():
             self.config_DL(baserate = self.pr_baserate,dec = self.pr_dec, DOI_config = self.pr_DOI_config, DOI_set = self.pr_DOI_set)
         else:
             warning('The driver object in the device _init() is {}'.format(driver))
-        self.start()
 
     def start(self):
         """
