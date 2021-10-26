@@ -27,15 +27,12 @@ if sys.version_info[0] == 3:
 else:
     from time import gmtime, strftime, time, sleep, clock
 
-import os.path
-import struct
 from pdb import pm
 
 from logging import debug,info,warning,error
 
 from timeit import Timer, timeit
 from circular_buffer_numpy.queue import Queue
-from datetime import datetime
 
 from ubcs_auxiliary.saved_property import DataBase, SavedProperty
 from ubcs_auxiliary.threading import new_thread
