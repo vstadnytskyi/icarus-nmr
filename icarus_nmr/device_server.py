@@ -74,7 +74,7 @@ class Server(PVGroup):
             io_dict = await self.io_push_queue.async_get()
             # Propagate the keypress to the EPICS PV, triggering any monitors
             # along the way
-            print(f'inside while True {io_dict}')
+            info(f'inside while True {io_dict}')
             for key in list(io_dict.keys()):
                 if key == 'dio':
                     await self.dio.write(io_dict[key])
@@ -88,25 +88,29 @@ class Server(PVGroup):
                 elif key == 'd':
                     await self.d.write(io_dict[key])
 
-
+    @dio.startup
+    async def dio(self, instance, async_lib):
+        value = self.device.get_DIO()
+        await self.dio.write(value)
     @dio.putter
     async def dio(self, instance, value):
-        print('Received update for the {}, sending new value {}'.format('dio',value))
+        info('Received update for the {}, sending new value {}'.format('dio',value))
         self.device.set_outside_DIO(value = value)
         return value
     @dio.getter
     async def dio(self, instance):
-        print(f"getter: {'dio'}, new value ")
+        info(f"getter: {'dio'}, new value ")
         value = self.device.get_DIO()
         return value
 
     @data.getter
     async def data(self, instance):
+        info('self.device.pr_packet_size',self.device.pr_packet_size)
         value = self.device.queue.dequeue(self.device.pr_packet_size).flatten()
         if value.shape[0] > 1280:
-            print(f'{value.shape}')
-            print(f"getter: {'data'}, queue length {self.device.queue.length}")
-            print(f"getter: {'data'}, queue rear {self.device.queue.rear}")
+            info(f'{value.shape}')
+            info(f"getter: data, queue length {self.device.queue.length}")
+            info(f"getter: data, queue rear {self.device.queue.rear}")
         return value
 
     @peek_data.getter
@@ -119,7 +123,7 @@ class Server(PVGroup):
         await self.queue_length.write(self.device.queue.length)
     @queue_length.getter
     async def queue_length(self, instance):
-        print(f"getter: {'queue length'}: {self.device.queue.length}")
+        info(f"getter: {'queue length'}: {self.device.queue.length}")
         value = self.device.queue.length
         return value
 

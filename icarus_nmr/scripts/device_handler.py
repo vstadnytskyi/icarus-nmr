@@ -48,6 +48,7 @@ if __name__ == '__main__':
 
 
     device.init()
+    device.start()
 
     from icarus_nmr.device_server import Server
 
