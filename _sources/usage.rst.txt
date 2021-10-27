@@ -13,7 +13,8 @@ The major modules are divided into submodules:
 
   * device daq (device_daq.py)
   * device server (device_server.py)
- 
+  * device client (device_client.py)
+
 #. digital handler
 
   * digital handler (dio_handler.py)

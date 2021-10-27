@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Device Level &mdash; Icarus Pressure Jump for NMR 0.1.0.post26+g4b7e50b documentation</title>
+  <title>Device Level &mdash; Icarus Pressure Jump for NMR 0.1.0.post28+gc4637b5 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/plot_directive.css" type="text/css" />
@@ -34,7 +34,7 @@
             <a href="index.html" class="icon icon-home"> Icarus Pressure Jump for NMR
           </a>
               <div class="version">
-                0.1.0.post26+g4b7e50b
+                0.1.0.post28+gc4637b5
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -146,7 +146,14 @@
 </section>
 <section id="device-level-client">
 <h2>Device Level Client<a class="headerlink" href="#device-level-client" title="Permalink to this headline">¶</a></h2>
-<p>There is no client associated with the device level process.</p>
+<p>There is a client associated with the Device level code but it interferes with the normal operation of the system and has to be used only for debugging.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">/</span><span class="n">icarus_nmr</span>
+<span class="n">ipython3</span>
+<span class="n">run</span> <span class="n">device_client</span><span class="o">.</span><span class="n">py</span>
+<span class="n">client</span><span class="o">.</span><span class="n">get_all</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Note, the server has to be running before client can access any process variables(PVs).</p>
 </section>
 <section id="device-level-server">
 <h2>Device Level Server<a class="headerlink" href="#device-level-server" title="Permalink to this headline">¶</a></h2>

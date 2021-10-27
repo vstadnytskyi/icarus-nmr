@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>icarus_nmr.device_daq &mdash; Icarus Pressure Jump for NMR 0.1.0.post26+g4b7e50b documentation</title>
+  <title>icarus_nmr.device_daq &mdash; Icarus Pressure Jump for NMR 0.1.0.post28+gc4637b5 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/plot_directive.css" type="text/css" />
@@ -31,7 +31,7 @@
             <a href="../../index.html" class="icon icon-home"> Icarus Pressure Jump for NMR
           </a>
               <div class="version">
-                0.1.0.post26+g4b7e50b
+                0.1.0.post28+gc4637b5
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -342,7 +342,7 @@
             <span class="n">value</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">set_digital</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">io_push</span><span class="p">({</span><span class="s1">&#39;dio&#39;</span><span class="p">:</span><span class="n">value</span><span class="p">})</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;set DIO inside device daq library&#39;</span><span class="p">)</span></div>
+        <span class="n">info</span><span class="p">(</span><span class="s1">&#39;set DIO inside device daq library&#39;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Device.set_outside_DIO"><a class="viewcode-back" href="../../device.html#icarus_nmr.device_daq.Device.set_outside_DIO">[docs]</a>    <span class="k">def</span> <span class="nf">set_outside_DIO</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s1">&#39;00000000&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -362,7 +362,7 @@
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span><span class="nb">str</span><span class="p">):</span>
             <span class="n">value</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">set_digital</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;set DIO inside device daq library&#39;</span><span class="p">)</span></div>
+        <span class="n">info</span><span class="p">(</span><span class="s1">&#39;set DIO inside device daq library&#39;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Device.get_DIO"><a class="viewcode-back" href="../../device.html#icarus_nmr.device_daq.Device.get_DIO">[docs]</a>    <span class="k">def</span> <span class="nf">get_DIO</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -513,7 +513,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">io_pull_queue</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">io_dict</span><span class="o">.</span><span class="n">items</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;received update to </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1"> to change to </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span></div></div>
+                <span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;received update to </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1"> to change to </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span></div></div>
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span> <span class="c1">#for testing</span>
     <span class="kn">from</span> <span class="nn">tempfile</span> <span class="kn">import</span> <span class="n">gettempdir</span>
