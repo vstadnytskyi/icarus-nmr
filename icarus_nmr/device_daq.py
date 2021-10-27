@@ -257,7 +257,7 @@ class Device():
             value = int(value,2)
         self.driver.set_digital(value)
         self.io_push({'dio':value})
-        print('set DIO inside device daq library')
+        info('set DIO inside device daq library')
 
     def set_outside_DIO(self, value = '00000000'):
         """
@@ -277,7 +277,7 @@ class Device():
         if isinstance(value,str):
             value = int(value,2)
         self.driver.set_digital(value)
-        print('set DIO inside device daq library')
+        info('set DIO inside device daq library')
 
 
     def get_DIO(self):
@@ -428,7 +428,7 @@ class Device():
         """
         if self.io_pull_queue is not None:
             for key, value in io_dict.items:
-                print(f'received update to {key} to change to {value}')
+                info(f'received update to {key} to change to {value}')
 
 if __name__ == "__main__": #for testing
     from tempfile import gettempdir

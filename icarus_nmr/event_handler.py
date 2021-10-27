@@ -25,7 +25,8 @@ version 3.0.0 - added tube_length and medium
  - 4.0.0 - majopr upgrade to Python 3 and minor restructuring
 
 """
-__version__ = '4.0.0' #
+
+
 import sys
 
 from ubcs_auxiliary.advsleep import precision_sleep
@@ -549,7 +550,7 @@ class Handler(object):
         else:
             self.daq.run_once()
 
-        #print(self.packet_pointer,self.daq_packet_pointer)
+        #info(self.packet_pointer,self.daq_packet_pointer)
 
 
     def run_once_once(self):
@@ -563,9 +564,9 @@ class Handler(object):
         g_packet_pointer = self.g_packet_pointer
         self.daq.run_once()
         new_packet = np.copy(self.get_daq_packet_ij(packet_pointer,packet_pointer+1)[:self.daq_packet_length+1,:])
-        print(f'new packet shape {new_packet.shape}')
-        print(f'packet_pointer: {packet_pointer}')
-        print(f'packet_pointer: {self.daq_packet_length}')
+        info(f'new packet shape {new_packet.shape}')
+        info(f'packet_pointer: {packet_pointer}')
+        info(f'packet_pointer: {self.daq_packet_length}')
 
         self.events_list += self.find_dio_events(data = new_packet)
         self.events_list +=  self.find_aio_events(data = new_packet)
@@ -661,7 +662,7 @@ class Handler(object):
 
         ### ANALYSIS OF PUMP STROKE EVENT
         t = length - self.last_event_index[b'A100']- self.daq_freq*2
-        print('analog events data', data.shape)
+        info('analog events data', data.shape)
         flag, index, value = self.analyse_pump_event(data = data)
         if t > 0:
             gated_on = True
@@ -983,7 +984,7 @@ class Handler(object):
                 msg = ''
                 msg+='event index = %r \n' %dic[b'global_index']
                 msg+='self.slow_leak_flag = %r \n' %self.slow_leak_flag
-                #print(msg)
+                #info(msg)
 
                 self.push_depressurize_event()
                 before0 = 0 #self.history_buffers[b'pPre_after_0'].buffer[3,self.history_buffers[b'pPre_after_0'].pointer]
@@ -1144,7 +1145,7 @@ class Handler(object):
                 data = self.get_ring_buffer_N(N = int(self.last_event_width[b'valve3']*self.daq.freq) , pointer = self.last_event_index[b'D31'])
 
                 #log into a log file
-                temp_dic[b'meanbit3'] = mean(data[5,:])
+                temp_dic[b'meanbit3'] = mean(data[:,5])
                 self.history_append(dic = temp_dic,
                                           event_code = 31,
                                           global_pointer = dic[b'global_index'],
@@ -1383,7 +1384,7 @@ class Handler(object):
         """
         if self.io_push_queue is not None:
             for key, value in io_dict.items:
-                print(f'received update to {key} to change to {value}')
+                info(f'received update to {key} to change to {value}')
 
     def push_target_pressure(self,value = None):
         from numpy import nanmedian, median, copy
@@ -1655,7 +1656,7 @@ class Handler(object):
     def push_new_period(self, value):
         import numpy as np
         data = value
-        #print(data)
+        #info(data)
         # b'period': nan, b'delay': nan, b'pressurize_width': nan, b'depressurize_width': nan, b'pump_width': nan,
         def chart_one(x,y):
             """
@@ -1780,8 +1781,8 @@ class Handler(object):
         period_buffer = data
         lst_result = self.find_dio_events(data = period_buffer, local = True)
         period_event = zeros((2,len(lst_result)))
-        #print(len(lst_result))
-        #print(period_event)
+        #info(len(lst_result))
+        #info(period_event)
         i = 0
         for item in lst_result:
             period_event[0,i] = int(item[b'index'])
@@ -1963,7 +1964,7 @@ class Handler(object):
         """
         from numpy import gradient, nanmedian, nan, isnan ,argmin,argwhere
         from logging import error
-        print(f'analyse_pump_event data shape: {data.shape}')
+        info(f'analyse_pump_event data shape: {data.shape}')
         try:
             target = data[:,0]
             grad = gradient(target)
@@ -1974,9 +1975,9 @@ class Handler(object):
             else:
                 flag = False
         except:
-            print(f'except data shape: {data.shape}')
+            info(f'except data shape: {data.shape}')
             target = data[:,0]
-            print(target)
+            info(target)
             error(traceback.format_exc())
             flag, idx_min, grad_min = False, 0, 0
 
@@ -2910,7 +2911,7 @@ class Handler(object):
             debug(msg)
             #self.logging_permanent_log_append(message = msg)
             #self.SentEmail(event = 'fault')
-            #print(msg)
+            #info(msg)
 
         else:
             pass
@@ -3192,9 +3193,9 @@ class Handler(object):
 
     def set_logging_state(self, value = None):
         #from icarus_SL import icarus_SL
-        print("def set_logging_state(self, value = None): where value = %r" %value)
+        info("def set_logging_state(self, value = None): where value = %r" %value)
         if value == 1:
-            print('if value: %r' %value)
+            info('if value: %r' %value)
             self.exp_start_time = self.last_event_index[b'D40']
             #icarus_SL.inds.exp_start_time = self.last_event_index[b'D40']
             #self.logging_start()
@@ -3402,7 +3403,7 @@ class Handler(object):
             sample = data[0,:]
             x = arange(0,len(sample),1)
             sample_grad = gradient(data[0,:])
-            print(self.analyse_pump_event(data))
+            info(self.analyse_pump_event(data))
             plt.figure()
             plt.plot(x,sample,'o',
                      x,data[1,:],'-',

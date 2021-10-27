@@ -89,7 +89,16 @@ You can peek into the device queue with functions inside of the Queue object.
 Device Level Client
 *********************
 
-There is no client associated with the device level process.
+There is a client associated with the Device level code but it interferes with the normal operation of the system and has to be used only for debugging.
+
+.. code-block:: python
+
+  cd /icarus_nmr
+  ipython3
+  run device_client.py
+  client.get_all()
+
+Note, the server has to be running before client can access any process variables(PVs). 
 
 **********************
 Device Level Server

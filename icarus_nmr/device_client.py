@@ -22,6 +22,15 @@ class Client():
         for item in self.pv_names:
             self.pvs[item], = self.ctx.get_pvs(f'{self.ca_name}{item}',)
 
+    def get_all(self):
+        """
+        get all PV values as a dictionary
+        """
+        dict = {}
+        for key in self.pvs.keys():
+            dict[key] = self.pvs[key].read().data
+        return dict
+        
     def get_dio(self):
         """
         a wrapper to get digital state from the device handler process

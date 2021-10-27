@@ -38,9 +38,10 @@ if __name__ == '__main__':
     from icarus_nmr.event_server import Server
 
     client = Client(device_ca_server_prefix = f'device_{SERVER_NAME}:',dio_ca_server_prefix = f'dio_{SERVER_NAME}:')
+    print(f'SERVER_NAME = {SERVER_NAME}:')
     daq = DAQ(client)
     daq.init()
-    #daq.start()
+    daq.start()
 
     handler = Handler(daq, client)
     handler.init()

@@ -83,6 +83,7 @@ class DAQ(object):
         execute run_once function in a while self.running loop indefinitely.
         """
         from time import sleep
+        self.running = True
         while self.running:
             self.run_once()
 
@@ -114,4 +115,14 @@ class DAQ(object):
         return res
 
 if __name__ == '__main__':
-    pass
+    import socket
+    SERVER_NAME = socket.gethostname()
+    from icarus_nmr.event_daq import DAQ
+
+    from icarus_nmr.event_client import Client
+
+
+    client = Client(device_ca_server_prefix = f'device_{SERVER_NAME}:',dio_ca_server_prefix = f'dio_{SERVER_NAME}:')
+    daq = DAQ(client)
+    daq.init()
+    daq.start()
