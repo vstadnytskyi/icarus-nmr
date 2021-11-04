@@ -37,7 +37,7 @@ class Driver(object):
 
     def __init__(self):
         """
-        
+
         """
         self.available_ports = []
         self.dev = None
@@ -444,11 +444,12 @@ class Driver(object):
         print('t = Timer(lambda: dev.get_readings(N))')
         print('print t.timeit(number = M)')
 
-driver = Driver()
+
 
 if __name__ == "__main__": #for testing
     import logging
     from tempfile import gettempdir
+    driver = Driver()
     self = driver
 
 

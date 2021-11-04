@@ -47,6 +47,12 @@ class Server(PVGroup):
 
     operating_mode = pvproperty(value=0,dtype=int)
 
+
+    pulse_generator_depre_width = pvproperty(value=0.1, dtype = float)
+    pulse_generator_pre_width = pvproperty(value=0.1, dtype = float)
+    pulse_generator_delay = pvproperty(value=0.1, dtype = float)
+    pulse_generator_period = pvproperty(value=0.1, dtype = float)
+
     @dio.startup
     async def dio(self, instance, async_lib):
         # This method will be called when the server starts up.

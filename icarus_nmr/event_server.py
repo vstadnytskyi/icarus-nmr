@@ -101,6 +101,25 @@ class Server(PVGroup):
 
     warning_text = pvproperty(value='this is a warning/faults field')
 
+
+    timeout_period = pvproperty(value=60.0, dtype = float, units = 's')
+    target_pressure_coefficient = pvproperty(value=0.92, dtype = float)
+    transfer_tube = pvproperty(value=120, dtype = float, units = 'inches')
+    log_history = pvproperty(value=False, dtype = bool)
+    save_traces = pvproperty(value=False, dtype = bool)
+    show_sample_sensors = pvproperty(value=False, dtype = bool)
+
+    global_valve_counter_pre = pvproperty(value=1123, dtype = int)
+    global_valve_counter_pre_reset = pvproperty(value=False, dtype = bool)
+    #
+    global_valve_counter_depre = pvproperty(value=2123, dtype = int)
+    global_valve_counter_depre_reset = pvproperty(value=False, dtype = bool)
+    #
+    global_pump_counter= pvproperty(value=3123, dtype = int)
+    global_pump_counter_reset = pvproperty(value=False, dtype = bool)
+
+    medium= pvproperty(value='mineral spirits')
+
     @sample_pressure.startup
     async def sample_pressure(self, instance, async_lib):
         # This method will be called when the server starts up.

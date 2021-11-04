@@ -2,10 +2,7 @@
 """
 Icarus Client (High Pressure Apparatus Client Level)
 dates: Nov 2017 - Sept 2018
-by Gabriel Anfinrud, Philip Anfinrud, Valentyn Stadnytskyi @ National Institutes of Health
-
-current version: 4.3.1
-last updated: November 16, 2018
+by  Valentyn Stadnytskyi @ National Institutes of Health
 
 
 """
@@ -68,8 +65,9 @@ def resource_path(relative_path):
 import platform
 class GUI(wx.Frame):
 
-    def __init__(self, caserver_name = ''):
-        self.caserver_name = caserver_name
+    def __init__(self, event_server_name = '', dio_server_name = ''):
+        self.event_server_name = event_server_name
+        self.dio_server_name = dio_server_name
         self.name = platform.node() + '_'+'GUI'
         self.lastN_history = 0
         self.lastM_history = 10000
@@ -142,6 +140,10 @@ class GUI(wx.Frame):
         file_item[0] = fileMenu.Append(wx.ID_EXIT, 'Quit', 'Quit application')
         self.Bind(wx.EVT_MENU, self.on_quit, file_item[0])
 
+        self.settingMenu = wx.Menu()
+        #self.setting_item[0] = settingMenu.Append(wx.NewId(),  'server settings')
+        self.Bind(wx.EVT_MENU_OPEN, self.on_server_settings)#3self.setting_item[0])
+
 
         aboutMenu = wx.Menu()
         about_item[0]= aboutMenu.Append(wx.ID_ANY,  'About')
@@ -150,7 +152,7 @@ class GUI(wx.Frame):
 
         menubar.Append(fileMenu, '&File')
 
-        #menubar.Append(self.settingMenu, '&Settings')
+        menubar.Append(self.settingMenu, '&Settings')
         menubar.Append(aboutMenu, '&About')
 
 
@@ -171,25 +173,25 @@ class GUI(wx.Frame):
 
         self.sizers['graph0'] = wx.BoxSizer(wx.VERTICAL)
         self.labels['graph0']  = wx.StaticText(self.panel, label= 'Field 2 label', style = wx.ALIGN_CENTER)
-        self.fields['graph0']  = PVImage(self.panel, pv=f'{self.caserver_name}:image_pre', im_size = (768,216))
+        self.fields['graph0']  = PVImage(self.panel, pv=f'{self.event_server_name}:image_pre', im_size = (768,216))
         self.sizers['graph0'] .Add(self.labels['graph0']  , 0)
         self.sizers['graph0'] .Add(self.fields['graph0']  , 0)
 
         self.sizers['graph1'] = wx.BoxSizer(wx.VERTICAL)
-        self.labels['graph1']  = wx.StaticText(self.panel, label= 'Field 2 label', style = wx.ALIGN_CENTER)
-        self.fields['graph1']  = PVImage(self.panel, pv=f'{self.caserver_name}:image_depre', im_size = (768,216))
+        self.labels['graph1'] = wx.StaticText(self.panel, label= 'Field 2 label', style = wx.ALIGN_CENTER)
+        self.fields['graph1'] = PVImage(self.panel, pv=f'{self.event_server_name}:image_depre', im_size = (768,216))
         self.sizers['graph1'] .Add(self.labels['graph1']  , 0)
         self.sizers['graph1'] .Add(self.fields['graph1']  , 0)
 
         self.sizers['graph2'] = wx.BoxSizer(wx.VERTICAL)
-        self.labels['graph2']  = wx.StaticText(self.panel, label= 'Field 2 label', style = wx.ALIGN_CENTER)
-        self.fields['graph2']  = PVImage(self.panel, pv=f'{self.caserver_name}:image_period', im_size = (768,216))
+        self.labels['graph2'] = wx.StaticText(self.panel, label= 'Field 2 label', style = wx.ALIGN_CENTER)
+        self.fields['graph2'] = PVImage(self.panel, pv=f'{self.event_server_name}:image_period', im_size = (768,216))
         self.sizers['graph2'] .Add(self.labels['graph2']  , 0)
         self.sizers['graph2'] .Add(self.fields['graph2']  , 0)
 
         self.sizers['graph3'] = wx.BoxSizer(wx.VERTICAL)
-        self.labels['graph3']  = wx.StaticText(self.panel, label= 'Field 2 label', style = wx.ALIGN_CENTER)
-        self.fields['graph3']  = PVImage(self.panel, pv=f'{self.caserver_name}:image_logging', im_size = (768,1080))
+        self.labels['graph3'] = wx.StaticText(self.panel, label= 'Field 2 label', style = wx.ALIGN_CENTER)
+        self.fields['graph3'] = PVImage(self.panel, pv=f'{self.event_server_name}:image_logging', im_size = (768,1080))
         self.sizers['graph3'] .Add(self.labels['graph3']  , 0)
         self.sizers['graph3'] .Add(self.fields['graph3']  , 0)
 
@@ -205,7 +207,7 @@ class GUI(wx.Frame):
 
         self.sizers[b'server'] = wx.BoxSizer(wx.HORIZONTAL)
         self.labels[b'server'] = wx.StaticText(self.panel, label= "server name", size = (200,-1))
-        self.fields[b'server'] = wx.StaticText(self.panel, label= f'{self.caserver_name}', size = (200,-1))
+        self.fields[b'server'] = wx.StaticText(self.panel, label= f'{self.event_server_name}', size = (200,-1))
         self.sizers[b'server'].Add(self.labels[b'server'],0)
         self.sizers[b'server'].Add(self.fields[b'server'],0)
 
@@ -224,7 +226,7 @@ class GUI(wx.Frame):
         self.labels[b'pressure_target'].SetBackgroundColour(wx.Colour(240, 240, 240))
         #
         #
-        self.fields[b'pressure_target'] = epics.wx.PVText(self.panel, pv=f'{self.caserver_name}:target_pressure', size = (200,-1))
+        self.fields[b'pressure_target'] = epics.wx.PVText(self.panel, pv=f'{self.event_server_name}:target_pressure', size = (200,-1))
         #
         self.fields[b'pressure_target'].SetFont(wx_l_font)
         self.fields[b'pressure_target'].SetBackgroundColour(wx.Colour(240, 240, 240))
@@ -236,7 +238,7 @@ class GUI(wx.Frame):
         self.labels[b'pressure_sample'] = wx.StaticText(self.panel, label= "Sample:", size = (200,-1))
 
         self.labels[b'pressure_sample'].SetFont(wx_l_font)
-        self.fields[b'pressure_sample'] = epics.wx.PVText(self.panel, pv=f'{self.caserver_name}:sample_pressure', size = (200,-1))
+        self.fields[b'pressure_sample'] = epics.wx.PVText(self.panel, pv=f'{self.event_server_name}:sample_pressure', size = (200,-1))
         self.fields[b'pressure_sample'].SetFont(wx_l_font)
 
         self.sizers[b'pressure_sample'] = wx.BoxSizer(wx.HORIZONTAL)
@@ -247,7 +249,7 @@ class GUI(wx.Frame):
         self.labels[b'pump_counter'] = wx.StaticText(self.panel, label= "Pump Counter:", size = (200,-1))
 
         self.labels[b'pump_counter'].SetFont(wx_m_font)
-        self.fields[b'pump_counter'] = epics.wx.PVText(self.panel, pv=f'{self.caserver_name}:pump_counter', size = (200,-1))
+        self.fields[b'pump_counter'] = epics.wx.PVText(self.panel, pv=f'{self.event_server_name}:pump_counter', size = (200,-1))
         self.fields[b'pump_counter'].SetFont(wx_m_font)
 
         self.sizers[b'pump_counter'] = wx.BoxSizer(wx.HORIZONTAL)
@@ -258,7 +260,7 @@ class GUI(wx.Frame):
         self.labels[b'valves_per_pump_current'] = wx.StaticText(self.panel, label= "Valve opngs per pump stroke", size = (200,-1))
 
         self.labels[b'valves_per_pump_current'].SetFont(wx_m_font)
-        self.fields[b'valves_per_pump_current'] = epics.wx.PVText(self.panel, pv=f'{self.caserver_name}:valves_per_pump_current', size = (200,-1))
+        self.fields[b'valves_per_pump_current'] = epics.wx.PVText(self.panel, pv=f'{self.event_server_name}:valves_per_pump_current', size = (200,-1))
         self.fields[b'valves_per_pump_current'].SetFont(wx_m_font)
 
         self.sizers[b'valves_per_pump_current'] = wx.BoxSizer(wx.HORIZONTAL)
@@ -315,7 +317,7 @@ class GUI(wx.Frame):
 
         self.labels[b'warnings_text'] = wx.StaticText(self.panel, label= "Warning/Faults", size = (200,-1))
         self.labels[b'warnings_text'].SetFont(wx_m_font)
-        self.fields[b'warnings_text'] = epics.wx.PVText(self.panel, pv=f'{self.caserver_name}:warning_text', size = (400,200))
+        self.fields[b'warnings_text'] = epics.wx.PVText(self.panel, pv=f'{self.event_server_name}:warning_text', size = (400,200))
         self.fields[b'warnings_text'].SetFont(wx_s_font)
 
         self.sizers[b'warnings_text'] = wx.BoxSizer(wx.VERTICAL)
@@ -342,8 +344,8 @@ class GUI(wx.Frame):
 
         #ROW1
         self.labels[b'pressure'] = wx.StaticText(self.panel, label= "P after/before [kbar]", size = (200,-1))
-        self.fields[b'pressure_col1'] = epics.wx.PVText(self.panel, pv=f'{self.caserver_name}:table_pressure_after_pre', size = (200,-1))
-        self.fields[b'pressure_col2'] = epics.wx.PVText(self.panel, pv=f'{self.caserver_name}:table_pressure_before_depre', size = (200,-1))
+        self.fields[b'pressure_col1'] = epics.wx.PVText(self.panel, pv=f'{self.event_server_name}:table_pressure_after_pre', size = (200,-1))
+        self.fields[b'pressure_col2'] = epics.wx.PVText(self.panel, pv=f'{self.event_server_name}:table_pressure_before_depre', size = (200,-1))
 
         self.sizers[b'row1'] = wx.BoxSizer(wx.HORIZONTAL)
         self.sizers[b'row1'].Add(self.labels[b'pressure'],0)
@@ -354,8 +356,8 @@ class GUI(wx.Frame):
 
         #ROW2
         self.labels[b'time_to_swtich'] = wx.StaticText(self.panel, label= "time to switch [ms]", size = (200,-1))
-        self.fields[b'time_to_swtich_col1'] = epics.wx.PVText(self.panel, pv=f'{self.caserver_name}:table_time_to_switch_pre', size = (200,-1))
-        self.fields[b'time_to_swtich_col2'] = epics.wx.PVText(self.panel, pv=f'{self.caserver_name}:table_time_to_switch_depre', size = (200,-1))
+        self.fields[b'time_to_swtich_col1'] = epics.wx.PVText(self.panel, pv=f'{self.event_server_name}:table_time_to_switch_pre', size = (200,-1))
+        self.fields[b'time_to_swtich_col2'] = epics.wx.PVText(self.panel, pv=f'{self.event_server_name}:table_time_to_switch_depre', size = (200,-1))
 
         self.sizers[b'row2'] = wx.BoxSizer(wx.HORIZONTAL)
         self.sizers[b'row2'].Add(self.labels[b'time_to_swtich'],0)
@@ -366,8 +368,8 @@ class GUI(wx.Frame):
 
         #ROW3
         self.labels[b'slope'] = wx.StaticText(self.panel, label= "fall/rise slope [kbar/ms]", size = (200,-1))
-        self.fields[b'slope_col1'] = epics.wx.PVText(self.panel, pv=f'{self.caserver_name}:table_rise_slope', size = (200,-1))
-        self.fields[b'slope_col2'] = epics.wx.PVText(self.panel, pv=f'{self.caserver_name}:table_fall_slope', size = (200,-1))
+        self.fields[b'slope_col1'] = epics.wx.PVText(self.panel, pv=f'{self.event_server_name}:table_rise_slope', size = (200,-1))
+        self.fields[b'slope_col2'] = epics.wx.PVText(self.panel, pv=f'{self.event_server_name}:table_fall_slope', size = (200,-1))
 
         self.sizers[b'row3'] = wx.BoxSizer(wx.HORIZONTAL)
         self.sizers[b'row3'].Add(self.labels[b'slope'],0)
@@ -378,8 +380,8 @@ class GUI(wx.Frame):
 
         #ROW4
         self.labels[b'pulse_width'] = wx.StaticText(self.panel, label= "pulse width [ms]", size = (200,-1))
-        self.fields[b'pulse_width_col1'] = epics.wx.PVText(self.panel, pv=f'{self.caserver_name}:table_pulse_width_pre', size = (200,-1))
-        self.fields[b'pulse_width_col2'] = epics.wx.PVText(self.panel, pv=f'{self.caserver_name}:table_pulse_width_depre', size = (200,-1))
+        self.fields[b'pulse_width_col1'] = epics.wx.PVText(self.panel, pv=f'{self.event_server_name}:table_pulse_width_pre', size = (200,-1))
+        self.fields[b'pulse_width_col2'] = epics.wx.PVText(self.panel, pv=f'{self.event_server_name}:table_pulse_width_depre', size = (200,-1))
 
         self.sizers[b'row4'] = wx.BoxSizer(wx.HORIZONTAL)
         self.sizers[b'row4'].Add(self.labels[b'pulse_width'],0)
@@ -391,7 +393,7 @@ class GUI(wx.Frame):
 
         #ROW5
         self.labels[b'delay'] = wx.StaticText(self.panel, label= "delay [ms]", size = (200,-1))
-        self.fields[b'delay_col1'] = epics.wx.PVText(self.panel, pv=f'{self.caserver_name}:table_delay', size = (200,-1))
+        self.fields[b'delay_col1'] = epics.wx.PVText(self.panel, pv=f'{self.event_server_name}:table_delay', size = (200,-1))
 
         self.sizers[b'row5'] = wx.BoxSizer(wx.HORIZONTAL)
         self.sizers[b'row5'].Add(self.labels[b'delay'],0)
@@ -401,7 +403,7 @@ class GUI(wx.Frame):
 
         #ROW6
         self.labels[b'period'] = wx.StaticText(self.panel, label= "period [s]", size = (200,-1))
-        self.fields[b'period_col1'] = epics.wx.PVText(self.panel, pv=f'{self.caserver_name}:table_period', size = (200,-1))
+        self.fields[b'period_col1'] = epics.wx.PVText(self.panel, pv=f'{self.event_server_name}:table_period', size = (200,-1))
 
         self.sizers[b'row6'] = wx.BoxSizer(wx.HORIZONTAL)
         self.sizers[b'row6'].Add(self.labels[b'period'],0)
@@ -412,8 +414,8 @@ class GUI(wx.Frame):
 
         #ROW7
         self.labels[b'valve_counter'] = wx.StaticText(self.panel, label= "Valve Counter", size = (200,-1))
-        self.fields[b'valve_counter_col1'] = epics.wx.PVText(self.panel, pv=f'{self.caserver_name}:table_valve_counter_pre', size = (200,-1))
-        self.fields[b'valve_counter_col2'] = epics.wx.PVText(self.panel, pv=f'{self.caserver_name}:table_valve_counter_depre', size = (200,-1))
+        self.fields[b'valve_counter_col1'] = epics.wx.PVText(self.panel, pv=f'{self.event_server_name}:table_valve_counter_pre', size = (200,-1))
+        self.fields[b'valve_counter_col2'] = epics.wx.PVText(self.panel, pv=f'{self.event_server_name}:table_valve_counter_depre', size = (200,-1))
 
         self.sizers[b'row7'] = wx.BoxSizer(wx.HORIZONTAL)
         self.sizers[b'row7'].Add(self.labels[b'valve_counter'],0)
@@ -495,6 +497,128 @@ class GUI(wx.Frame):
         del self
         os._exit(1)
 
+    def on_server_settings(self,event):
+        print("on_server_settings Clicked")
+        if event.EventObject == self.settingMenu:
+            self.serverSettingWindow = self.SettingServerWindowFrame(event_server_name=self.event_server_name,dio_server_name = self.dio_server_name)
+            self.serverSettingWindow.Show()
+
+    class SettingServerWindowFrame(wx.Frame):
+
+        title = "Server Settings Panel"
+
+        def __init__(self, event_server_name = '', dio_server_name = ''):
+            self.event_server_name = event_server_name
+            self.dio_server_name = dio_server_name
+
+            self.labels = {}
+            self.fields = {}
+            self.sizers = {}
+            self.box_sizer = {}
+
+
+            wx.Frame.__init__(self, None, wx.ID_ANY, title=self.title, style=wx.DEFAULT_FRAME_STYLE | wx.STAY_ON_TOP)
+            self.panel=wx.Panel(self, -1)
+            self.Bind(wx.EVT_CLOSE, self.on_quit)
+
+
+            self.init()
+            self.SetBackgroundColour(wx.Colour(255,255,255))
+            self.Centre()
+            self.Show()
+
+        def on_quit(self,event):
+            self.Destroy()
+            del self
+
+        def init(self):
+            """
+            """
+            self.xs_font = 10
+            self.s_font = 12
+            self.m_font = 16
+            self.l_font = 24
+            self.xl_font = 32
+            self.xl_font = 60
+            self.wx_xs_font = wx_xs_font=wx.Font(self.xs_font,wx.DEFAULT,wx.NORMAL,wx.NORMAL)
+            self.wx_s_font = wx_s_font=wx.Font(self.s_font,wx.DEFAULT,wx.NORMAL,wx.NORMAL)
+            self.wx_m_font = wx_m_font=wx.Font(self.m_font,wx.DEFAULT,wx.NORMAL,wx.NORMAL)
+            self.wx_l_font = wx_l_font=wx.Font(self.l_font,wx.DEFAULT,wx.NORMAL,wx.NORMAL)
+            self.wx_xl_font = wx_xl_font=wx.Font(self.xl_font,wx.DEFAULT,wx.NORMAL,wx.NORMAL)
+            self.wx_xxl_font = wx_xxl_font=wx.Font(self.xl_font,wx.DEFAULT,wx.NORMAL,wx.NORMAL)
+
+            sizer = wx.GridBagSizer(hgap = 5, vgap = 5)
+            self.labels ={}
+            self.fields = {}
+            self.sizer = {}
+            # Create 2 levels of sizers
+            self.topSizer = wx.BoxSizer(wx.HORIZONTAL)
+            self.sl_indicators_sizer = wx.BoxSizer(wx.VERTICAL)
+            self.sl_controls_sizer = wx.BoxSizer(wx.VERTICAL)
+            self.al_controls_sizer = wx.BoxSizer(wx.VERTICAL)
+
+
+            # Indicators
+            self.labels[b'valve1'] = wx.StaticText(self.panel, label= "Valve1", size = (200,-1))
+            self.labels[b'valve1'].SetFont(wx_l_font)
+            self.labels[b'valve1'].SetBackgroundColour(wx.Colour(240, 240, 240))
+            self.fields[b'valve1_count'] = epics.wx.PVText(self.panel, pv=f'{self.event_server_name}:global_valve_counter_depre', size = (200,-1))
+            self.fields[b'valve1_reset_button'] = epics.wx.PVButton(self.panel, pv=f"{self.event_server_name}:global_valve_counter_depre_reset", pushValue = 1, size = (200,-1),label="reset")
+            self.fields[b'valve1_count'].SetFont(wx_l_font)
+            self.fields[b'valve1_count'].SetBackgroundColour(wx.Colour(240, 240, 240))
+            self.sizers[b'valve1'] = wx.BoxSizer(wx.HORIZONTAL)
+            self.sizers[b'valve1'].Add(self.labels[b'valve1'],0)
+            self.sizers[b'valve1'].Add(self.fields[b'valve1_count'],0)
+            self.sizers[b'valve1'].Add(self.fields[b'valve1_reset_button'],0)
+
+            self.labels[b'valve2'] = wx.StaticText(self.panel, label= "valve2", size = (200,-1))
+            self.labels[b'valve2'].SetFont(wx_l_font)
+            self.labels[b'valve2'].SetBackgroundColour(wx.Colour(240, 240, 240))
+            self.fields[b'valve2_count'] = epics.wx.PVText(self.panel, pv=f'{self.event_server_name}:global_valve_counter_pre', size = (200,-1))
+            self.fields[b'valve2_reset_button'] = epics.wx.PVButton(self.panel, pv=f"{self.event_server_name}:global_valve_counter_pre_reset", pushValue = 1, size = (200,-1),label="reset")
+            self.fields[b'valve2_count'].SetFont(wx_l_font)
+            self.fields[b'valve2_count'].SetBackgroundColour(wx.Colour(240, 240, 240))
+            self.sizers[b'valve2'] = wx.BoxSizer(wx.HORIZONTAL)
+            self.sizers[b'valve2'].Add(self.labels[b'valve2'],0)
+            self.sizers[b'valve2'].Add(self.fields[b'valve2_count'],0)
+            self.sizers[b'valve2'].Add(self.fields[b'valve2_reset_button'],0)
+
+            self.labels[b'pump'] = wx.StaticText(self.panel, label= "pump", size = (200,-1))
+            self.labels[b'pump'].SetFont(wx_l_font)
+            self.labels[b'pump'].SetBackgroundColour(wx.Colour(240, 240, 240))
+            self.fields[b'pump_count'] = epics.wx.PVText(self.panel, pv=f'{self.event_server_name}:global_pump_counter', size = (200,-1))
+            self.fields[b'pump_reset_button'] = epics.wx.PVButton(self.panel, pv=f"{self.event_server_name}:global_pump_counter_reset", pushValue = 1, size = (200,-1),label="reset")
+            self.fields[b'pump_count'].SetFont(wx_l_font)
+            self.fields[b'pump_count'].SetBackgroundColour(wx.Colour(240, 240, 240))
+            self.sizers[b'pump'] = wx.BoxSizer(wx.HORIZONTAL)
+            self.sizers[b'pump'].Add(self.labels[b'pump'],0)
+            self.sizers[b'pump'].Add(self.fields[b'pump_count'],0)
+            self.sizers[b'pump'].Add(self.fields[b'pump_reset_button'],0)
+
+            self.sl_indicators_sizer.Add(self.sizers[b'valve1'])
+            self.sl_indicators_sizer.Add(self.sizers[b'valve2'])
+            self.sl_indicators_sizer.Add(self.sizers[b'pump'])
+            self.sl_indicators_sizer.Add(self.sizers[b'medium'])
+
+            #self.sl_controls_sizer.Add(self.sizers[b'pressure_sample'])
+
+            #self.sl_controls_sizer.Add(self.sizers[b'pump_counter'])
+
+            #self.al_controls_sizer.Add(self.sizers[b'valves_per_pump_current'])
+
+            self.Center()
+            self.Show()
+
+            self.topSizer.Add(self.sl_indicators_sizer,0)
+            self.topSizer.Add(self.sl_controls_sizer,0)
+            self.topSizer.Add(self.al_controls_sizer,0)
+
+            self.panel.SetSizer(self.topSizer)
+            self.topSizer.Fit(self)
+            self.Layout()
+            self.panel.Layout()
+            self.panel.Fit()
+            self.Fit()
 
 if __name__ == "__main__":
     from pdb import pm
@@ -503,11 +627,12 @@ if __name__ == "__main__":
     import sys
     import socket
     if len(sys.argv)>1:
-        caserver_name = sys.argv[2]
+        event_server_name = sys.argv[2]
     else:
-        caserver_name = f'event_handler_{socket.gethostname()}'
+        event_server_name = f'event_handler_{socket.gethostname()}'
+        dio_server_name = f'dio_{socket.gethostname()}'
 
     app = wx.App(redirect=False)
-    panel = GUI(caserver_name = caserver_name)
+    panel = GUI(event_server_name = event_server_name, dio_server_name = dio_server_name)
 
     app.MainLoop()
