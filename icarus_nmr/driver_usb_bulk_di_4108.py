@@ -318,7 +318,7 @@ class Driver(object):
         #keep the leading zero. The very first zero 'D7' byte count 18 (see manual) is ommited.
         #will be shown as a string. We need to convert it to a numpy array for easier usage
         try:
-            res = transpose(asarray(split(data,points_to_read)))
+            res = asarray(split(data,points_to_read))
         except:
             error(traceback.format_exc())
             res = None
