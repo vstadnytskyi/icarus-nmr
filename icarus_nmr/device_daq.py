@@ -433,6 +433,7 @@ class Device():
 
 if __name__ == "__main__": #for testing
     import sys
+    flag = False
     if sys.argv[1] == 'mock':
         flag = True
 
