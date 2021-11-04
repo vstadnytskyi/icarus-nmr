@@ -26,7 +26,7 @@ import struct
 from pdb import pm
 
 
-
+from logging import info,warn, debug, error
 from struct import pack, unpack
 from timeit import Timer
 
@@ -448,7 +448,7 @@ class Driver(object):
 
 if __name__ == "__main__": #for testing
     import logging
-    from logging import info,warn, debug, error
+
     from tempfile import gettempdir
     driver = Driver()
     self = driver
