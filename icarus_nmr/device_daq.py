@@ -432,13 +432,20 @@ class Device():
                 info(f'received update to {key} to change to {value}')
 
 if __name__ == "__main__": #for testing
+    import sys
+    if sys.argv[1] == 'mock':
+        flag = True
+
     from tempfile import gettempdir
     import logging
     logging.basicConfig(filename=gettempdir()+'/icarus_device.log',
                         level=logging.INFO, format="%(asctime)s %(levelname)s: %(message)s")
     from icarus_nmr.device_daq import Device
     device = Device()
-    from icarus_nmr.driver_mock import Driver
+    if flag:
+        from icarus_nmr.driver_mock import Driver
+    else:
+        from icarus_nmr.driver_usb_bulk_di_4108 import Driver
     driver = Driver()
     device.bind_driver(driver)
     device.init()
