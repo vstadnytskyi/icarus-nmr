@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>icarus_nmr.device_daq &mdash; Icarus Pressure Jump for NMR 0.1.0.post30+g4d3cd03 documentation</title>
+  <title>icarus_nmr.device_daq &mdash; Icarus Pressure Jump for NMR 0.1.0.post31+g12e4b72 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/plot_directive.css" type="text/css" />
@@ -31,7 +31,7 @@
             <a href="../../index.html" class="icon icon-home"> Icarus Pressure Jump for NMR
           </a>
               <div class="version">
-                0.1.0.post30+g4d3cd03
+                0.1.0.post31+g12e4b72
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -517,13 +517,20 @@
                 <span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;received update to </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1"> to change to </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span></div></div>
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span> <span class="c1">#for testing</span>
+    <span class="kn">import</span> <span class="nn">sys</span>
+    <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;mock&#39;</span><span class="p">:</span>
+        <span class="n">flag</span> <span class="o">=</span> <span class="kc">True</span>
+
     <span class="kn">from</span> <span class="nn">tempfile</span> <span class="kn">import</span> <span class="n">gettempdir</span>
     <span class="kn">import</span> <span class="nn">logging</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">gettempdir</span><span class="p">()</span><span class="o">+</span><span class="s1">&#39;/icarus_device.log&#39;</span><span class="p">,</span>
                         <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%(asctime)s</span><span class="s2"> </span><span class="si">%(levelname)s</span><span class="s2">: </span><span class="si">%(message)s</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="kn">from</span> <span class="nn">icarus_nmr.device_daq</span> <span class="kn">import</span> <span class="n">Device</span>
     <span class="n">device</span> <span class="o">=</span> <span class="n">Device</span><span class="p">()</span>
-    <span class="kn">from</span> <span class="nn">icarus_nmr.driver_mock</span> <span class="kn">import</span> <span class="n">Driver</span>
+    <span class="k">if</span> <span class="n">flag</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">icarus_nmr.driver_mock</span> <span class="kn">import</span> <span class="n">Driver</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">icarus_nmr.driver_usb_bulk_di_4108</span> <span class="kn">import</span> <span class="n">Driver</span>
     <span class="n">driver</span> <span class="o">=</span> <span class="n">Driver</span><span class="p">()</span>
     <span class="n">device</span><span class="o">.</span><span class="n">bind_driver</span><span class="p">(</span><span class="n">driver</span><span class="p">)</span>
     <span class="n">device</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
