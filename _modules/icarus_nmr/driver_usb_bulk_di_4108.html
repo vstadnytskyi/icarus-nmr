@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>icarus_nmr.driver_usb_bulk_di_4108 &mdash; Icarus Pressure Jump for NMR 0.1.0.post34+g15bd272 documentation</title>
+  <title>icarus_nmr.driver_usb_bulk_di_4108 &mdash; Icarus Pressure Jump for NMR 0.1.0.post35+g224e886 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/plot_directive.css" type="text/css" />
@@ -31,7 +31,7 @@
             <a href="../../index.html" class="icon icon-home"> Icarus Pressure Jump for NMR
           </a>
               <div class="version">
-                0.1.0.post34+g15bd272
+                0.1.0.post35+g224e886
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -403,7 +403,7 @@
         <span class="c1">#keep the leading zero. The very first zero &#39;D7&#39; byte count 18 (see manual) is ommited.</span>
         <span class="c1">#will be shown as a string. We need to convert it to a numpy array for easier usage</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">res</span> <span class="o">=</span> <span class="n">transpose</span><span class="p">(</span><span class="n">asarray</span><span class="p">(</span><span class="n">split</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="n">points_to_read</span><span class="p">)))</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="n">asarray</span><span class="p">(</span><span class="n">split</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="n">points_to_read</span><span class="p">))</span>
         <span class="k">except</span><span class="p">:</span>
             <span class="n">error</span><span class="p">(</span><span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">())</span>
             <span class="n">res</span> <span class="o">=</span> <span class="kc">None</span>
