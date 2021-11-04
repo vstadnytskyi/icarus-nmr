@@ -42,7 +42,7 @@ class DAQ(object):
         # use auxiliary library new_thread wrapper
         # create new thread with self.run
         # add the thread pointer to self.threads for further inspection
-        from ubcs_auxiliary.multithreading import new_thread
+        from ubcs_auxiliary.threading import new_thread
         self.threads['running'] = new_thread(self.run,)
 
     def stop(self):
