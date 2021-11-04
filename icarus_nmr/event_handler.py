@@ -52,7 +52,7 @@ import scipy.stats
 from scipy.interpolate import UnivariateSpline
 
 from ubcs_auxiliary.saved_property import DataBase, SavedProperty
-from ubcs_auxiliary.multithreading import new_thread
+from ubcs_auxiliary.threading import new_thread
 from pdb import pm
 
 prefix = platform.node()+'_'
