@@ -198,7 +198,7 @@ class GUI(wx.Frame):
         self.fields['graph0'].im_size_show = (768,216)
         self.fields['graph1'].im_size_show = (768,216)
         self.fields['graph2'].im_size_show = (768,216)
-        self.fields['graph3'].im_size_show = (768,1080)
+        self.fields['graph3'].im_size_show = (600,1080)
 
         ###########################################################################
         ###FIGURE ENDS####
