@@ -54,7 +54,7 @@ class Server(PVGroup):
 
     """
 
-    arr_logging = np.zeros(logging_shape).flatten() + 255
+    arr_logging = np.zeros(logging_shape).flatten() + 128
     image_logging = pvproperty(value=arr_logging, dtype = int, max_length = logging_shape[0]*logging_shape[1]*logging_shape[2])
 
     arr_pre = np.zeros(pre_shape).flatten() + 255

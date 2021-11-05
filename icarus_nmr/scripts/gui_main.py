@@ -115,8 +115,8 @@ class GUI(wx.Frame):
 
         frame = wx.Frame.__init__(self, None, wx.ID_ANY, "High Pressure Control Panel")#, size = (192,108))#, style= wx.SYSTEM_MENU | wx.CAPTION)
 
-        self.panel = wx.Panel(self, wx.ID_ANY, style=wx.BORDER_THEME)#, size = (1920,1080))
-        self.panel.Bind(wx.EVT_SIZE, self.on_size_change)
+        self.panel = wx.Panel(self, wx.ID_ANY, style=wx.BORDER_THEME, size = (1920,1080))
+        #self.panel.Bind(wx.EVT_SIZE, self.on_size_change)
         self.SetBackgroundColour('white')
         self.Bind(wx.EVT_CLOSE, self.on_quit)
         self.statusbar = self.CreateStatusBar() # Will likely merge the two fields unless we can think of a reason to keep them split
@@ -194,6 +194,11 @@ class GUI(wx.Frame):
         self.fields['graph3'] = PVImage(self.panel, pv=f'{self.event_server_name}:image_logging', im_size = (768,1080))
         self.sizers['graph3'] .Add(self.labels['graph3']  , 0)
         self.sizers['graph3'] .Add(self.fields['graph3']  , 0)
+
+        self.fields['graph0'].im_size_show = (768,216)
+        self.fields['graph1'].im_size_show = (768,216)
+        self.fields['graph2'].im_size_show = (768,216)
+        self.fields['graph3'].im_size_show = (768,1080)
 
         ###########################################################################
         ###FIGURE ENDS####
