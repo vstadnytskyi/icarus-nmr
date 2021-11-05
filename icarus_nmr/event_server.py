@@ -33,7 +33,7 @@ else:
 
 import numpy as np
 
-logging_shape = (1080,768, 3)
+logging_shape = (1080,600, 3)
 pre_shape = (216,768, 3)
 depre_shape = (216,768, 3)
 period_shape = (216,768, 3)

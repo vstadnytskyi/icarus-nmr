@@ -191,7 +191,7 @@ class GUI(wx.Frame):
 
         self.sizers['graph3'] = wx.BoxSizer(wx.VERTICAL)
         self.labels['graph3'] = wx.StaticText(self.panel, label= 'Field 2 label', style = wx.ALIGN_CENTER)
-        self.fields['graph3'] = PVImage(self.panel, pv=f'{self.event_server_name}:image_logging', im_size = (768,1080))
+        self.fields['graph3'] = PVImage(self.panel, pv=f'{self.event_server_name}:image_logging', im_size = (600,1080))
         self.sizers['graph3'] .Add(self.labels['graph3']  , 0)
         self.sizers['graph3'] .Add(self.fields['graph3']  , 0)
 
