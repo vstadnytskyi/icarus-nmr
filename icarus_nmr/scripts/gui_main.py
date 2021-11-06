@@ -505,6 +505,7 @@ class GUI(wx.Frame):
     def on_server_settings(self,event):
         print("on_server_settings Clicked")
         if event.EventObject == self.settingMenu:
+            print("on_server_settings Clicked 2")
             self.serverSettingWindow = self.SettingServerWindowFrame(event_server_name=self.event_server_name,dio_server_name = self.dio_server_name)
             self.serverSettingWindow.Show()
 
@@ -600,10 +601,9 @@ class GUI(wx.Frame):
             self.sizers[b'pump'].Add(self.fields[b'pump_count'],0)
             self.sizers[b'pump'].Add(self.fields[b'pump_reset_button'],0)
 
-            self.sl_indicators_sizer.Add(self.sizers[b'valve1'])
-            self.sl_indicators_sizer.Add(self.sizers[b'valve2'])
-            self.sl_indicators_sizer.Add(self.sizers[b'pump'])
-            self.sl_indicators_sizer.Add(self.sizers[b'medium'])
+            #self.sl_indicators_sizer.Add(self.sizers[b'medium'])
+
+
 
             #self.sl_controls_sizer.Add(self.sizers[b'pressure_sample'])
 
