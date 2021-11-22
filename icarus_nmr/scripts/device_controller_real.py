@@ -53,7 +53,7 @@ if __name__ == '__main__':
     from icarus_nmr.device_server import Server
 
     ioc_options, run_options = ioc_arg_parser(
-        default_prefix=f'device_{SERVER_NAME}:',
+        default_prefix=f'{SERVER_NAME}_device_controller:',
         desc=dedent(Server.__doc__))
     ioc = Server(**ioc_options)
 
