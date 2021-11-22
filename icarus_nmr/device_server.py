@@ -94,7 +94,7 @@ class Server(PVGroup):
         await self.dio.write(value)
     @dio.putter
     async def dio(self, instance, value):
-        print('{ctime(time())} Received update for the {}, sending new value {}'.format('dio',value))
+        print(f'{ctime(time())} Received update for the {"dio"}, sending new value {value}')
         self.device.set_outside_DIO(value = value)
         return value
     @dio.getter
