@@ -10,22 +10,17 @@ The variable SERVER_NAME needs to be changed to launch the server with a unique 
 
 
 """
-from caproto.server import pvproperty, PVGroup, ioc_arg_parser, run
-from textwrap import dedent
-from pdb import pm
-
-from numpy import random, array, zeros, ndarray, nan, isnan
-from time import time,sleep
-
 import socket
 
 SERVER_NAME = socket.gethostname()
 
 if __name__ == '__main__':
 
+    from caproto import config_caproto_logging
+    config_caproto_logging(file='/tmp/device_controller_mock.log', level='INFO')
+
 
     from caproto.server import pvproperty, PVGroup, ioc_arg_parser, run
-    import caproto
     from textwrap import dedent
     from pdb import pm
 
@@ -53,10 +48,13 @@ if __name__ == '__main__':
     from icarus_nmr.device_server import Server
 
     ioc_options, run_options = ioc_arg_parser(
-        default_prefix=f'device_{SERVER_NAME}:',
+        default_prefix=f'{SERVER_NAME}_device_controller:',
         desc=dedent(Server.__doc__))
     ioc = Server(**ioc_options)
 
     # the device instance is shared with ioc.device instance which allows two moduled to talk to each other.
     ioc.device = device
+
+
+
     run(ioc.pvdb, **run_options)

@@ -1,5 +1,5 @@
 ================
-Device Level
+Device Controller Level
 ================
 
 *****************
@@ -98,7 +98,7 @@ There is a client associated with the Device level code but it interferes with t
   run device_client.py
   client.get_all()
 
-Note, the server has to be running before client can access any process variables(PVs). 
+Note, the server has to be running before client can access any process variables(PVs).
 
 **********************
 Device Level Server

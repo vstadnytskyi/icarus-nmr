@@ -20,7 +20,7 @@ import os.path
 import struct
 from pdb import pm
 from time import gmtime, strftime
-import logging
+
 from struct import pack, unpack
 from timeit import Timer
 from logging import info,warn, debug, error

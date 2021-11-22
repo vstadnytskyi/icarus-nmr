@@ -132,7 +132,7 @@ class Handler():
             sleep(duration)
         if valve_bit != 0:
             self.set_dio(curr_DIO) # up
-        print('DIO %r -> %r -> %r' % (curr_DIO,new_DIO,curr_DIO))
+        info('DIO %r -> %r -> %r' % (curr_DIO,new_DIO,curr_DIO))
 
 
     def set_bit(self, current_dio, bit = 1, value = 1):
@@ -168,7 +168,7 @@ class Handler():
         new_DIO = curr_DIO-_bit
 
         self.set_dio(new_DIO) #down
-        print('setting bit %r -> %r -> %r' % (curr_DIO,new_DIO))
+        print({ctime(time())}, 'setting bit %r -> %r -> %r' % (curr_DIO,new_DIO))
 
     def pulse_sequence(self,pvname = '',value = '', char_val = ''):
         """

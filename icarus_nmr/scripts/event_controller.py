@@ -23,7 +23,9 @@ SERVER_NAME = socket.gethostname()
 
 if __name__ == '__main__':
     from caproto.server import pvproperty, PVGroup, ioc_arg_parser, run
-    import caproto
+    from caproto import config_caproto_logging
+    config_caproto_logging(file='/tmp/event_controller.log', level='INFO')
+
     from textwrap import dedent
     from pdb import pm
 
@@ -37,7 +39,7 @@ if __name__ == '__main__':
     from icarus_nmr.event_client import Client
     from icarus_nmr.event_server import Server
 
-    client = Client(device_ca_server_prefix = f'device_{SERVER_NAME}:',dio_ca_server_prefix = f'dio_{SERVER_NAME}:')
+    client = Client(device_ca_server_prefix = f'{SERVER_NAME}_device_controller:',dio_ca_server_prefix = f'{SERVER_NAME}_dio_controller:')
     print(f'SERVER_NAME = {SERVER_NAME}:')
     daq = DAQ(client)
     daq.init()
@@ -49,7 +51,7 @@ if __name__ == '__main__':
     handler.start()
 
     ioc_options, run_options = ioc_arg_parser(
-        default_prefix=f'event_handler_{SERVER_NAME}:',
+        default_prefix=f'{SERVER_NAME}_event_controller:',
         desc=dedent(Server.__doc__))
 
     ioc = Server(**ioc_options)

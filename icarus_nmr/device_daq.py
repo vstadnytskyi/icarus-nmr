@@ -342,7 +342,7 @@ class Device():
                 try:
                    data[:,i] = data[:,i] - pressure_sensor_offset[i]
                 except:
-                    print('run_once')
+                    info('run_once')
                     error(traceback.format_exc())
             self.queue.enqueue(data)
 

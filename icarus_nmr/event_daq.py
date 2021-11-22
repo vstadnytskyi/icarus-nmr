@@ -9,6 +9,8 @@ if sys.version_info[0] == 3:
 else:
     from time import gmtime, strftime, time, sleep, clock
 
+from logging import debug, info, warning, error
+
 from numpy import nan
 
 sys.path.append('/Users/femto-13/All-Projects-on-femto/LaserLab/Software/')
@@ -99,7 +101,7 @@ class DAQ(object):
             j-= length
 
         if j >= i:
-            #print(i,j)
+            debug(i,j)
             result = self.circular_buffer.get_N((j-i+1)*self.packet_length,(j+1)*self.packet_length-1)
         else:
             result = nan

@@ -47,7 +47,7 @@ class PVImage(wx.StaticBitmap, PVMixin):
             bit_img = wx.Bitmap.FromBuffer(width, height, img.tobytes())
             image = wx.Bitmap.ConvertToImage(bit_img)
             image = image.Scale(im_size_show[0], im_size_show[1], wx.IMAGE_QUALITY_HIGH)
-            bit_img = wx.BitmapFromImage(image)
+            bit_img = wx.Bitmap(image)
             t1 = time()
             self.SetBitmap(bit_img)
         else:

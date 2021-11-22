@@ -20,8 +20,11 @@ from numpy import random, array, zeros, ndarray, nan, isnan
 from time import time,sleep
 
 if __name__ == '__main__':
+
+    from caproto import config_caproto_logging
+    config_caproto_logging(file='/tmp/dio_controller.log', level='DEBUG')
+
     from caproto.server import pvproperty, PVGroup, ioc_arg_parser, run
-    import caproto
     from textwrap import dedent
     from pdb import pm
 
@@ -33,11 +36,11 @@ if __name__ == '__main__':
     from icarus_nmr.dio_handler import Handler
 
     import socket
-    client = Client(device_ca_server_prefix = f'device_{socket.gethostname()}:')
+    client = Client(device_ca_server_prefix = f'{socket.gethostname()}_device_controller:')
     device = Handler(client)
 
     ioc_options, run_options = ioc_arg_parser(
-        default_prefix=f'dio_{socket.gethostname()}:',
+        default_prefix=f'{socket.gethostname()}_dio_controller:',
         desc=dedent(Server.__doc__))
     ioc = Server(**ioc_options)
     ioc.device = device

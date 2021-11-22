@@ -55,9 +55,10 @@ from ubcs_auxiliary.saved_property import DataBase, SavedProperty
 from ubcs_auxiliary.threading import new_thread
 from pdb import pm
 
-prefix = platform.node()+'_'
 
-EVENT_CODE_D0_GOES_LOW = 0
+prefix = platform.node()+'_'
+EVENT_CODE = {}
+EVENT_CODE['D0_GOES_LOW']=EVENT_CODE_D0_GOES_LOW = 0
 EVENT_CODE_D0_GOES_HIGH = 1
 EVENT_CODE_D1_GOES_LOW = 10
 EVENT_CODE_D1_GOES_HIGH = 11
@@ -174,6 +175,8 @@ class Handler(object):
 
         self.io_push_queue = None
         self.io_pull_queue = None
+
+        self.threads = {}
 
     def init(self):
         """
@@ -501,7 +504,7 @@ class Handler(object):
         if self.running:
             warning('The event detector thread is already running')
         else:
-            new_thread(self.run)
+            self.threads['running'] = new_thread(self.run)
 
     def run(self):
         """
@@ -523,6 +526,7 @@ class Handler(object):
 
         while self.running and self.daq_running:
            self.run_once()
+        self.running = False
         if self.daq_running == False:
             self.stop()
 
@@ -1301,6 +1305,7 @@ class Handler(object):
                 units = self.user_units[self.selected_pressure_units]
                 after0 = mean(data[5,:])*units*self.coeff_sample_pressure*2.0**-15
                 after1 = mean(data[6,:])*units*self.coeff_sample_pressure*2.0**-15
+                temp_dic = {}
                 #before0 = #self.history_buffers[b'pPre_after_0'].buffer[3,self.history_buffers[b'pPre_after_0'].pointer]
                 #before1 = #self.history_buffers[b'pPre_after_1'].buffer[3,self.history_buffers[b'pPre_after_1'].pointer]
                 # self.slow_leak_module()
@@ -1324,7 +1329,7 @@ class Handler(object):
                 self.counters_global[b'timeout'] += 1
                 self.counters_current[b'timeout'] += 1
 
-                # temp_dic[b'period'] = self.last_event_width[b'timeout']
+                temp_dic[b'period'] = self.last_event_width[b'timeout']
 
 
 
@@ -1656,7 +1661,7 @@ class Handler(object):
     def push_new_period(self, value):
         import numpy as np
         data = value
-        #info(data)
+        info(data)
         # b'period': nan, b'delay': nan, b'pressurize_width': nan, b'depressurize_width': nan, b'pump_width': nan,
         def chart_one(x,y):
             """
@@ -3439,7 +3444,7 @@ if __name__ == "__main__":
     client = Client(device_ca_server_prefix = f'device_{SERVER_NAME}:',dio_ca_server_prefix = f'dio_{SERVER_NAME}:')
     daq = DAQ(client)
     daq.init()
-    #daq.start()
+    daq.start()
 
     handler = Handler(daq, client)
     handler.init()

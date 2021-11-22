@@ -69,12 +69,12 @@ class Server(PVGroup):
             io_dict = await self.io_push_queue.async_get()
             # Propagate the keypress to the EPICS PV, triggering any monitors
             # along the way
-            print(f'inside server while True loop: {io_dict}')
+            print({ctime(time())},f'inside server while True loop: {io_dict}')
             for key in list(io_dict.keys()):
                 if key == 'dio':
                     new_val = io_dict[key]
                     cur_val = self.dio.value
-                    print(new_val,cur_val)
+                    print({ctime(time())},new_val,cur_val)
                     if new_val != cur_val:
                         await self.dio.write(val)
                         _bit0 = int(((val)&int(0b1))/(int(0b1)))
@@ -115,10 +115,10 @@ class Server(PVGroup):
 
     @dio.putter
     async def dio(self, instance, value):
-        print('{}, new value {}'.format('dio putter',value))
+        print({ctime(time())},'{}, new value {}'.format('dio putter',value))
         new_val = value
         cur_val = self.dio.value
-        print(new_val,cur_val)
+        print({ctime(time())},new_val,cur_val)
         if new_val != cur_val:
             _bit0 = int(((value)&int(0b1))/(int(0b1)))
             _bit1 = int(((value)&int(0b10))/(int(0b10)))
@@ -129,7 +129,7 @@ class Server(PVGroup):
         return value
     @operating_mode.putter
     async def operating_mode(self, instance, value):
-        print('Received update for the {}, sending new value {}'.format('operating_mode',value))
+        print({ctime(time())},'Received update for the {}, sending new value {}'.format('operating_mode',value))
         self.trigger_mode = value
         if value == 0:
             await self.bit1_enable.write(1)
@@ -144,12 +144,12 @@ class Server(PVGroup):
         return value
     @shutdown_state.putter
     async def shutdown_state(self, instance, value):
-        print('Received update for the {}, sending new value {}'.format('shutdown_state',value))
+        print({ctime(time())},'Received update for the {}, sending new value {}'.format('shutdown_state',value))
         #self.device.set_DIO(value = value)
         return value
     @bit0.putter
     async def bit0(self, instance, value):
-        print('Received update for the {}, sending new value {}'.format('bio0',value))
+        print({ctime(time())},'Received update for the {}, sending new value {}'.format('bio0',value))
         cur_d = self.dio.value
         new_d = new_digital(cur_d,0,value)
         if new_d!=cur_d:
@@ -158,12 +158,12 @@ class Server(PVGroup):
         return value
     @bit0_enable.putter
     async def bit0_enable(self, instance, value):
-        print('Received update for the {}, sending new value {}'.format('bio0_enable',value))
+        print({ctime(time())},'Received update for the {}, sending new value {}'.format('bio0_enable',value))
         #self.device.set_DIO(value = value)
         return value
     @bit1.putter
     async def bit1(self, instance, value):
-        print('Received update for the {}, sending new value {}'.format('bio1',value))
+        print({ctime(time())},'Received update for the {}, sending new value {}'.format('bio1',value))
         cur_d = self.dio.value
         new_d = new_digital(cur_d,1,value)
         if new_d!=cur_d:
@@ -171,12 +171,12 @@ class Server(PVGroup):
         return value
     @bit1_enable.putter
     async def bit1_enable(self, instance, value):
-        print('Received update for the {}, sending new value {}'.format('bio1_enable',value))
+        print({ctime(time())},'Received update for the {}, sending new value {}'.format('bio1_enable',value))
         #self.device.set_DIO(value = value)
         return value
     @bit2.putter
     async def bit2(self, instance, value):
-        print('Received update for the {}, sending new value {}'.format('bio2',value))
+        print({ctime(time())},'Received update for the {}, sending new value {}'.format('bio2',value))
         cur_d = self.dio.value
         new_d = new_digital(cur_d,2,value)
         if new_d!=cur_d:
@@ -184,7 +184,7 @@ class Server(PVGroup):
         return value
     @bit2_enable.putter
     async def bit2_enable(self, instance, value):
-        print('Received update for the {}, sending new value {}'.format('bio2_enable',value))
+        print({ctime(time())},'Received update for the {}, sending new value {}'.format('bio2_enable',value))
         #self.device.set_DIO(value = value)
         return value
 
@@ -238,6 +238,9 @@ def new_digital(old_digital, bit, new_bit_value):
     """
 
     """
+    def int_to_binary(value):
+        return bin(value+128)[-7:][::-1]
+
     from numpy import sign
     old_bit_value = int(int_to_binary(old_digital)[bit])
     bit_diff = new_bit_value - old_bit_value
