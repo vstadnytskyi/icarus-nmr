@@ -94,12 +94,12 @@ class Server(PVGroup):
         await self.dio.write(value)
     @dio.putter
     async def dio(self, instance, value):
-        print('Received update for the {}, sending new value {}'.format('dio',value))
+        print('{ctime(time())} Received update for the {}, sending new value {}'.format('dio',value))
         self.device.set_outside_DIO(value = value)
         return value
     @dio.getter
     async def dio(self, instance):
-        info(f"getter: {'dio'}, new value ")
+        info(f"{ctime(time())} getter: {'dio'}, new value ")
         value = self.device.get_DIO()
         return value
 
@@ -107,9 +107,9 @@ class Server(PVGroup):
     async def data(self, instance):
         value = self.device.queue.dequeue(self.device.pr_packet_size).flatten()
         if value.shape[0] > 1280:
-            print(f'{value.shape}')
-            print(f"getter: data, queue length {self.device.queue.length}")
-            print(f"getter: data, queue rear {self.device.queue.rear}")
+            print(f'{ctime(time())} {value.shape}')
+            print(f"{ctime(time())} getter: data, queue length {self.device.queue.length}")
+            print(f"{ctime(time())} getter: data, queue rear {self.device.queue.rear}")
         return value
 
     @peek_data.getter
