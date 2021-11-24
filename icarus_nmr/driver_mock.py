@@ -47,7 +47,7 @@ class Driver(object):
     def __init__(self):
         self.available_ports = []
         self.dev = None
-        self.sim_analog = [11000,0,8000,0,8000,11000,9000,0]
+        self.sim_analog = [11550,0,8000,0,8000,11000,9000,0]
         self.sim_analog_std = [30,30,30,30,30,30,30,30]
         self.sim_digital = 127
         self.sim_last_read = time()

@@ -154,7 +154,7 @@ class Handler(object):
     save_data_period = 0
 
     slow_leak_threshold = -20.0
-    slow_leak_threshold_counter =5
+    slow_leak_threshold_counter = 5
 
     def __init__(self, daq, client = None):
         """
@@ -548,7 +548,7 @@ class Handler(object):
         if distance(back = self.packet_pointer,front = self.daq_packet_pointer,size = self.daq_packet_buffer_length) > 6:
 
             self.run_once_once()
-            if len(self.events_list) >0:
+            if len(self.events_list) > 0:
                 self.evaluate_events()
                 self.events_list = []
         else:
