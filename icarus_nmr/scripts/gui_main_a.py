@@ -209,6 +209,40 @@ class GUI(wx.Frame):
         ###On Button Press###
         ###########################################################################
         ###Sidebar###
+        bitmap_na= wx.Bitmap()
+        bitmap_na.LoadFile('../files/na_state_20x20.jpg', wx.BITMAP_TYPE_ANY)
+
+        bitmap_low = wx.Bitmap()
+        bitmap_low.LoadFile('../files/low_state_20x20.jpg', wx.BITMAP_TYPE_ANY)
+
+        bitmap_high = wx.Bitmap()
+        bitmap_high.LoadFile('../files/high_state_20x20.jpg', wx.BITMAP_TYPE_ANY)
+
+        self.sizers[b'digital_indicators'] = wx.BoxSizer(wx.HORIZONTAL)
+
+        self.labels[b'states'] = wx.StaticText(self.panel, label= "digital states", size = (200,-1))
+        self.sizers[b'digital_indicators'].Add(self.labels[b'states'],0)
+
+        self.fields[b'bit0'] =epics.wx.PVBitmap(self.panel, pv=f'{self.dio_server_name}:bit0_indicator', bitmaps={"0":bitmap_low,"1":bitmap_high}, defaultBitmap=bitmap_na)
+        self.sizers[b'digital_indicators'].Add(self.fields[b'bit0'],0)
+
+        self.fields[b'bit1'] =epics.wx.PVBitmap(self.panel, pv=f'{self.dio_server_name}:bit1_indicator', bitmaps={"0":bitmap_low,"1":bitmap_high}, defaultBitmap=bitmap_na)
+        self.sizers[b'digital_indicators'].Add(self.fields[b'bit1'],0)
+
+        self.fields[b'bit2'] =epics.wx.PVBitmap(self.panel, pv=f'{self.dio_server_name}:bit2_indicator', bitmaps={"0":bitmap_low,"1":bitmap_high}, defaultBitmap=bitmap_na)
+        self.sizers[b'digital_indicators'].Add(self.fields[b'bit2'],0)
+
+        self.fields[b'bit3'] =epics.wx.PVBitmap(self.panel, pv=f'{self.dio_server_name}:bit3_indicator', bitmaps={"0":bitmap_low,"1":bitmap_high}, defaultBitmap=bitmap_na)
+        self.sizers[b'digital_indicators'].Add(self.fields[b'bit3'],0)
+
+        self.fields[b'bit4'] =epics.wx.PVBitmap(self.panel, pv=f'{self.dio_server_name}:bit4_indicator', bitmaps={"0":bitmap_low,"1":bitmap_high}, defaultBitmap=bitmap_na)
+        self.sizers[b'digital_indicators'].Add(self.fields[b'bit4'],0)
+
+        self.fields[b'bit5'] =epics.wx.PVBitmap(self.panel, pv=f'{self.dio_server_name}:bit5_indicator', bitmaps={"0":bitmap_low,"1":bitmap_high}, defaultBitmap=bitmap_na)
+        self.sizers[b'digital_indicators'].Add(self.fields[b'bit5'],0)
+
+        self.fields[b'bit6'] =epics.wx.PVBitmap(self.panel, pv=f'{self.dio_server_name}:bit6_indicator', bitmaps={"0":bitmap_low,"1":bitmap_high}, defaultBitmap=bitmap_na)
+        self.sizers[b'digital_indicators'].Add(self.fields[b'bit6'],0)
 
         self.sizers[b'server'] = wx.BoxSizer(wx.HORIZONTAL)
         self.labels[b'server'] = wx.StaticText(self.panel, label= "server name", size = (200,-1))
@@ -437,6 +471,7 @@ class GUI(wx.Frame):
         self.sizer_middle.Add(self.sizers['graph3'],0)
 
 
+        self.sizer_right.Add(self.sizers[b'digital_indicators'])
         self.sizer_right.Add(self.box_sizer[b'measurements'])
         self.sizer_right.Add(wx.StaticLine(self.panel), 0, wx.ALL|wx.EXPAND, 5)
         self.sizer_right.Add(self.box_sizer[b'controls'])

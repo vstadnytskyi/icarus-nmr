@@ -531,6 +531,8 @@ class Handler(object):
             self.stop()
 
     def run_once(self):
+        """
+        """
         from time import time
         t = time()
         ###compares its' own packet pointer with DAQ packet pointer
@@ -548,6 +550,7 @@ class Handler(object):
         if distance(back = self.packet_pointer,front = self.daq_packet_pointer,size = self.daq_packet_buffer_length) > 6:
 
             self.run_once_once()
+
             if len(self.events_list) > 0:
                 self.evaluate_events()
                 self.events_list = []
@@ -558,7 +561,8 @@ class Handler(object):
 
 
     def run_once_once(self):
-
+        """
+        """
         import numpy as np
         #get packet to analyse. however, if the transition happens between packets
         #the algorith will not detect it.
@@ -1661,8 +1665,6 @@ class Handler(object):
     def push_new_period(self, value):
         import numpy as np
         data = value
-        info(data)
-        # b'period': nan, b'delay': nan, b'pressurize_width': nan, b'depressurize_width': nan, b'pump_width': nan,
         def chart_one(x,y):
             """
             charting function that takes x and y
@@ -1704,6 +1706,9 @@ class Handler(object):
         y_min = data[b'data']['y_min']
         y_max = data[b'data']['y_max']
         y_mean = data[b'data']['y_mean']
+        print(f'x shape = {x.shape}')
+        print(f'y_mean shape = {y_mean.shape}')
+        print(f'y_mean shape = {y_mean[6,:].shape}')
         arr = figure_to_array(chart_one(x=x,y=y_mean[6,:])).flatten()
         dic = {}
                 # : nan, : nan, : nan, : nan, : nan,

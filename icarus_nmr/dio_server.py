@@ -28,19 +28,33 @@ class Server(PVGroup):
     """
 
     dio = pvproperty(value=127, dtype = int)
+
     bit0 = pvproperty(value=0, dtype = int)
+    bit0_indicator = pvproperty(value="na", dtype = str)
     bit0_enable = pvproperty(value=1, dtype = int)
+
     bit1 = pvproperty(value=0, dtype = int)
+    bit1_indicator = pvproperty(value='na', dtype = str)
     bit1_enable = pvproperty(value=1, dtype = int)
+
     bit2 = pvproperty(value=0, dtype = int)
+    bit2_indicator = pvproperty(value='na', dtype = str)
     bit2_enable = pvproperty(value=1, dtype = int)
+
     bit3 = pvproperty(value=0, dtype = int)
+    bit3_indicator = pvproperty(value='na', dtype = str)
     bit3_enable = pvproperty(value=0, dtype = int)
+
     bit4 = pvproperty(value=0, dtype = int)
+    bit4_indicator = pvproperty(value='na', dtype = str)
     bit4_enable = pvproperty(value=0, dtype = int)
+
     bit5 = pvproperty(value=0, dtype = int)
+    bit5_indicator = pvproperty(value='na', dtype = str)
     bit5_enable = pvproperty(value=0, dtype = int)
+
     bit6 = pvproperty(value=0, dtype = int)
+    bit6_indicator = pvproperty(value='na', dtype = str)
     bit6_enable = pvproperty(value=0, dtype = int)
 
     shutdown_state = pvproperty(value=0, dtype = int)
@@ -115,72 +129,77 @@ class Server(PVGroup):
 
     @dio.putter
     async def dio(self, instance, value):
-        print({ctime(time())},'{}, new value {}'.format('dio putter',value))
-        new_val = value
-        cur_val = self.dio.value
-        print({ctime(time())},new_val,cur_val)
-        if new_val != cur_val:
-            _bit0 = int(((value)&int(0b1))/(int(0b1)))
-            _bit1 = int(((value)&int(0b10))/(int(0b10)))
-            _bit2 = int(((value)&int(0b100))/(int(0b100)))
-            await self.bit0.write(_bit0)
-            await self.bit1.write(_bit1)
-            await self.bit2.write(_bit2)
-        return value
+        """
+        when the dio PV is changed in the database it submits new value to the core module. All smarts are in the core module
+        """
+        print(f'{ctime(time())}: {"dio putter"}, new value {value}')
+        self.device.update_dio(value)
+        arr = int_to_binary(value)
+        print(f'arr = {arr}')
+
+        bit0 = int(arr[0])
+        print(f'bit0 = {bit0}')
+        await self.bit0_indicator.write(str(bit0))
+
+        bit1 = int(arr[1])
+        print(f'bit1 = {bit1}')
+        await self.bit1_indicator.write(str(bit1))
+
+        bit2 = int(arr[2] )
+        print(f'bit2 = {bit2},{arr[2]}')
+        await self.bit2_indicator.write(str(bit2))
+
+        bit3 = int(arr[3])
+        print(f'bit3 = {bit3}')
+        await self.bit3_indicator.write(str(bit3))
+
+        bit4 = int(arr[4])
+        print(f'bit4 = {bit4}')
+        await self.bit4_indicator.write(str(bit4))
+
+        bit5 = int(arr[5])
+        print(f'bit5 = {bit5}')
+        await self.bit5_indicator.write(str(bit5))
+
+        bit6 = int(arr[6])
+        print(f'bit6 = {bit6}')
+        await self.bit6_indicator.write(str(bit6))
+
     @operating_mode.putter
     async def operating_mode(self, instance, value):
         print({ctime(time())},'Received update for the {}, sending new value {}'.format('operating_mode',value))
-        self.trigger_mode = value
-        if value == 0:
-            await self.bit1_enable.write(1)
-            await self.bit2_enable.write(1)
-        elif value == 1:
-            await self.bit1_enable.write(0)
-            await self.bit2_enable.write(0)
-        elif value == 2:
-            await self.bit1_enable.write(0)
-            await self.bit2_enable.write(0)
+        self.device.set_trigger_mode(value)
 
-        return value
     @shutdown_state.putter
     async def shutdown_state(self, instance, value):
         print({ctime(time())},'Received update for the {}, sending new value {}'.format('shutdown_state',value))
-        #self.device.set_DIO(value = value)
-        return value
+        self.device.set_operating_mode(value = value)
+
     @bit0.putter
     async def bit0(self, instance, value):
         print({ctime(time())},'Received update for the {}, sending new value {}'.format('bio0',value))
-        cur_d = self.dio.value
-        new_d = new_digital(cur_d,0,value)
-        if new_d!=cur_d:
-            self.device.set_dio(value = new_d)
-        return value
+        self.device.set_bit0(value)
         return value
     @bit0_enable.putter
     async def bit0_enable(self, instance, value):
-        print({ctime(time())},'Received update for the {}, sending new value {}'.format('bio0_enable',value))
+        print(f'{ctime(time())} Received update for the {"bio0_enable"}, sending new value {value}')
         #self.device.set_DIO(value = value)
         return value
+
     @bit1.putter
     async def bit1(self, instance, value):
         print({ctime(time())},'Received update for the {}, sending new value {}'.format('bio1',value))
-        cur_d = self.dio.value
-        new_d = new_digital(cur_d,1,value)
-        if new_d!=cur_d:
-            self.device.set_dio(value = new_d)
+        self.device.set_bit1(value)
         return value
     @bit1_enable.putter
     async def bit1_enable(self, instance, value):
-        print({ctime(time())},'Received update for the {}, sending new value {}'.format('bio1_enable',value))
+        print(f'{ctime(time())} Received update for the {"bio1_enable"}, sending new value {value}')
         #self.device.set_DIO(value = value)
         return value
     @bit2.putter
     async def bit2(self, instance, value):
-        print({ctime(time())},'Received update for the {}, sending new value {}'.format('bio2',value))
-        cur_d = self.dio.value
-        new_d = new_digital(cur_d,2,value)
-        if new_d!=cur_d:
-            self.device.set_dio(value = new_d)
+        print(f'{ctime(time())} Received update for the {"bio2_enable"}, sending new value {value}')
+        self.device.set_bit2(value)
         return value
     @bit2_enable.putter
     async def bit2_enable(self, instance, value):
@@ -188,64 +207,23 @@ class Server(PVGroup):
         #self.device.set_DIO(value = value)
         return value
 
-    # @dio.getter
-    # async def dio(self, instance):
-    #     print(f"getter: {'dio'}, new value ")
-    #     value = self.device.get_DIO()
-    #     return value
-    #
-    # @data.getter
-    # async def data(self, instance):
-    #     value = self.device.queue.dequeue(self.device.pr_packet_size).flatten()
-    #     if value.shape[0] > 1280:
-    #         print(f'{value.shape}')
-    #         print(f"getter: {'data'}, queue length {self.device.queue.length}")
-    #         print(f"getter: {'data'}, queue rear {self.device.queue.rear}")
-    #     return value
-    #
-    # @peek_data.getter
-    # async def peek_data(self, instance):
-    #     value = self.device.queue.peek_first_N(N=6400).flatten()
-    #     return value
-    #
-    # @queue_length.startup
-    # async def queue_length(self, instance, async_lib):
-    #     await self.queue_length.write(self.device.queue.length)
-    # @queue_length.getter
-    # async def queue_length(self, instance):
-    #     print(f"getter: {'data'}, queue length {self.device.queue.length}")
-    #     value = self.device.queue.length
-    #     return value
-
-    # @ai_offset.startup
-    # async def ai_offset(self, instance, async_lib):
-    #     await self.ai_offset.write(self.device.pressure_sensor_offset)
-    # @ai_offset.putter
-    # async def ai_offset(self, instance, value):
-    #     print(f"Received update for the {'dio'}, sending new value {value}")
-    #     self.device.pressure_sensor_offset = value
-    #     return value
-    # @ai_offset.getter
-    # async def ai_offset(self, instance):
-    #     print(f"getter: {'ai_offset'}, new value ")
-    #     value = self.device.pressure_sensor_offset
-    #     return value
-
+#
+#
 def int_to_binary(value):
     return bin(value+128)[-7:][::-1]
-
-def new_digital(old_digital, bit, new_bit_value):
-    """
-
-    """
-    def int_to_binary(value):
-        return bin(value+128)[-7:][::-1]
-
-    from numpy import sign
-    old_bit_value = int(int_to_binary(old_digital)[bit])
-    bit_diff = new_bit_value - old_bit_value
-    new_digital = old_digital + sign(bit_diff)*(2**bit)
-    return new_digital
+#
+# def new_digital(old_digital, bit, new_bit_value):
+#     """
+#
+#     """
+#     def int_to_binary(value):
+#         return bin(value+128)[-7:][::-1]
+#
+#     from numpy import sign
+#     old_bit_value = int(int_to_binary(old_digital)[bit])
+#     bit_diff = new_bit_value - old_bit_value
+#     new_digital = old_digital + sign(bit_diff)*(2**bit)
+#     return new_digital
 
 if __name__ == '__main__':
 

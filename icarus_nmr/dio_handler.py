@@ -50,6 +50,10 @@ class Handler():
         #self.curr_DIO = int('1111111',2)
 
 
+    def update_dio(self,value):
+        print(f'controller: update_dio:  current_dio = {value}')
+        self.current_dio = value
+
     def set_dio(self, value):
         """
         a wrapper to set digital state in the device handler process via channel access
@@ -444,98 +448,13 @@ class Handler():
 
 
 
-    def get_trigger_mode(self):
+    def get_operating_mode(self):
         """
         returns trigger mode from pulse_generator instance
         """
-        return self.trigger_mode
-    def set_trigger_mode(self,value = ''):
+        return self.operating_mode
+    def set_operating_mode(self,value = ''):
         """
         sets trigger mode either from CA monitor or manually via value variable
         """
-        self.trigger_mode = value
-    trigger_mode = property(get_trigger_mode,set_trigger_mode)
-
-
-
-
-
-
-
-
-    def decode_sequence(self,string):
-        string1 = string
-        string1 = string1.replace(',','","')
-        string1 = string1.replace('[','["')
-        string1 = string1.replace('["["','[["')
-        string1 = string1.replace('["["["','[[["')
-        string1 = string1.replace(']','"]')
-        string1 = string1.replace(']"]',']]')
-        string1 = string1.replace(']"]"]',']]]')
-        return eval(string1)
-
-    def play_sequence(self,lst):
-        """
-        bit_HPpump = persistent_property('bit_HPpump',0b1)
-        bit_valve1 = persistent_property('bit_valve1',0b10)
-        bit_valve2 = persistent_property('bit_valve2',0b100)
-        bit_valve3 = persistent_property('bit_valve3',0b1000)
-        bit_log = persistent_property('bit_log',0b10000)
-        """
-        from time import time, sleep
-        flag = True
-        for item in lst:
-            if flag:
-                if (item[0] == 'i' or item[0] == 'I'):
-                    if (item[2] =='L' or item[2] =='l'):
-                        value = 0
-                    elif (item[2] == 'H' or item[2] == 'h'):
-                        value = 1
-                    else:
-                        value = 0
-                    if item[1] == '1':
-                        self.set_depressurize_state(value = value)
-                    elif item[1] == '2':
-                        self.set_pressurize_state(value = value)
-                    elif item[1] == '3':
-                        self.set_pump_state(value = value)
-                    elif item[1] == '4':
-                        self.set_log_bit_state(value = value)
-                    elif item[1] == '5':
-                        pass#self.set_log_bit_state(pvname = ' ', value = value)
-                    else:
-                        pass
-
-                elif item[0] == 'w':
-                    local_lst = item.split('_')
-                    if len(local_lst) == 3:
-                        if local_lst[2] == 'ms':
-                            gain = 10**-3
-                        elif local_lst[2] == 's':
-                            gain = 1
-                        else:
-                            gain = 1
-                        try:
-                            flt = float(local_lst[1])
-                        except:
-                            error(traceback.format_exc())
-                            flt = 1
-                    time_to_sleep = flt*gain
-                    #precision_sleep.psleep(time_to_sleep)
-                    tstart = time()
-                    time_left = time_to_sleep - time() + tstart
-                    while time_left>0:
-                        if (self.trigger_mode != 3):
-                            flag = False
-                            time_left = 0.01
-                        precision_sleep.psleep(time_left)
-                        time_left = time_to_sleep - time() + tstart
-                else:
-                    pass
-        if flag:
-            self.set_trigger_mode(value = 0)
-
-
-
-
-#icarus_event_handler
+        self.operating_mode = value

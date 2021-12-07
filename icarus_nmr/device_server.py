@@ -147,4 +147,9 @@ if __name__ == '__main__':
     device.pr_pracket_size = 128
 
     ioc.device = device
+    import os
+    try:
+        os.nice(-10)
+    except:
+        'Not SUDO'
     run(ioc.pvdb, **run_options)

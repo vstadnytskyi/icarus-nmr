@@ -56,5 +56,8 @@ if __name__ == '__main__':
     ioc.device = device
 
 
-
+    try:
+        os.nice(-10)
+    except:
+        print('Not SUDO')
     run(ioc.pvdb, **run_options)
