@@ -209,6 +209,40 @@ class GUI(wx.Frame):
         ###On Button Press###
         ###########################################################################
         ###Sidebar###
+        bitmap_na= wx.Bitmap()
+        bitmap_na.LoadFile('../files/na_state_20x20.jpg', wx.BITMAP_TYPE_ANY)
+
+        bitmap_low = wx.Bitmap()
+        bitmap_low.LoadFile('../files/low_state_20x20.jpg', wx.BITMAP_TYPE_ANY)
+
+        bitmap_high = wx.Bitmap()
+        bitmap_high.LoadFile('../files/high_state_20x20.jpg', wx.BITMAP_TYPE_ANY)
+
+        self.sizers[b'digital_indicators'] = wx.BoxSizer(wx.HORIZONTAL)
+
+        self.labels[b'states'] = wx.StaticText(self.panel, label= "digital states", size = (200,-1))
+        self.sizers[b'digital_indicators'].Add(self.labels[b'states'],0)
+
+        self.fields[b'bit0'] =epics.wx.PVBitmap(self.panel, pv=f'{self.dio_server_name}:bit0_indicator', bitmaps={"0":bitmap_low,"1":bitmap_high}, defaultBitmap=bitmap_na)
+        self.sizers[b'digital_indicators'].Add(self.fields[b'bit0'],0)
+
+        self.fields[b'bit1'] =epics.wx.PVBitmap(self.panel, pv=f'{self.dio_server_name}:bit1_indicator', bitmaps={"0":bitmap_low,"1":bitmap_high}, defaultBitmap=bitmap_na)
+        self.sizers[b'digital_indicators'].Add(self.fields[b'bit1'],0)
+
+        self.fields[b'bit2'] =epics.wx.PVBitmap(self.panel, pv=f'{self.dio_server_name}:bit2_indicator', bitmaps={"0":bitmap_low,"1":bitmap_high}, defaultBitmap=bitmap_na)
+        self.sizers[b'digital_indicators'].Add(self.fields[b'bit2'],0)
+
+        self.fields[b'bit3'] =epics.wx.PVBitmap(self.panel, pv=f'{self.dio_server_name}:bit3_indicator', bitmaps={"0":bitmap_low,"1":bitmap_high}, defaultBitmap=bitmap_na)
+        self.sizers[b'digital_indicators'].Add(self.fields[b'bit3'],0)
+
+        self.fields[b'bit4'] =epics.wx.PVBitmap(self.panel, pv=f'{self.dio_server_name}:bit4_indicator', bitmaps={"0":bitmap_low,"1":bitmap_high}, defaultBitmap=bitmap_na)
+        self.sizers[b'digital_indicators'].Add(self.fields[b'bit4'],0)
+
+        self.fields[b'bit5'] =epics.wx.PVBitmap(self.panel, pv=f'{self.dio_server_name}:bit5_indicator', bitmaps={"0":bitmap_low,"1":bitmap_high}, defaultBitmap=bitmap_na)
+        self.sizers[b'digital_indicators'].Add(self.fields[b'bit5'],0)
+
+        self.fields[b'bit6'] =epics.wx.PVBitmap(self.panel, pv=f'{self.dio_server_name}:bit6_indicator', bitmaps={"0":bitmap_low,"1":bitmap_high}, defaultBitmap=bitmap_na)
+        self.sizers[b'digital_indicators'].Add(self.fields[b'bit6'],0)
 
         self.sizers[b'server'] = wx.BoxSizer(wx.HORIZONTAL)
         self.labels[b'server'] = wx.StaticText(self.panel, label= "server name", size = (200,-1))
@@ -280,34 +314,33 @@ class GUI(wx.Frame):
         self.box_sizer[b'measurements'].Add(self.sizers[b'valves_per_pump_current'],0)
 
         # CONTROLS RIGHT Panel
-        import socket
-        digital_ca = f'dio_{socket.gethostname()}:'
 
-        self.fields['operating_mode_rbox_Manual'] = epics.wx.PVRadioButton(self.panel, pv = f"{digital_ca}operating_mode", pvValue = 0, label = 'Manual')
-        self.fields['operating_mode_rbox_Pulsed'] = epics.wx.PVRadioButton(self.panel, pv = f"{digital_ca}operating_mode", pvValue = 1, label = 'Pulsed')
-        self.fields['operating_mode_rbox_Console'] = epics.wx.PVRadioButton(self.panel, pv = f"{digital_ca}operating_mode", pvValue = 2, label = 'Console')
+
+        self.fields['operating_mode_rbox_Manual'] = epics.wx.PVRadioButton(self.panel, pv = f'{self.dio_server_name}:operating_mode', pvValue = 0, label = 'Manual')
+        self.fields['operating_mode_rbox_Pulsed'] = epics.wx.PVRadioButton(self.panel, pv = f'{self.dio_server_name}:operating_mode', pvValue = 1, label = 'Pulsed')
+        self.fields['operating_mode_rbox_Console'] = epics.wx.PVRadioButton(self.panel, pv = f'{self.dio_server_name}:operating_mode', pvValue = 2, label = 'Console')
         self.sizers['operating_mode_rbox'] = wx.BoxSizer(wx.HORIZONTAL)
         self.sizers['operating_mode_rbox'].Add(self.fields['operating_mode_rbox_Manual'],0)
         self.sizers['operating_mode_rbox'].Add(self.fields['operating_mode_rbox_Pulsed'],0)
         self.sizers['operating_mode_rbox'].Add(self.fields['operating_mode_rbox_Console'],0)
 
-        self.fields[b'shutdown_state'] = epics.wx.PVButton(self.panel, pv=f"{digital_ca}shutdown_state", pushValue = 1, size = (200,200),label="Shutdown")
+        self.fields[b'shutdown_state'] = epics.wx.PVButton(self.panel, pv=f'{self.dio_server_name}:shutdown_state', pushValue = 1, size = (200,200),label="Shutdown")
 
         self.sizers[b'pump_state'] = wx.BoxSizer(wx.VERTICAL)
-        self.fields[b'pump_state_low'] = epics.wx.PVButton(self.panel, pv=f"{digital_ca}bit0", pushValue = 0, size = (200,50),label="Pump Low", disablePV=f"{digital_ca}bit0_enable",disableValue=0)
-        self.fields[b'pump_state_high'] = epics.wx.PVButton(self.panel, pv=f"{digital_ca}bit0", pushValue = 1, size = (200,50),label="Pump High", disablePV=f"{digital_ca}bit0_enable",disableValue=0)
+        self.fields[b'pump_state_low'] = epics.wx.PVButton(self.panel, pv=f'{self.dio_server_name}:bit0', pushValue = 0, size = (200,50),label="Pump Low", disablePV=f'{self.dio_server_name}:bit0_enable',disableValue=0)
+        self.fields[b'pump_state_high'] = epics.wx.PVButton(self.panel, pv=f'{self.dio_server_name}:bit0', pushValue = 1, size = (200,50),label="Pump High", disablePV=f'{self.dio_server_name}:bit0_enable',disableValue=0)
         self.sizers[b'pump_state'].Add(self.fields[b'pump_state_low'],0)
         self.sizers[b'pump_state'].Add(self.fields[b'pump_state_high'],0)
 
         self.sizers[b'depre_state'] = wx.BoxSizer(wx.VERTICAL)
-        self.fields[b'depre_state_low'] = epics.wx.PVButton(self.panel, pv=f"{digital_ca}bit1", pushValue = 0, size = (200,50),label="Depre Low", disablePV=f"{digital_ca}bit1_enable",disableValue=0)
-        self.fields[b'depre_state_high'] = epics.wx.PVButton(self.panel, pv=f"{digital_ca}bit1", pushValue = 1, size = (200,50),label="Depre High", disablePV=f"{digital_ca}bit1_enable",disableValue=0)
+        self.fields[b'depre_state_low'] = epics.wx.PVButton(self.panel, pv=f'{self.dio_server_name}:bit1', pushValue = 0, size = (200,50),label="Depre Low", disablePV=f'{self.dio_server_name}:bit1_enable',disableValue=0)
+        self.fields[b'depre_state_high'] = epics.wx.PVButton(self.panel, pv=f'{self.dio_server_name}:bit1', pushValue = 1, size = (200,50),label="Depre High", disablePV=f'{self.dio_server_name}:bit1_enable',disableValue=0)
         self.sizers[b'depre_state'].Add(self.fields[b'depre_state_low'],0)
         self.sizers[b'depre_state'].Add(self.fields[b'depre_state_high'],0)
 
         self.sizers[b'pre_state'] = wx.BoxSizer(wx.VERTICAL)
-        self.fields[b'pre_state_low'] = epics.wx.PVButton(self.panel, pv=f"{digital_ca}bit2", pushValue = 0, size = (200,50),label="Pre Low", disablePV=f"{digital_ca}bit2_enable",disableValue=0)
-        self.fields[b'pre_state_high'] = epics.wx.PVButton(self.panel, pv=f"{digital_ca}bit2", pushValue = 1, size = (200,50),label="Pre High", disablePV=f"{digital_ca}bit2_enable",disableValue=0)
+        self.fields[b'pre_state_low'] = epics.wx.PVButton(self.panel, pv=f'{self.dio_server_name}:bit2', pushValue = 0, size = (200,50),label="Pre Low", disablePV=f'{self.dio_server_name}:bit2_enable',disableValue=0)
+        self.fields[b'pre_state_high'] = epics.wx.PVButton(self.panel, pv=f'{self.dio_server_name}:bit2', pushValue = 1, size = (200,50),label="Pre High", disablePV=f'{self.dio_server_name}:bit2_enable',disableValue=0)
         self.sizers[b'pre_state'].Add(self.fields[b'pre_state_low'],0)
         self.sizers[b'pre_state'].Add(self.fields[b'pre_state_high'],0)
 
@@ -370,7 +403,6 @@ class GUI(wx.Frame):
         self.sizers[b'row2'].Add(self.fields[b'time_to_swtich_col2'],0)
 
         self.box_sizer[b'table'].Add(self.sizers[b'row2'],0)
-
         #ROW3
         self.labels[b'slope'] = wx.StaticText(self.panel, label= "fall/rise slope [kbar/ms]", size = (200,-1))
         self.fields[b'slope_col1'] = epics.wx.PVText(self.panel, pv=f'{self.event_server_name}:table_rise_slope', size = (200,-1))
@@ -439,6 +471,7 @@ class GUI(wx.Frame):
         self.sizer_middle.Add(self.sizers['graph3'],0)
 
 
+        self.sizer_right.Add(self.sizers[b'digital_indicators'])
         self.sizer_right.Add(self.box_sizer[b'measurements'])
         self.sizer_right.Add(wx.StaticLine(self.panel), 0, wx.ALL|wx.EXPAND, 5)
         self.sizer_right.Add(self.box_sizer[b'controls'])
@@ -447,10 +480,10 @@ class GUI(wx.Frame):
         self.sizer_right.Add(wx.StaticLine(self.panel), 0, wx.ALL|wx.EXPAND, 5)
 
 
-
+        self.sizer_main.Add(self.sizer_right,0)
         self.sizer_main.Add(self.sizer_left,0)
         self.sizer_main.Add(self.sizer_middle,0)
-        self.sizer_main.Add(self.sizer_right,0)
+
 
         self.Center()
         self.Show()
@@ -634,8 +667,10 @@ if __name__ == "__main__":
     if len(sys.argv)>1:
         event_server_name = sys.argv[2]
     else:
-        event_server_name = f'event_handler_{socket.gethostname()}'
-        dio_server_name = f'dio_{socket.gethostname()}'
+        event_server_name = f'{socket.gethostname()}_event_controller'
+        dio_server_name = f'{socket.gethostname()}_dio_controller'
+
+    print(event_server_name,dio_server_name)
 
     app = wx.App(redirect=False)
     panel = GUI(event_server_name = event_server_name, dio_server_name = dio_server_name)
