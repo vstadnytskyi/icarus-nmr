@@ -574,11 +574,17 @@ class Handler(object):
         new_packet = np.copy(self.get_daq_packet_ij(packet_pointer,packet_pointer+1)[:self.daq_packet_length+1,:])
         info(f'new packet shape {new_packet.shape}')
         info(f'packet_pointer: {packet_pointer}')
-        info(f'packet_pointer: {self.daq_packet_length}')
-
-        self.events_list += self.find_dio_events(data = new_packet)
+        info(f'packet_length: {self.daq_packet_length}')
+        packet_length = self.daq_packet_length
+        circular_packet_pointer = self.g_packet_pointer
+        linear_packet_pointer = self.packet_pointer
+        self.events_list += self.find_dio_events(data = period_buffer, packet_length= packet_length,circular_packet_pointer = circular_packet_pointer,linear_packet_pointer=linear_packet_pointer)
         self.events_list +=  self.find_aio_events(data = new_packet)
-        self.events_list +=  self.find_time_events(data = new_packet)
+
+
+        kwargs = {}
+        kwargs['data'] = new_packet
+        self.events_list +=  self.find_time_events(**kwargs)
         if self.packet_pointer == self.daq_packet_buffer_length-1:
             self.packet_pointer = 0
         else:
@@ -695,7 +701,7 @@ class Handler(object):
 
         return lst_result
 
-    def find_time_events(self, data, local = False):
+    def find_time_events(self, packet, packet_length, linear_packet_pointer, circular_packet_pointer, frequency, timeout_period_time, periodic_udpate_hz, periodic_udpate_cooling_hz, local = False, ):
         """
         analyses the a packet(data) for the analog events.
         INPUTS:
@@ -715,11 +721,32 @@ class Handler(object):
         ----------
         data:  (numpy array)
             numpy array (Nx10) of data
+        packet_length: (integer)
+            length of the packet
+        linear_packet_pointer: (integer)
+            value of the linear(global) pointer
+        circular_packet_pointer: (integer)
+            value of the circular(local) pointer
+        frequency (integer)
+            frequency of data acquisition needed to convert index to time
+        last_event_index (dictionary)
+            dictionary of all last events indices
+        timeout_period_time (float)
+            timeout time in seconds
+        periodic_udpate_hz
+            frequenct of periodic updates time in Hz
+        periodic_udpate_cooling_hz
+            frequenct of periodic updates for cooling time in Hz
+
+
+
         local: boolean
             Optional flag
 
         Returns
         -------
+        list: (list)
+            list of dictionaries with events found
 
         Examples
         --------
@@ -729,24 +756,24 @@ class Handler(object):
         from time import time
 
         lst_result = []
-        ###LOCAL DATA ULPOAD for testing purposes
+        data = packet
+        packet_pointer = circular_packet_pointer
+        g_packet_pointer = linear_packet_pointer
+        length = data.shape[0]+packet_pointer*packet_length
 
-        length = data.shape[0]+self.g_packet_pointer*self.daq_packet_length
-        packet_pointer = self.packet_pointer
-        g_packet_pointer = self.g_packet_pointer
         ###TIMEOUT analog event
-        t = length - self.last_event_index[b'A200'] - self.timeout_period_time*self.daq_freq
+        t = length - last_event_index[b'A200'] - timeout_period_time*frequency
         if t>0:
             evt_code = 999
-            idx = (packet_pointer+1)*self.daq_packet_length - int(t)+1
-            g_idx = (g_packet_pointer+1)*self.daq_packet_length - int(t)+1
+            idx = (packet_pointer+1)*packet_length - int(t)+1
+            g_idx = (g_packet_pointer+1)*packet_length - int(t)+1
             lst_result.append({b'channel' : 'timeout',
                                b'index' : idx,
                                b'global_index' : g_idx,
                                b'evt_code': evt_code})
             evt_code = 200
-            idx = (packet_pointer+1)*self.daq_packet_length - int(t)+1
-            g_idx = (g_packet_pointer+1)*self.daq_packet_length - int(t)+1
+            idx = (packet_pointer+1)*packet_length - int(t)+1
+            g_idx = (g_packet_pointer+1)*packet_length - int(t)+1
             lst_result.append({b'channel' : 'period',
                                b'index' : idx,
                                b'global_index' : g_idx,
@@ -754,10 +781,10 @@ class Handler(object):
 
 
         ### 3 HZ update event
-        t = length - self.last_event_index[b'A300']- int(self.daq_freq/self.periodic_udpate_hz)
+        t = length - last_event_index[b'A300']- int(frequency/periodic_udpate_hz)
         if t > 0:
-            idx = (packet_pointer+1)*self.daq_packet_length - int(t)+1
-            g_idx = (g_packet_pointer+1)*self.daq_packet_length - int(t)+1
+            idx = (packet_pointer+1)*packet_length - int(t)+1
+            g_idx = (g_packet_pointer+1)*packet_length - int(t)+1
             evt_code = 300
             lst_result.append({b'channel' : 'periodic_update',
                                b'index' : idx,
@@ -765,10 +792,10 @@ class Handler(object):
                                b'evt_code': evt_code}) #local dictionary for evaluate_events
 
         ### 10 HZ update event
-        t = length - self.last_event_index[b'A301']- int(self.daq_freq/self.periodic_udpate_cooling_hz)
+        t = length - last_event_index[b'A301']- int(frequency/periodic_udpate_cooling_hz)
         if t > 0:
-            idx = (packet_pointer+1)*self.daq_packet_length - int(t)+1
-            g_idx = (g_packet_pointer+1)*self.daq_packet_length - int(t)+1
+            idx = (packet_pointer+1)*packet_length - int(t)+1
+            g_idx = (g_packet_pointer+1)*packet_length - int(t)+1
             evt_code = 301
             lst_result.append({b'channel' : 'periodic_update_cooling',
                                b'index' : idx,
@@ -800,7 +827,7 @@ class Handler(object):
 
 
 
-    def find_dio_events(self, data, packetPointer = 0, local = False):
+    def find_dio_events(self, data, linear_packet_pointer, circular_packet_pointer,packet_length):
         """
         look for the events in the digital channel of the data array.
         The function will retrieve data from the circular buffer.
@@ -816,8 +843,8 @@ class Handler(object):
         #create an array with 2 elements
         #for appending to the event circular buffer
 
-        packet_pointer = self.packet_pointer
-        g_packet_pointer = self.g_packet_pointer
+        packet_pointer = linear_packet_pointer
+        g_packet_pointer = circular_packet_pointer
 
         data1 = data[:-1,9]
         data2 = data[1:,9]
@@ -829,8 +856,8 @@ class Handler(object):
                 before = int(data[idx,9])
                 after = int(data[idx+1,9])
                 bin_array = self.parse_binary(value = after) - self.parse_binary(value = before)
-                evn_idx = idx+packet_pointer*self.daq_packet_length
-                g_evn_idx = idx+g_packet_pointer*self.daq_packet_length
+                evn_idx = idx+packet_pointer*packet_length
+                g_evn_idx = idx+g_packet_pointer*packet_length
                 debug(bin_array)
                 for dio in range(7):
                     value =  bin_array[dio]
@@ -1787,9 +1814,13 @@ class Handler(object):
         from numpy import nonzero,argwhere,empty_like, copyto, nan , isnan,zeros
         from time import time
         ###find indices of all events
-
-        period_buffer = data
-        lst_result = self.find_dio_events(data = period_buffer, local = True)
+        kwargs = {}
+        kwargs['data'] = data
+        kwargs['local'] = True
+        kwargs['packet_length']= seld.daq_packet_length
+        kwargs['circular_packet_pointer'] = self.g_packet_pointer
+        kwargs['linear_packet_pointer']=self.packet_pointer
+        lst_result = self.find_dio_events(**kwargs)
         period_event = zeros((2,len(lst_result)))
         #info(len(lst_result))
         #info(period_event)
