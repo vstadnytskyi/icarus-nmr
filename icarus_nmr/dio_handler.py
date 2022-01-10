@@ -51,7 +51,7 @@ class Handler():
 
 
     def update_dio(self,value):
-        print(f'controller: update_dio:  current_dio = {value}')
+        #print(f'controller: update_dio:  current_dio = {value}')
         self.current_dio = value
 
     def set_dio(self, value):

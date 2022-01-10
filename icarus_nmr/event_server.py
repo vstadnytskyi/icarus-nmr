@@ -120,6 +120,10 @@ class Server(PVGroup):
 
     medium= pvproperty(value='mineral spirits')
 
+    dio = pvproperty(value=0, dtype = int)
+
+    packet_counter = pvproperty(value=0, dtype = int)
+
     @sample_pressure.startup
     async def sample_pressure(self, instance, async_lib):
         # This method will be called when the server starts up.
@@ -179,6 +183,12 @@ class Server(PVGroup):
                     await self.table_delay.write(io_dict[key])
                 elif key == 'table_period':
                     await self.table_period.write(io_dict[key])
+                elif key == 'dio':
+                    print(f' writing DIO: {io_dict[key]})')
+                    await self.dio.write(io_dict[key])
+                elif key == 'packet_counter':
+                    await self.packet_counter.write(io_dict[key])
+
 
 
 if __name__ == '__main__':

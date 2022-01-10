@@ -1,8 +1,12 @@
 #!/bin/env python
 """
-PyEpics based device GUI
-"""
+Icarus Client (High Pressure Apparatus Client Level)
+dates: Nov 2017 - Sept 2018
+by  Valentyn Stadnytskyi @ National Institutes of Health
 
+
+"""
+__version__ = '0.0.0'
 
 
 
@@ -57,15 +61,13 @@ def resource_path(relative_path):
 
     return os.path.join(base_path, relative_path)
 
-import socket
-SERVER_NAME = socket.gethostname()
-
 """Graphical User Interface"""
 import platform
 class GUI(wx.Frame):
 
-    def __init__(self, caserver_name = ''):
-        self.caserver_name = caserver_name
+    def __init__(self, event_server_name = '', dio_server_name = ''):
+        self.event_server_name = event_server_name
+        self.dio_server_name = dio_server_name
         self.name = platform.node() + '_'+'GUI'
         self.lastN_history = 0
         self.lastM_history = 10000
@@ -78,9 +80,9 @@ class GUI(wx.Frame):
         self.sizer_middle = wx.BoxSizer(wx.VERTICAL)
         self.sizer_right = wx.BoxSizer(wx.VERTICAL)
 
-        self.box_sizer[b'graph0'] = wx.BoxSizer(wx.VERTICAL)
-        self.box_sizer[b'graph1'] = wx.BoxSizer(wx.VERTICAL)
-        self.box_sizer[b'graph2'] = wx.BoxSizer(wx.VERTICAL)
+        self.box_sizer[b'dio_device'] = wx.BoxSizer(wx.VERTICAL)
+        self.box_sizer[b'dio_event'] = wx.BoxSizer(wx.VERTICAL)
+        self.box_sizer[b'dio_digital'] = wx.BoxSizer(wx.VERTICAL)
         self.box_sizer[b'graph3'] = wx.BoxSizer(wx.VERTICAL)
 
         self.box_sizer[b'counters'] = wx.BoxSizer(wx.VERTICAL)
@@ -113,7 +115,8 @@ class GUI(wx.Frame):
 
         frame = wx.Frame.__init__(self, None, wx.ID_ANY, "High Pressure Control Panel")#, size = (192,108))#, style= wx.SYSTEM_MENU | wx.CAPTION)
 
-        self.panel = wx.Panel(self, wx.ID_ANY, style=wx.BORDER_THEME)#, size = (1920,1080))
+        self.panel = wx.Panel(self, wx.ID_ANY, style=wx.BORDER_THEME, size = (192*2,108*2))
+        #self.panel.Bind(wx.EVT_SIZE, self.on_size_change)
         self.SetBackgroundColour('white')
         self.Bind(wx.EVT_CLOSE, self.on_quit)
         self.statusbar = self.CreateStatusBar() # Will likely merge the two fields unless we can think of a reason to keep them split
@@ -137,6 +140,10 @@ class GUI(wx.Frame):
         file_item[0] = fileMenu.Append(wx.ID_EXIT, 'Quit', 'Quit application')
         self.Bind(wx.EVT_MENU, self.on_quit, file_item[0])
 
+        self.settingMenu = wx.Menu()
+        #self.setting_item[0] = settingMenu.Append(wx.NewId(),  'server settings')
+        self.Bind(wx.EVT_MENU_OPEN, self.on_server_settings)#3self.setting_item[0])
+
 
         aboutMenu = wx.Menu()
         about_item[0]= aboutMenu.Append(wx.ID_ANY,  'About')
@@ -145,7 +152,7 @@ class GUI(wx.Frame):
 
         menubar.Append(fileMenu, '&File')
 
-        #menubar.Append(self.settingMenu, '&Settings')
+        menubar.Append(self.settingMenu, '&Settings')
         menubar.Append(aboutMenu, '&About')
 
 
@@ -164,48 +171,49 @@ class GUI(wx.Frame):
         ###FIGUREs####
         ###########################################################################
 
+        self.sizers['dio_device'] = wx.BoxSizer(wx.HORIZONTAL)
+        self.labels['dio_device']  = wx.StaticText(self.panel, label= 'DIO device:', style = wx.ALIGN_CENTER)
+        self.fields['dio_device']  = epics.wx.PVText(self.panel, pv=f'Valentyns-MacBook-Pro.local_device_controller:dio')
+        self.sizers['dio_device'] .Add(self.labels['dio_device']  , 0)
+        self.sizers['dio_device'] .Add(self.fields['dio_device']  , 0)
+
+        self.sizers['dio_digital'] = wx.BoxSizer(wx.HORIZONTAL)
+        self.labels['dio_digital']  = wx.StaticText(self.panel, label= 'DIO digital:', style = wx.ALIGN_CENTER)
+        self.fields['dio_digital']  = epics.wx.PVText(self.panel, pv=f'Valentyns-MacBook-Pro.local_dio_controller:dio', )
+        self.sizers['dio_digital'] .Add(self.labels['dio_digital']  , 0)
+        self.sizers['dio_digital'] .Add(self.fields['dio_digital']  , 0)
+
+        self.sizers['dio_event'] = wx.BoxSizer(wx.HORIZONTAL)
+        self.labels['dio_event']  = wx.StaticText(self.panel, label= 'DIO event:', style = wx.ALIGN_CENTER)
+        self.fields['dio_event']  = epics.wx.PVText(self.panel, pv=f'Valentyns-MacBook-Pro.local_event_controller:dio', )
+        self.sizers['dio_event'] .Add(self.labels['dio_event']  , 0)
+        self.sizers['dio_event'] .Add(self.fields['dio_event']  , 0)
+
+        self.sizers['packet_pointer'] = wx.BoxSizer(wx.HORIZONTAL)
+        self.labels['packet_pointer']  = wx.StaticText(self.panel, label= 'packet pointer:', style = wx.ALIGN_CENTER)
+        self.fields['packet_pointer']  = epics.wx.PVText(self.panel, pv=f'Valentyns-MacBook-Pro.local_event_controller:packet_counter', )
+        self.sizers['packet_pointer'] .Add(self.labels['packet_pointer']  , 0)
+        self.sizers['packet_pointer'] .Add(self.fields['packet_pointer']  , 0)
 
 
-        self.labels[b'dio'] = wx.StaticText(self.panel, label= "DIO state:", size = (200,-1))
-        #
-        self.labels[b'dio'].SetFont(wx_l_font)
-        self.labels[b'dio'].SetBackgroundColour(wx.Colour(240, 240, 240))
-        self.fields[b'dio'] = epics.wx.PVFloatCtrl(self.panel, pv=f"{caserver_name}:dio", size = (200,40))
-        #
-        self.fields[b'dio'].SetFont(wx_l_font)
-        self.fields[b'dio'].SetBackgroundColour(wx.Colour(240, 240, 240))
-        #
-        self.sizers[b'dio'] = wx.BoxSizer(wx.HORIZONTAL)
-        self.sizers[b'dio'].Add(self.labels[b'dio'],0)
-        self.sizers[b'dio'].Add(self.fields[b'dio'],0)
+        ###########################################################################
+        ###FIGURE ENDS####
+        ###########################################################################
 
-        self.labels[b'packet_shape'] = wx.StaticText(self.panel, label= "packet length:", size = (200,-1))
-        self.labels[b'packet_shape'].SetFont(wx_l_font)
-        self.labels[b'packet_shape'].SetBackgroundColour(wx.Colour(240, 240, 240))
-        self.fields[b'packet_shape'] = epics.wx.PVText(self.panel, pv=f"{caserver_name}:packet_shape", size = (800,-1))
-        #
-        self.fields[b'packet_shape'].SetFont(wx_l_font)
-        self.fields[b'packet_shape'].SetBackgroundColour(wx.Colour(240, 240, 240))
-        #
-        self.sizers[b'packet_shape'] = wx.BoxSizer(wx.HORIZONTAL)
-        self.sizers[b'packet_shape'].Add(self.labels[b'packet_shape'],0)
-        self.sizers[b'packet_shape'].Add(self.fields[b'packet_shape'],0)
 
-        self.labels[b'queue_length'] = wx.StaticText(self.panel, label= "queue length:", size = (200,-1))
-        self.labels[b'queue_length'].SetFont(wx_l_font)
-        self.labels[b'queue_length'].SetBackgroundColour(wx.Colour(240, 240, 240))
-        self.fields[b'queue_length'] = epics.wx.PVText(self.panel, pv=f"{caserver_name}:dio", size = (800,-1))
-        #
-        self.fields[b'queue_length'].SetFont(wx_l_font)
-        self.fields[b'queue_length'].SetBackgroundColour(wx.Colour(240, 240, 240))
-        #
-        self.sizers[b'queue_length'] = wx.BoxSizer(wx.HORIZONTAL)
-        self.sizers[b'queue_length'].Add(self.labels[b'queue_length'],0)
-        self.sizers[b'queue_length'].Add(self.fields[b'queue_length'],0)
+        ###########################################################################
+        ###On Button Press###
+        ###########################################################################
+        ###Sidebar###
 
-        self.sizer_right.Add(self.sizers[b'dio'])
-        self.sizer_right.Add(self.sizers[b'packet_shape'])
-        self.sizer_right.Add(self.sizers[b'queue_length'])
+
+
+
+        self.sizer_left.Add(self.sizers['dio_device'],0)
+        self.sizer_left.Add(self.sizers['dio_digital'],0)
+        self.sizer_left.Add(self.sizers['dio_event'],0)
+        self.sizer_left.Add(self.sizers['packet_pointer'],0)
+
 
 
         self.sizer_main.Add(self.sizer_left,0)
@@ -225,6 +233,29 @@ class GUI(wx.Frame):
     #----------------------------------------------------------------------
 
 
+    def on_size_change(self,event):
+        """
+        method called when user changes the size of the window and underlying panel.
+        """
+        self.panel_width,self.panel_height = event.GetSize()
+        print ("Width =",self.panel_width,"Height =",self.panel_height)
+        w = self.panel_width
+        h = self.panel_height
+        try:
+            self.fields['graph0'].im_size_show = (int((w-384)/2),int(h/5))
+            self.fields['graph1'].im_size_show = (int((w-384)/2),int(h/5))
+            self.fields['graph2'].im_size_show = (int((w-384)/2),int(h/5))
+            self.fields['graph3'].im_size_show = (int((w-384)/2),int(h))
+        except:
+            pass
+
+        #self.panel.SetSizer(self.sizer_main)
+        #self.sizer_main.Fit(self)
+        self.Layout()
+        self.panel.Layout()
+        #self.panel.Fit()
+
+
     def _on_about(self,event):
         """
         method executed when a user click on "About" button in the menu.
@@ -239,6 +270,13 @@ class GUI(wx.Frame):
         del self
         os._exit(1)
 
+    def on_server_settings(self,event):
+        print("on_server_settings Clicked")
+        if event.EventObject == self.settingMenu:
+            print("on_server_settings Clicked 2")
+            self.serverSettingWindow = self.SettingServerWindowFrame(event_server_name=self.event_server_name,dio_server_name = self.dio_server_name)
+            self.serverSettingWindow.Show()
+
 
 if __name__ == "__main__":
     from pdb import pm
@@ -247,12 +285,14 @@ if __name__ == "__main__":
     import sys
     import socket
     if len(sys.argv)>1:
-        caserver_name = sys.argv[2]
+        event_server_name = sys.argv[2]
     else:
-        caserver_name = f'{SERVER_NAME}_device_controller'
-    print(caserver_name)
+        event_server_name = f'{socket.gethostname()}_event_controller'
+        dio_server_name = f'{socket.gethostname()}_dio_controller'
+
+    print(event_server_name,dio_server_name)
 
     app = wx.App(redirect=False)
-    panel = GUI(caserver_name = caserver_name)
+    panel = GUI(event_server_name = event_server_name, dio_server_name = dio_server_name)
 
     app.MainLoop()

@@ -105,8 +105,10 @@ class Server(PVGroup):
 
     @data.getter
     async def data(self, instance):
-        value = self.device.queue.dequeue(self.device.pr_packet_size).flatten()
-        if value.shape[0] > 1280:
+        queue = self.device.queue
+        length = 64#int(self.device.queue.length/self.device.pr_packet_size)
+        value = queue.dequeue(length).flatten()
+        if value.shape[0] > 1280*10:
             print(f'{ctime(time())} {value.shape}')
             print(f"{ctime(time())} getter: data, queue length {self.device.queue.length}")
             print(f"{ctime(time())} getter: data, queue rear {self.device.queue.rear}")

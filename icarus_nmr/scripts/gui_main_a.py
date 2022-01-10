@@ -172,21 +172,21 @@ class GUI(wx.Frame):
         ###########################################################################
 
         self.sizers['graph0'] = wx.BoxSizer(wx.VERTICAL)
-        self.labels['graph0']  = wx.StaticText(self.panel, label= 'Field 2 label', style = wx.ALIGN_CENTER)
+        #self.labels['graph0']  = wx.StaticText(self.panel, label= 'Field 2 label', style = wx.ALIGN_CENTER)
         self.fields['graph0']  = PVImage(self.panel, pv=f'{self.event_server_name}:image_pre', im_size = (768,216))
-        self.sizers['graph0'] .Add(self.labels['graph0']  , 0)
+        #self.sizers['graph0'] .Add(self.labels['graph0']  , 0)
         self.sizers['graph0'] .Add(self.fields['graph0']  , 0)
 
         self.sizers['graph1'] = wx.BoxSizer(wx.VERTICAL)
-        self.labels['graph1'] = wx.StaticText(self.panel, label= 'Field 2 label', style = wx.ALIGN_CENTER)
+        #self.labels['graph1'] = wx.StaticText(self.panel, label= 'Field 2 label', style = wx.ALIGN_CENTER)
         self.fields['graph1'] = PVImage(self.panel, pv=f'{self.event_server_name}:image_depre', im_size = (768,216))
-        self.sizers['graph1'] .Add(self.labels['graph1']  , 0)
+        #self.sizers['graph1'] .Add(self.labels['graph1']  , 0)
         self.sizers['graph1'] .Add(self.fields['graph1']  , 0)
 
         self.sizers['graph2'] = wx.BoxSizer(wx.VERTICAL)
-        self.labels['graph2'] = wx.StaticText(self.panel, label= 'Field 2 label', style = wx.ALIGN_CENTER)
+        #self.labels['graph2'] = wx.StaticText(self.panel, label= 'Field 2 label', style = wx.ALIGN_CENTER)
         self.fields['graph2'] = PVImage(self.panel, pv=f'{self.event_server_name}:image_period', im_size = (768,216))
-        self.sizers['graph2'] .Add(self.labels['graph2']  , 0)
+        #self.sizers['graph2'] .Add(self.labels['graph2']  , 0)
         self.sizers['graph2'] .Add(self.fields['graph2']  , 0)
 
         self.sizers['graph3'] = wx.BoxSizer(wx.VERTICAL)

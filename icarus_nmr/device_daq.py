@@ -79,6 +79,8 @@ class Device():
         self.curr_dio = 127
         self.user_set_dio = self.curr_dio
 
+        self.run_once_counter = 0
+
         self.threads = {}
 
     def first_time_setup(self):
@@ -331,6 +333,7 @@ class Device():
         --------
         >>> device.run_once()
         """
+        self.run_once_counter +=1
         from numpy import array
         data, flag = (self.driver.get_readings(points_to_read = self.pr_packet_size))
         self.data = data
@@ -344,6 +347,7 @@ class Device():
                 except:
                     info('run_once')
                     error(traceback.format_exc())
+            data[:,8] = self.run_once_counter
             self.queue.enqueue(data)
 
         else:

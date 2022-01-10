@@ -4,11 +4,6 @@ Icarus Client (High Pressure Apparatus Client Level)
 dates: Nov 2017 - Sept 2018
 by  Valentyn Stadnytskyi @ National Institutes of Health
 
-I’d like to reorganize the layout with an aim to make it more intuitive and logical. Since we read from left to write, and top to bottom, I’m thinking of shifting the User controls to the top left so they are close to the ‘Settings’ menu in the upper left of the screen, move the current Pressure Target and Sample Indicators immediately below the User Controls, and the Fault/Warning box below that (Status Indicators). The Event Indicators and Operational History Indicators would be shifted to the right. I’d also like to reorganize the Event Indicators Table into two tables, the top of which has Pressurize and Depressurize columns, and the bottom with a single column that specifies the values for [Delay, Period, Pump Stroke Counter, Valve Openings per Pump Stroke].
-
-The Server selector currently in the upper right could be put into the Settings pull down menu instead.
-
-The ‘show last N history log points field is a control, and could be placed to the right of ‘period index’ in the Operational History Indicators column, as that is what it corresponds to.
 
 """
 __version__ = '0.0.0'
@@ -485,10 +480,10 @@ class GUI(wx.Frame):
         self.sizer_right.Add(wx.StaticLine(self.panel), 0, wx.ALL|wx.EXPAND, 5)
 
 
-        self.sizer_main.Add(self.sizer_right,0)
+
         self.sizer_main.Add(self.sizer_left,0)
         self.sizer_main.Add(self.sizer_middle,0)
-
+        self.sizer_main.Add(self.sizer_right,0)
 
         self.Center()
         self.Show()

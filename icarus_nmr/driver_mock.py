@@ -52,7 +52,7 @@ class Driver(object):
         self.sim_digital = 127
         self.sim_last_read = time()
         self.sim_pressure_state = 1
-        self.pump_freq = 1#0.99995
+        self.pump_freq = 0.99995
         self.sim_slow_leak_start_time = time()
         self.sim_slow_leak_tau = 60000*1000000
 

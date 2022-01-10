@@ -171,7 +171,7 @@ class Handler(object):
         # 4000 ticks/second * 60 seconds/min * 60 min/hour * 500 uL / 2.5 kbar
         self.buffer_shape = (25600,10)#8192000)
 
-        self.current_dio = 127
+        self.current_dio = 0
 
         self.io_push_queue = None
         self.io_pull_queue = None
@@ -526,6 +526,7 @@ class Handler(object):
 
         while self.running and self.daq_running:
            self.run_once()
+           sleep(0.05)
         self.running = False
         if self.daq_running == False:
             self.stop()
@@ -538,26 +539,14 @@ class Handler(object):
         ###compares its' own packet pointer with DAQ packet pointer
         ###if local packet poitner is smaller than DAQ, means that there are packets that need to be analyzed
 
-        def distance(back = 0, front = 0,size = 1):
-            if front > back:
-                distance = front - back
-            elif front < back:
-                distance = size + front - back
-            elif front == back:
-                distance = 0
-            return distance
-
-        if distance(back = self.packet_pointer,front = self.daq_packet_pointer,size = self.daq_packet_buffer_length) > 6:
-
+        while self.daq_packet_pointer - self.g_packet_pointer  > 6:
+            if self.g_packet_pointer%int(4000/128)  == 0:
+                self.io_push(io_dict = {'packet_counter':self.daq_packet_pointer -self.g_packet_pointer})
             self.run_once_once()
 
-            if len(self.events_list) > 0:
-                self.evaluate_events()
-                self.events_list = []
-        else:
-            self.daq.run_once()
+        #Get new packets in the DAQ object
+        self.daq.run_once()
 
-        #info(self.packet_pointer,self.daq_packet_pointer)
 
 
     def run_once_once(self):
@@ -568,33 +557,49 @@ class Handler(object):
         #the algorith will not detect it.
         #Hence, I need to grab 2 packets to analyse
         #first packet + 1 point from the next packet.
-        packet_pointer = self.packet_pointer
         g_packet_pointer = self.g_packet_pointer
-        self.daq.run_once()
-        new_packet = np.copy(self.get_daq_packet_ij(packet_pointer,packet_pointer+1)[:self.daq_packet_length+1,:])
+        #print(packet_pointer,g_packet_pointer)
+
+
+        #TODO. Here is the problem.
+        new_packet = np.copy(self.get_daq_packet_ij(g_packet_pointer,g_packet_pointer+1)[:self.daq_packet_length+1,:])
+        dio_value = new_packet[-1,9]
+        if dio_value != self.current_dio:
+            self.io_push(io_dict = {'dio':dio_value})
+            self.client.dio.write(dio_value)
+            self.current_dio = dio_value
+
+
         info(f'new packet shape {new_packet.shape}')
-        info(f'packet_pointer: {packet_pointer}')
         info(f'packet_length: {self.daq_packet_length}')
-        packet_length = self.daq_packet_length
-        circular_packet_pointer = self.g_packet_pointer
-        linear_packet_pointer = self.packet_pointer
-        self.events_list += self.find_dio_events(data = period_buffer, packet_length= packet_length,circular_packet_pointer = circular_packet_pointer,linear_packet_pointer=linear_packet_pointer)
-        self.events_list +=  self.find_aio_events(data = new_packet)
 
+        linear_packet_pointer = self.g_packet_pointer
 
+        self.events_list += self.find_dio_events(data = new_packet, linear_packet_pointer=linear_packet_pointer)
+        self.events_list +=  self.find_aio_events(data = new_packet[:,:-1])
+
+        buffer = self.daq.circular_buffer
         kwargs = {}
-        kwargs['data'] = new_packet
+        kwargs['packet'] = new_packet[:,:-1]
+        kwargs['packet_length'] = 64
+        kwargs['linear_packet_pointer'] = linear_packet_pointer
+        kwargs['circular_packet_pointer'] = int(linear_packet_pointer%int(buffer.length/buffer.packet_length))
+        kwargs['frequency'] = 4000
+        kwargs['timeout_period_time'] = 30
+        kwargs['last_event_index'] = self.last_event_index
+
+        kwargs['periodic_udpate_hz'] = 3
+        kwargs['periodic_udpate_cooling_hz'] = 10
         self.events_list +=  self.find_time_events(**kwargs)
-        if self.packet_pointer == self.daq_packet_buffer_length-1:
-            self.packet_pointer = 0
-        else:
-            self.packet_pointer += 1
-            self.g_packet_pointer += 1
+
+        self.g_packet_pointer += 1
 
         ###Sort Detected events according to a specified algorithm.
         self.events_list = self.sort_events(self.events_list)
         ###Evaluation of the detected events
-
+        if len(self.events_list) > 0:
+            self.evaluate_events()
+            self.events_list = []
 
 
     def stop(self):
@@ -701,7 +706,7 @@ class Handler(object):
 
         return lst_result
 
-    def find_time_events(self, packet, packet_length, linear_packet_pointer, circular_packet_pointer, frequency, timeout_period_time, periodic_udpate_hz, periodic_udpate_cooling_hz, local = False, ):
+    def find_time_events(self, packet, packet_length, linear_packet_pointer, circular_packet_pointer, frequency, timeout_period_time, periodic_udpate_hz, periodic_udpate_cooling_hz, last_event_index, local = False):
         """
         analyses the a packet(data) for the analog events.
         INPUTS:
@@ -759,7 +764,7 @@ class Handler(object):
         data = packet
         packet_pointer = circular_packet_pointer
         g_packet_pointer = linear_packet_pointer
-        length = data.shape[0]+packet_pointer*packet_length
+        length = data.shape[0]+g_packet_pointer*packet_length
 
         ###TIMEOUT analog event
         t = length - last_event_index[b'A200'] - timeout_period_time*frequency
@@ -827,7 +832,7 @@ class Handler(object):
 
 
 
-    def find_dio_events(self, data, linear_packet_pointer, circular_packet_pointer,packet_length):
+    def find_dio_events(self, data, linear_packet_pointer):
         """
         look for the events in the digital channel of the data array.
         The function will retrieve data from the circular buffer.
@@ -842,9 +847,11 @@ class Handler(object):
         lst_result = []
         #create an array with 2 elements
         #for appending to the event circular buffer
-
-        packet_pointer = linear_packet_pointer
-        g_packet_pointer = circular_packet_pointer
+        buffer = self.daq.circular_buffer
+        circular_packet_pointer = linear_packet_pointer%int(buffer.length/buffer.packet_length)
+        g_packet_pointer = linear_packet_pointer
+        packet_pointer = circular_packet_pointer
+        packet_length = data.shape[0]
 
         data1 = data[:-1,9]
         data2 = data[1:,9]
@@ -1549,7 +1556,6 @@ class Handler(object):
 
     def push_pressurize_event(self):
         import numpy as np
-        #from icarus_SL import icarus_SL
 
         if len(self.pressurize_data)>1:
             data = self.pressurize_data[1]
@@ -1692,7 +1698,7 @@ class Handler(object):
     def push_new_period(self, value):
         import numpy as np
         data = value
-        def chart_one(x,y):
+        def chart_period(x,y):
             """
             charting function that takes x and y
             """
@@ -1709,12 +1715,22 @@ class Handler(object):
             from scipy import stats
             figure = Figure(figsize=(7.68,2.16),dpi=100)#figsize=(7,5))
             axes = figure.add_subplot(1,1,1)
+            target = y[0,:]
+            origin = y[5,:]
+            sample = y[6,:]
+            d0 = y[9,:]&0b1
+            d1 = y[9,:]&0b10
+            d2 = y[9,:]&0b100
+            axes.plot(x,target, color = 'black')
+            axes.plot(x,origin, color = 'darkred')
+            axes.plot(x,sample, color = 'darkorange')
+            axes.plot(x,d0, color = 'red')
+            axes.plot(x,d1, color = 'darkgreen')
+            axes.plot(x,d2, color = 'darkblue')
 
-            axes.plot(x,y, color = 'red' )
-
-            axes.set_title("Top subplot")
-            axes.set_xlabel("x (value)")
-            axes.set_ylabel("y (value)")
+            axes.set_title("Last Period",fontsize=m_font, color = 'black')
+            axes.set_xlabel("time, (seconds)")
+            axes.set_ylabel("pressure (kbar)")
             axes.tick_params(axis='y', which='both', labelleft=True, labelright=False)
             axes.grid(True)
             figure.tight_layout()
@@ -1736,7 +1752,7 @@ class Handler(object):
         print(f'x shape = {x.shape}')
         print(f'y_mean shape = {y_mean.shape}')
         print(f'y_mean shape = {y_mean[6,:].shape}')
-        arr = figure_to_array(chart_one(x=x,y=y_mean[6,:])).flatten()
+        arr = figure_to_array(chart_period(x=x/4000,y=y_mean)).flatten()
         dic = {}
                 # : nan, : nan, : nan, : nan, : nan,
         dic['image_period'] = arr
@@ -3047,15 +3063,11 @@ class Handler(object):
 ###  Wrappers to interact with DAQ DI-4108 section
 ##########################################################################################
 
-    def get_daq_packet_ij(self,packet_pointer_i = 0,packet_pointer_j = 0):
+    def get_daq_packet_ij(self,i = 0,j = 0):
         """
         grabs one packet at packet_pointer
         """
-        try:
-            data = self.daq.get_packet_ij(packet_pointer_i,packet_pointer_j)
-        except:
-            error(traceback.format_exc())
-            data = None
+        data = self.daq.circular_buffer.get_packet_linear_i_j(i,j)
         return data
 
     def getPeriodHistory(self, pointer):
@@ -3125,7 +3137,7 @@ class Handler(object):
     def get_daq_packet_pointer(self):
         """returns DAQ packet pointer"""
         try:
-            res = self.daq.circular_buffer.packet_pointer #
+            res = self.daq.circular_buffer.linear_packet_pointer #
         except:
             error(traceback.format_exc())
             res = nan
@@ -3477,7 +3489,7 @@ if __name__ == "__main__":
     from icarus_nmr.event_client import Client
     from icarus_nmr.event_server import Server
 
-    client = Client(device_ca_server_prefix = f'device_{SERVER_NAME}:',dio_ca_server_prefix = f'dio_{SERVER_NAME}:')
+    client = Client(device_ca_server_prefix = f'{SERVER_NAME}_device_controller:',dio_ca_server_prefix =  f'{SERVER_NAME}_dio_controller:')
     daq = DAQ(client)
     daq.init()
     daq.start()

@@ -8,6 +8,8 @@ Overview
 
 
 Events:
+*****************
+
 Digital events:
 
 * D00 (0) - bit 0 goes low
@@ -30,7 +32,22 @@ Analog events:
 * A100 (100) - pump stroke
 
 Time based events:
+
 * T200 (200) - period
 * T300 (300) - 3 Hz periodic update
 * T301 (301) - 10 Hz periodic update
 * T999 (999) - timeout event
+
+Data channels:
+**********************************
+
+* channel 0 - target pressure
+* channel 1 - depressurization valve lower sensor
+* channel 2 - depressurization valve upper sensor
+* channel 3 - pressurization valve lower sensor
+* channel 4 - pressurization valve upper sensor
+* channel 5 - high pressure transducer at the origin
+* channel 6 - high pressure transducer at the sample*
+* channel 7 - target pressure
+* channel 8 - auxiliary digital line (no in use)
+* channel 9 - digital line represented as 7bit number

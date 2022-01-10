@@ -17,17 +17,8 @@ The icarus NMR pressure jump control software is designed to be minimally invasi
   :alt: block diagram
 
 
-The Data Handler process has two main responsibilities:
+The data acquisition unit(DAQ) (DI-4108 by DATAQ) collects data from all channels at 4kS/s resulting in a stream of data of 16 bit integers. The stream of data is 80kB per second. The DAQ's build-in buffer has capacity of 16kB, hence we need to read data out of the build-in buffer at least once per 200 ms to prevent buffer overflow. The data controller process is responsible to read data in packets (by default 64-long | every 16 ms | 1.280 kBytes). The acquired data goes into device controller numpy queue with the programmatically controller length. If the queue is full, the oldest values are discarded and new one are added at the rear of the queue. The device controller is equipped with server capabilities and can present information in the queue to outside clients.
 
-1. reading data from the DI-4108 built-in buffer and never let the buffer to overflow. The read data is put into FIFO queue of variable length.
-2. provide software path to change the digital state on the DI-4108.
+The event controller process acts as a client and retrieves packets of data from the device controller queue and appends it to the circular buffer. Each packet of data is searched for preprogrammed events. Later events are analyzed and results are presented to upper level clients, e.g. Graphical User Interface and logging controller.
 
-The Event Handler process retrieves all new packets of data from the Data Handler's FIFO queue and puts them into a circular buffer. Later new packets from the circular buffer are analyzed for events and results are published via corresponding PVs.
-
-The Graphical User Interface process provides graphical controls and indicators for a user.
-
-The Logging process subscribes to process variables(PVs) that it is supposed to log.
-
-The DIO Handler (digital input/output handler) aggregates functionality associated with digital input/output on the DI-4108 data acquisition unit.
-
-All communication between these 5 modules is done via Channel Access protocol.
+The Graphical User Interface (GUI) presents data as charts or numbers and provides text fields to change parameters and buttons to control valves.

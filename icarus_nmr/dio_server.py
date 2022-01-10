@@ -86,17 +86,7 @@ class Server(PVGroup):
             print({ctime(time())},f'inside server while True loop: {io_dict}')
             for key in list(io_dict.keys()):
                 if key == 'dio':
-                    new_val = io_dict[key]
-                    cur_val = self.dio.value
-                    print({ctime(time())},new_val,cur_val)
-                    if new_val != cur_val:
-                        await self.dio.write(val)
-                        _bit0 = int(((val)&int(0b1))/(int(0b1)))
-                        _bit1 = int(((val)&int(0b10))/(int(0b10)))
-                        _bit2 = int(((val)&int(0b100))/(int(0b100)))
-                        await self.bit0.write(_bit0)
-                        await self.bit1.write(_bit1)
-                        await self.bit2.write(_bit2)
+                    print('dio arrived from server')
                 elif key == 'bit0':
                     await self.bit0.write(io_dict[key])
                 elif key == 'bit0_enable':
@@ -132,37 +122,38 @@ class Server(PVGroup):
         """
         when the dio PV is changed in the database it submits new value to the core module. All smarts are in the core module
         """
+        echo = False
         print(f'{ctime(time())}: {"dio putter"}, new value {value}')
-        self.device.update_dio(value)
+        #self.device.update_dio(value)
         arr = int_to_binary(value)
-        print(f'arr = {arr}')
+        if echo: print(f'arr = {arr}')
 
         bit0 = int(arr[0])
-        print(f'bit0 = {bit0}')
+        if echo: print(f'bit0 = {bit0}')
         await self.bit0_indicator.write(str(bit0))
 
         bit1 = int(arr[1])
-        print(f'bit1 = {bit1}')
+        if echo: print(f'bit1 = {bit1}')
         await self.bit1_indicator.write(str(bit1))
 
         bit2 = int(arr[2] )
-        print(f'bit2 = {bit2},{arr[2]}')
+        if echo: print(f'bit2 = {bit2},{arr[2]}')
         await self.bit2_indicator.write(str(bit2))
 
         bit3 = int(arr[3])
-        print(f'bit3 = {bit3}')
+        if echo: print(f'bit3 = {bit3}')
         await self.bit3_indicator.write(str(bit3))
 
         bit4 = int(arr[4])
-        print(f'bit4 = {bit4}')
+        if echo: print(f'bit4 = {bit4}')
         await self.bit4_indicator.write(str(bit4))
 
         bit5 = int(arr[5])
-        print(f'bit5 = {bit5}')
+        if echo: print(f'bit5 = {bit5}')
         await self.bit5_indicator.write(str(bit5))
 
         bit6 = int(arr[6])
-        print(f'bit6 = {bit6}')
+        if echo: print(f'bit6 = {bit6}')
         await self.bit6_indicator.write(str(bit6))
 
     @operating_mode.putter
