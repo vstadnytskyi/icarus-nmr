@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Usage &mdash; Icarus Pressure Jump for NMR 0.1.0.post53+g3df7893 documentation</title>
+  <title>Digital Controller &mdash; Icarus Pressure Jump for NMR 0.1.0.post53+g3df7893 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/plot_directive.css" type="text/css" />
@@ -22,8 +22,8 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Driver Level" href="driver.html" />
-    <link rel="prev" title="Graphical User Interface" href="gui.html" /> 
+    <link rel="next" title="Event Controller" href="event-controller.html" />
+    <link rel="prev" title="Device Controller Level" href="device-controller.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -49,15 +49,15 @@
 <li class="toctree-l1"><a class="reference internal" href="development.html">Development</a></li>
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Introduction and Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gui.html">Graphical User Interface</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Usage</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#instrumentation">Instrumentation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#data-analysis">Data Analysis</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="driver.html">Driver Level</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mock-driver.html">Mock Driver Level</a></li>
 <li class="toctree-l1"><a class="reference internal" href="device-controller.html">Device Controller Level</a></li>
-<li class="toctree-l1"><a class="reference internal" href="digital-controller.html">Digital Controller</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Digital Controller</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#digital-level">Digital Level</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="event-controller.html">Event Controller</a></li>
 <li class="toctree-l1"><a class="reference internal" href="logging.html">Logging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data-analysis.html">Data Analysis</a></li>
@@ -80,9 +80,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Usage</li>
+      <li>Digital Controller</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="_sources/usage.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/digital-controller.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -90,69 +90,13 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="usage">
-<h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h1>
-<section id="instrumentation">
-<h2>Instrumentation<a class="headerlink" href="#instrumentation" title="Permalink to this headline">¶</a></h2>
-<p>The library consists of five major modules that provide all necessary functionality. Software is written in a modular, hierarchical way and network delocalized way. There are multiple modules that are imported into scripts. Modules are located in the main directory and scripts are located in the /scripts/ subdirectory.</p>
-<p>The major modules are divided into submodules:</p>
-<ol class="arabic simple">
-<li><p>device handler</p></li>
-</ol>
-<blockquote>
-<div><ul class="simple">
-<li><p>device daq (device_daq.py)</p></li>
-<li><p>device server (device_server.py)</p></li>
-<li><p>device client (device_client.py)</p></li>
-</ul>
-</div></blockquote>
-<ol class="arabic simple">
-<li><p>digital handler</p></li>
-</ol>
-<blockquote>
-<div><ul class="simple">
-<li><p>digital handler (dio_handler.py)</p></li>
-<li><p>digital server (dio_server.py)</p></li>
-<li><p>digital client (dio_client.py)</p></li>
-</ul>
-</div></blockquote>
-<ol class="arabic simple">
-<li><p>event handler</p></li>
-</ol>
-<blockquote>
-<div><ul class="simple">
-<li><p>event handler (event_handler.py)</p></li>
-<li><p>event daq (event_daq.py)</p></li>
-<li><p>event server (event_server.py)</p></li>
-<li><p>event client (event_client.py)</p></li>
-</ul>
-</div></blockquote>
-<ol class="arabic simple">
-<li><p>logging handler</p></li>
-</ol>
-<blockquote>
-<div><ul class="simple">
-<li><p>logging handler (logging_handler.py)</p></li>
-<li><p>logging client (logging_client.py)</p></li>
-</ul>
-</div></blockquote>
-<p>Auxiliary modules are:</p>
-<ul class="simple">
-<li><p>driver USB (driver_usb_bulk_di_4108.py)</p></li>
-<li><p>driver MOCK (driver_mock.py)</p></li>
-<li><p>PyEpics (pyepics.py)</p></li>
-</ul>
+  <section id="digital-controller">
+<h1>Digital Controller<a class="headerlink" href="#digital-controller" title="Permalink to this headline">¶</a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 </section>
-<section id="data-analysis">
-<h2>Data Analysis<a class="headerlink" href="#data-analysis" title="Permalink to this headline">¶</a></h2>
-<p>The icarus analysis submodule allow easy and seamless access to the logged data from the pressure jump experiment. The instantiation of the Dataset class creates a link to a folder allowing easy access to the log file and traces.</p>
-<p>The Dataset class has
-log_header = None
-log_data = None
-log_length = 0
-description = ‘’
-trace_length
-trace_lists</p>
+<section id="digital-level">
+<h2>Digital Level<a class="headerlink" href="#digital-level" title="Permalink to this headline">¶</a></h2>
 </section>
 </section>
 
@@ -160,8 +104,8 @@ trace_lists</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="gui.html" class="btn btn-neutral float-left" title="Graphical User Interface" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="driver.html" class="btn btn-neutral float-right" title="Driver Level" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="device-controller.html" class="btn btn-neutral float-left" title="Device Controller Level" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="event-controller.html" class="btn btn-neutral float-right" title="Event Controller" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

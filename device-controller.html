@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Device Level &mdash; Icarus Pressure Jump for NMR 0.1.0.post42+g1383df1 documentation</title>
+  <title>Device Controller Level &mdash; Icarus Pressure Jump for NMR 0.1.0.post53+g3df7893 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/plot_directive.css" type="text/css" />
@@ -22,7 +22,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Channel Access Caproto Server" href="server-caproto.html" />
+    <link rel="next" title="Digital Controller" href="digital-controller.html" />
     <link rel="prev" title="Mock Driver Level" href="mock-driver.html" /> 
 </head>
 
@@ -34,7 +34,7 @@
             <a href="index.html" class="icon icon-home"> Icarus Pressure Jump for NMR
           </a>
               <div class="version">
-                0.1.0.post42+g1383df1
+                0.1.0.post53+g3df7893
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -52,18 +52,19 @@
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="driver.html">Driver Level</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mock-driver.html">Mock Driver Level</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Device Level</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Device Controller Level</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id1">Device Level</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#device-level">Device Level</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#device-level-client">Device Level Client</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#device-level-server">Device Level Server</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#device-level-script">Device Level Script</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="server-caproto.html">Channel Access Caproto Server</a></li>
-<li class="toctree-l1"><a class="reference internal" href="event-analyser.html">Event Analyser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="digital-controller.html">Digital Controller</a></li>
+<li class="toctree-l1"><a class="reference internal" href="event-controller.html">Event Controller</a></li>
 <li class="toctree-l1"><a class="reference internal" href="logging.html">Logging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data-analysis.html">Data Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="server-caproto.html">Channel Access Caproto Server</a></li>
 <li class="toctree-l1"><a class="reference internal" href="release-history.html">Release History</a></li>
 <li class="toctree-l1"><a class="reference internal" href="min_versions.html">Minimum Version of Python and NumPy</a></li>
 </ul>
@@ -82,9 +83,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Device Level</li>
+      <li>Device Controller Level</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="_sources/device.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/device-controller.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -92,8 +93,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="device-level">
-<h1>Device Level<a class="headerlink" href="#device-level" title="Permalink to this headline">¶</a></h1>
+  <section id="device-controller-level">
+<h1>Device Controller Level<a class="headerlink" href="#device-controller-level" title="Permalink to this headline">¶</a></h1>
 <section id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <a class="reference internal image-reference" href="_images/device_level_diagram.png"><img alt="device level block diagram" src="_images/device_level_diagram.png" style="width: 600px;" /></a>
@@ -113,8 +114,8 @@
 <p><em>Graphical User interface</em></p>
 <p><a class="reference external" href="http://pyepics.github.io/pyepics/">PyEpics</a> based graphical user interface.</p>
 </section>
-<section id="id1">
-<h2>Device Level<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<section id="device-level">
+<h2>Device Level<a class="headerlink" href="#device-level" title="Permalink to this headline">¶</a></h2>
 <p>Start by importing analysis submodule for Icarus Pressure Jump for NMR .</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">icarus_nmr.device_daq</span> <span class="kn">import</span> <span class="n">Device</span>
 <span class="n">device</span> <span class="o">=</span> <span class="n">Device</span><span class="p">()</span>
@@ -178,10 +179,10 @@
 <h2>Device Level Script<a class="headerlink" href="#device-level-script" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="icarus_nmr.device_daq.Device">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">icarus_nmr.device_daq.</span></span><span class="sig-name descname"><span class="pre">Device</span></span><a class="reference internal" href="_modules/icarus_nmr/device_daq.html#Device"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.device_daq.Device" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">icarus_nmr.device_daq.</span></span><span class="sig-name descname"><span class="pre">Device</span></span><a class="reference internal" href="_modules/icarus_nmr/device_daq.html#Device"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.device_daq.Device" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="py property">
 <dt class="sig sig-object py" id="icarus_nmr.device_daq.Device.DIO">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">DIO</span></span><a class="headerlink" href="#icarus_nmr.device_daq.Device.DIO" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DIO</span></span><a class="headerlink" href="#icarus_nmr.device_daq.Device.DIO" title="Permalink to this definition">¶</a></dt>
 <dd><p>get digital state from data queue</p>
 </dd></dl>
 
@@ -302,7 +303,7 @@ If float number is passed, it will be converted to int.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="icarus_nmr.device_daq.Device.pg_delay_width">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">pg_delay_width</span></span><a class="headerlink" href="#icarus_nmr.device_daq.Device.pg_delay_width" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pg_delay_width</span></span><a class="headerlink" href="#icarus_nmr.device_daq.Device.pg_delay_width" title="Permalink to this definition">¶</a></dt>
 <dd><p>getter for SavedProperty. returns saved value if it exists in the database, otherwise returns default_value</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -326,7 +327,7 @@ If float number is passed, it will be converted to int.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="icarus_nmr.device_daq.Device.pg_depre_pulse_width">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">pg_depre_pulse_width</span></span><a class="headerlink" href="#icarus_nmr.device_daq.Device.pg_depre_pulse_width" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pg_depre_pulse_width</span></span><a class="headerlink" href="#icarus_nmr.device_daq.Device.pg_depre_pulse_width" title="Permalink to this definition">¶</a></dt>
 <dd><p>getter for SavedProperty. returns saved value if it exists in the database, otherwise returns default_value</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -350,7 +351,7 @@ If float number is passed, it will be converted to int.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="icarus_nmr.device_daq.Device.pg_period">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">pg_period</span></span><a class="headerlink" href="#icarus_nmr.device_daq.Device.pg_period" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pg_period</span></span><a class="headerlink" href="#icarus_nmr.device_daq.Device.pg_period" title="Permalink to this definition">¶</a></dt>
 <dd><p>getter for SavedProperty. returns saved value if it exists in the database, otherwise returns default_value</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -374,7 +375,7 @@ If float number is passed, it will be converted to int.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="icarus_nmr.device_daq.Device.pg_pre_pulse_width">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">pg_pre_pulse_width</span></span><a class="headerlink" href="#icarus_nmr.device_daq.Device.pg_pre_pulse_width" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pg_pre_pulse_width</span></span><a class="headerlink" href="#icarus_nmr.device_daq.Device.pg_pre_pulse_width" title="Permalink to this definition">¶</a></dt>
 <dd><p>getter for SavedProperty. returns saved value if it exists in the database, otherwise returns default_value</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -398,7 +399,7 @@ If float number is passed, it will be converted to int.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="icarus_nmr.device_daq.Device.pr_AI_channels">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">pr_AI_channels</span></span><a class="headerlink" href="#icarus_nmr.device_daq.Device.pr_AI_channels" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pr_AI_channels</span></span><a class="headerlink" href="#icarus_nmr.device_daq.Device.pr_AI_channels" title="Permalink to this definition">¶</a></dt>
 <dd><p>getter for SavedProperty. returns saved value if it exists in the database, otherwise returns default_value</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -422,7 +423,7 @@ If float number is passed, it will be converted to int.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="icarus_nmr.device_daq.Device.pr_DI_channels">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">pr_DI_channels</span></span><a class="headerlink" href="#icarus_nmr.device_daq.Device.pr_DI_channels" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pr_DI_channels</span></span><a class="headerlink" href="#icarus_nmr.device_daq.Device.pr_DI_channels" title="Permalink to this definition">¶</a></dt>
 <dd><p>getter for SavedProperty. returns saved value if it exists in the database, otherwise returns default_value</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -446,7 +447,7 @@ If float number is passed, it will be converted to int.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="icarus_nmr.device_daq.Device.pr_DOI_config">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">pr_DOI_config</span></span><a class="headerlink" href="#icarus_nmr.device_daq.Device.pr_DOI_config" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pr_DOI_config</span></span><a class="headerlink" href="#icarus_nmr.device_daq.Device.pr_DOI_config" title="Permalink to this definition">¶</a></dt>
 <dd><p>getter for SavedProperty. returns saved value if it exists in the database, otherwise returns default_value</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -470,7 +471,7 @@ If float number is passed, it will be converted to int.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="icarus_nmr.device_daq.Device.pr_DOI_set">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">pr_DOI_set</span></span><a class="headerlink" href="#icarus_nmr.device_daq.Device.pr_DOI_set" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pr_DOI_set</span></span><a class="headerlink" href="#icarus_nmr.device_daq.Device.pr_DOI_set" title="Permalink to this definition">¶</a></dt>
 <dd><p>getter for SavedProperty. returns saved value if it exists in the database, otherwise returns default_value</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -494,7 +495,7 @@ If float number is passed, it will be converted to int.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="icarus_nmr.device_daq.Device.pr_baserate">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">pr_baserate</span></span><a class="headerlink" href="#icarus_nmr.device_daq.Device.pr_baserate" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pr_baserate</span></span><a class="headerlink" href="#icarus_nmr.device_daq.Device.pr_baserate" title="Permalink to this definition">¶</a></dt>
 <dd><p>getter for SavedProperty. returns saved value if it exists in the database, otherwise returns default_value</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -518,7 +519,7 @@ If float number is passed, it will be converted to int.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="icarus_nmr.device_daq.Device.pr_dec">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">pr_dec</span></span><a class="headerlink" href="#icarus_nmr.device_daq.Device.pr_dec" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pr_dec</span></span><a class="headerlink" href="#icarus_nmr.device_daq.Device.pr_dec" title="Permalink to this definition">¶</a></dt>
 <dd><p>getter for SavedProperty. returns saved value if it exists in the database, otherwise returns default_value</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -542,7 +543,7 @@ If float number is passed, it will be converted to int.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="icarus_nmr.device_daq.Device.pr_os_buffer">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">pr_os_buffer</span></span><a class="headerlink" href="#icarus_nmr.device_daq.Device.pr_os_buffer" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pr_os_buffer</span></span><a class="headerlink" href="#icarus_nmr.device_daq.Device.pr_os_buffer" title="Permalink to this definition">¶</a></dt>
 <dd><p>getter for SavedProperty. returns saved value if it exists in the database, otherwise returns default_value</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -566,7 +567,7 @@ If float number is passed, it will be converted to int.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="icarus_nmr.device_daq.Device.pr_packet_buffer_size">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">pr_packet_buffer_size</span></span><a class="headerlink" href="#icarus_nmr.device_daq.Device.pr_packet_buffer_size" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pr_packet_buffer_size</span></span><a class="headerlink" href="#icarus_nmr.device_daq.Device.pr_packet_buffer_size" title="Permalink to this definition">¶</a></dt>
 <dd><p>getter for SavedProperty. returns saved value if it exists in the database, otherwise returns default_value</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -590,7 +591,7 @@ If float number is passed, it will be converted to int.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="icarus_nmr.device_daq.Device.pr_packet_size">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">pr_packet_size</span></span><a class="headerlink" href="#icarus_nmr.device_daq.Device.pr_packet_size" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pr_packet_size</span></span><a class="headerlink" href="#icarus_nmr.device_daq.Device.pr_packet_size" title="Permalink to this definition">¶</a></dt>
 <dd><p>getter for SavedProperty. returns saved value if it exists in the database, otherwise returns default_value</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -614,7 +615,7 @@ If float number is passed, it will be converted to int.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="icarus_nmr.device_daq.Device.pr_rate">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">pr_rate</span></span><a class="headerlink" href="#icarus_nmr.device_daq.Device.pr_rate" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pr_rate</span></span><a class="headerlink" href="#icarus_nmr.device_daq.Device.pr_rate" title="Permalink to this definition">¶</a></dt>
 <dd><p>getter for SavedProperty. returns saved value if it exists in the database, otherwise returns default_value</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -638,13 +639,13 @@ If float number is passed, it will be converted to int.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="icarus_nmr.device_daq.Device.pr_serial_number">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">pr_serial_number</span></span><a class="headerlink" href="#icarus_nmr.device_daq.Device.pr_serial_number" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pr_serial_number</span></span><a class="headerlink" href="#icarus_nmr.device_daq.Device.pr_serial_number" title="Permalink to this definition">¶</a></dt>
 <dd><p>serial number, five character long string</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="icarus_nmr.device_daq.Device.pressure_sensor_offset">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">pressure_sensor_offset</span></span><a class="headerlink" href="#icarus_nmr.device_daq.Device.pressure_sensor_offset" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pressure_sensor_offset</span></span><a class="headerlink" href="#icarus_nmr.device_daq.Device.pressure_sensor_offset" title="Permalink to this definition">¶</a></dt>
 <dd><p>getter for SavedProperty. returns saved value if it exists in the database, otherwise returns default_value</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -769,7 +770,7 @@ If float number is passed, it will be converted to int.</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="mock-driver.html" class="btn btn-neutral float-left" title="Mock Driver Level" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="server-caproto.html" class="btn btn-neutral float-right" title="Channel Access Caproto Server" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="digital-controller.html" class="btn btn-neutral float-right" title="Digital Controller" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

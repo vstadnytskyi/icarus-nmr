@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Event Analyser &mdash; Icarus Pressure Jump for NMR 0.1.0.post42+g1383df1 documentation</title>
+  <title>Event Controller &mdash; Icarus Pressure Jump for NMR 0.1.0.post53+g3df7893 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/plot_directive.css" type="text/css" />
@@ -23,7 +23,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Logging" href="logging.html" />
-    <link rel="prev" title="Channel Access Caproto Server" href="server-caproto.html" /> 
+    <link rel="prev" title="Digital Controller" href="digital-controller.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -34,7 +34,7 @@
             <a href="index.html" class="icon icon-home"> Icarus Pressure Jump for NMR
           </a>
               <div class="version">
-                0.1.0.post42+g1383df1
+                0.1.0.post53+g3df7893
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -52,14 +52,19 @@
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="driver.html">Driver Level</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mock-driver.html">Mock Driver Level</a></li>
-<li class="toctree-l1"><a class="reference internal" href="device.html">Device Level</a></li>
-<li class="toctree-l1"><a class="reference internal" href="server-caproto.html">Channel Access Caproto Server</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Event Analyser</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="device-controller.html">Device Controller Level</a></li>
+<li class="toctree-l1"><a class="reference internal" href="digital-controller.html">Digital Controller</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Event Controller</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#events">Events:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#data-channels">Data channels:</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="logging.html">Logging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data-analysis.html">Data Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="server-caproto.html">Channel Access Caproto Server</a></li>
 <li class="toctree-l1"><a class="reference internal" href="release-history.html">Release History</a></li>
 <li class="toctree-l1"><a class="reference internal" href="min_versions.html">Minimum Version of Python and NumPy</a></li>
 </ul>
@@ -78,9 +83,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Event Analyser</li>
+      <li>Event Controller</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="_sources/event-analyser.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/event-controller.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -88,12 +93,13 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="event-analyser">
-<h1>Event Analyser<a class="headerlink" href="#event-analyser" title="Permalink to this headline">¶</a></h1>
+  <section id="event-controller">
+<h1>Event Controller<a class="headerlink" href="#event-controller" title="Permalink to this headline">¶</a></h1>
 <section id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
-<p>Events:
-Digital events:</p>
+<section id="events">
+<h3>Events:<a class="headerlink" href="#events" title="Permalink to this headline">¶</a></h3>
+<p>Digital events:</p>
 <ul class="simple">
 <li><p>D00 (0) - bit 0 goes low</p></li>
 <li><p>D01 (1) - bit 0 goes high</p></li>
@@ -114,11 +120,29 @@ Digital events:</p>
 <ul class="simple">
 <li><p>A100 (100) - pump stroke</p></li>
 </ul>
-<p>Time based events:
-* T200 (200) - period
-* T300 (300) - 3 Hz periodic update
-* T301 (301) - 10 Hz periodic update
-* T999 (999) - timeout event</p>
+<p>Time based events:</p>
+<ul class="simple">
+<li><p>T200 (200) - period</p></li>
+<li><p>T300 (300) - 3 Hz periodic update</p></li>
+<li><p>T301 (301) - 10 Hz periodic update</p></li>
+<li><p>T999 (999) - timeout event</p></li>
+</ul>
+</section>
+<section id="data-channels">
+<h3>Data channels:<a class="headerlink" href="#data-channels" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>channel 0 - target pressure</p></li>
+<li><p>channel 1 - depressurization valve lower sensor</p></li>
+<li><p>channel 2 - depressurization valve upper sensor</p></li>
+<li><p>channel 3 - pressurization valve lower sensor</p></li>
+<li><p>channel 4 - pressurization valve upper sensor</p></li>
+<li><p>channel 5 - high pressure transducer at the origin</p></li>
+<li><p>channel 6 - high pressure transducer at the sample*</p></li>
+<li><p>channel 7 - target pressure</p></li>
+<li><p>channel 8 - auxiliary digital line (no in use)</p></li>
+<li><p>channel 9 - digital line represented as 7bit number</p></li>
+</ul>
+</section>
 </section>
 </section>
 
@@ -126,7 +150,7 @@ Digital events:</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="server-caproto.html" class="btn btn-neutral float-left" title="Channel Access Caproto Server" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="digital-controller.html" class="btn btn-neutral float-left" title="Digital Controller" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="logging.html" class="btn btn-neutral float-right" title="Logging" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

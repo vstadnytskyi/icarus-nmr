@@ -16,12 +16,14 @@ Icarus Pressure Jump for NMR Documentation
    usage
    driver
    mock-driver
-   device
-   server-caproto
-   event-analyser
+   device-controller
+   digital-controller
+   event-controller
    logging
 
    data-analysis
+
+   server-caproto
 
    release-history
    min_versions

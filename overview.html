@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Introduction and Overview &mdash; Icarus Pressure Jump for NMR 0.1.0.post42+g1383df1 documentation</title>
+  <title>Introduction and Overview &mdash; Icarus Pressure Jump for NMR 0.1.0.post53+g3df7893 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/plot_directive.css" type="text/css" />
@@ -34,7 +34,7 @@
             <a href="index.html" class="icon icon-home"> Icarus Pressure Jump for NMR
           </a>
               <div class="version">
-                0.1.0.post42+g1383df1
+                0.1.0.post53+g3df7893
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -52,11 +52,12 @@
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="driver.html">Driver Level</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mock-driver.html">Mock Driver Level</a></li>
-<li class="toctree-l1"><a class="reference internal" href="device.html">Device Level</a></li>
-<li class="toctree-l1"><a class="reference internal" href="server-caproto.html">Channel Access Caproto Server</a></li>
-<li class="toctree-l1"><a class="reference internal" href="event-analyser.html">Event Analyser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="device-controller.html">Device Controller Level</a></li>
+<li class="toctree-l1"><a class="reference internal" href="digital-controller.html">Digital Controller</a></li>
+<li class="toctree-l1"><a class="reference internal" href="event-controller.html">Event Controller</a></li>
 <li class="toctree-l1"><a class="reference internal" href="logging.html">Logging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data-analysis.html">Data Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="server-caproto.html">Channel Access Caproto Server</a></li>
 <li class="toctree-l1"><a class="reference internal" href="release-history.html">Release History</a></li>
 <li class="toctree-l1"><a class="reference internal" href="min_versions.html">Minimum Version of Python and NumPy</a></li>
 </ul>
@@ -92,16 +93,9 @@
 <p>The high-pressure and low-pressure hydraulic valves can be open and closed by an electrical TTL signal (Active Low) originating at NMR console. The system is equipment with multiple low pressure sensors and high-pressure hydraulic transducer(shown in the Figure 1). The digital TTL lines together with analog sensor readings are connected to the data acquisition unit for monitoring and emergency control.</p>
 <p>The icarus NMR pressure jump control software is designed to be minimally invasive and provide real-time constant monitoring. The monitoring is done with a fast data acquisition unit from DATAQ DI-4108, which collects data from 8 analog and 7 digital channels.</p>
 <a class="reference internal image-reference" href="_images/overview_block_diagram.png"><img alt="block diagram" src="_images/overview_block_diagram.png" style="width: 600px;" /></a>
-<p>The Data Handler process has two main responsibilities:</p>
-<ol class="arabic simple">
-<li><p>reading data from the DI-4108 built-in buffer and never let the buffer to overflow. The read data is put into FIFO queue of variable length.</p></li>
-<li><p>provide software path to change the digital state on the DI-4108.</p></li>
-</ol>
-<p>The Event Handler process retrieves all new packets of data from the Data Handler’s FIFO queue and puts them into a circular buffer. Later new packets from the circular buffer are analyzed for events and results are published via corresponding PVs.</p>
-<p>The Graphical User Interface process provides graphical controls and indicators for a user.</p>
-<p>The Logging process subscribes to process variables(PVs) that it is supposed to log.</p>
-<p>The DIO Handler (digital input/output handler) aggregates functionality associated with digital input/output on the DI-4108 data acquisition unit.</p>
-<p>All communication between these 5 modules is done via Channel Access protocol.</p>
+<p>The data acquisition unit(DAQ) (DI-4108 by DATAQ) collects data from all channels at 4kS/s resulting in a stream of data of 16 bit integers. The stream of data is 80kB per second. The DAQ’s build-in buffer has capacity of 16kB, hence we need to read data out of the build-in buffer at least once per 200 ms to prevent buffer overflow. The data controller process is responsible to read data in packets (by default 64-long | every 16 ms | 1.280 kBytes). The acquired data goes into device controller numpy queue with the programmatically controller length. If the queue is full, the oldest values are discarded and new one are added at the rear of the queue. The device controller is equipped with server capabilities and can present information in the queue to outside clients.</p>
+<p>The event controller process acts as a client and retrieves packets of data from the device controller queue and appends it to the circular buffer. Each packet of data is searched for preprogrammed events. Later events are analyzed and results are presented to upper level clients, e.g. Graphical User Interface and logging controller.</p>
+<p>The Graphical User Interface (GUI) presents data as charts or numbers and provides text fields to change parameters and buttons to control valves.</p>
 </section>
 
 

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>icarus_nmr.driver_mock &mdash; Icarus Pressure Jump for NMR 0.1.0.post42+g1383df1 documentation</title>
+  <title>icarus_nmr.driver_mock &mdash; Icarus Pressure Jump for NMR 0.1.0.post53+g3df7893 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/plot_directive.css" type="text/css" />
@@ -31,7 +31,7 @@
             <a href="../../index.html" class="icon icon-home"> Icarus Pressure Jump for NMR
           </a>
               <div class="version">
-                0.1.0.post42+g1383df1
+                0.1.0.post53+g3df7893
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -49,11 +49,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../driver.html">Driver Level</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../mock-driver.html">Mock Driver Level</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../device.html">Device Level</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../server-caproto.html">Channel Access Caproto Server</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../event-analyser.html">Event Analyser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../device-controller.html">Device Controller Level</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../digital-controller.html">Digital Controller</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../event-controller.html">Event Controller</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../logging.html">Logging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../data-analysis.html">Data Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../server-caproto.html">Channel Access Caproto Server</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../release-history.html">Release History</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../min_versions.html">Minimum Version of Python and NumPy</a></li>
 </ul>
@@ -105,7 +106,7 @@
 <span class="kn">import</span> <span class="nn">struct</span>
 <span class="kn">from</span> <span class="nn">pdb</span> <span class="kn">import</span> <span class="n">pm</span>
 <span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">gmtime</span><span class="p">,</span> <span class="n">strftime</span>
-<span class="kn">import</span> <span class="nn">logging</span>
+
 <span class="kn">from</span> <span class="nn">struct</span> <span class="kn">import</span> <span class="n">pack</span><span class="p">,</span> <span class="n">unpack</span>
 <span class="kn">from</span> <span class="nn">timeit</span> <span class="kn">import</span> <span class="n">Timer</span>
 <span class="kn">from</span> <span class="nn">logging</span> <span class="kn">import</span> <span class="n">info</span><span class="p">,</span><span class="n">warn</span><span class="p">,</span> <span class="n">debug</span><span class="p">,</span> <span class="n">error</span>
@@ -132,12 +133,12 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">available_ports</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dev</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">sim_analog</span> <span class="o">=</span> <span class="p">[</span><span class="mi">11000</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">8000</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">8000</span><span class="p">,</span><span class="mi">11000</span><span class="p">,</span><span class="mi">9000</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sim_analog</span> <span class="o">=</span> <span class="p">[</span><span class="mi">11550</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">8000</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">8000</span><span class="p">,</span><span class="mi">11000</span><span class="p">,</span><span class="mi">9000</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sim_analog_std</span> <span class="o">=</span> <span class="p">[</span><span class="mi">30</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">30</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sim_digital</span> <span class="o">=</span> <span class="mi">127</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sim_last_read</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sim_pressure_state</span> <span class="o">=</span> <span class="mi">1</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">pump_freq</span> <span class="o">=</span> <span class="mi">1</span><span class="c1">#0.99995</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pump_freq</span> <span class="o">=</span> <span class="mf">0.99995</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sim_slow_leak_start_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sim_slow_leak_tau</span> <span class="o">=</span> <span class="mi">60000</span><span class="o">*</span><span class="mi">1000000</span>
 

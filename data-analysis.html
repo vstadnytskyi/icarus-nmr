@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Data Analysis &mdash; Icarus Pressure Jump for NMR 0.1.0.post42+g1383df1 documentation</title>
+  <title>Data Analysis &mdash; Icarus Pressure Jump for NMR 0.1.0.post53+g3df7893 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/plot_directive.css" type="text/css" />
@@ -22,7 +22,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Release History" href="release-history.html" />
+    <link rel="next" title="Channel Access Caproto Server" href="server-caproto.html" />
     <link rel="prev" title="Logging" href="logging.html" /> 
 </head>
 
@@ -34,7 +34,7 @@
             <a href="index.html" class="icon icon-home"> Icarus Pressure Jump for NMR
           </a>
               <div class="version">
-                0.1.0.post42+g1383df1
+                0.1.0.post53+g3df7893
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -52,14 +52,15 @@
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="driver.html">Driver Level</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mock-driver.html">Mock Driver Level</a></li>
-<li class="toctree-l1"><a class="reference internal" href="device.html">Device Level</a></li>
-<li class="toctree-l1"><a class="reference internal" href="server-caproto.html">Channel Access Caproto Server</a></li>
-<li class="toctree-l1"><a class="reference internal" href="event-analyser.html">Event Analyser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="device-controller.html">Device Controller Level</a></li>
+<li class="toctree-l1"><a class="reference internal" href="digital-controller.html">Digital Controller</a></li>
+<li class="toctree-l1"><a class="reference internal" href="event-controller.html">Event Controller</a></li>
 <li class="toctree-l1"><a class="reference internal" href="logging.html">Logging</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Data Analysis</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#the-dataset-class">The Dataset Class</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="server-caproto.html">Channel Access Caproto Server</a></li>
 <li class="toctree-l1"><a class="reference internal" href="release-history.html">Release History</a></li>
 <li class="toctree-l1"><a class="reference internal" href="min_versions.html">Minimum Version of Python and NumPy</a></li>
 </ul>
@@ -153,7 +154,7 @@
 <h2>The Dataset Class<a class="headerlink" href="#the-dataset-class" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="icarus_nmr.analysis.Dataset">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">icarus_nmr.analysis.</span></span><span class="sig-name descname"><span class="pre">Dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/analysis.html#Dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.analysis.Dataset" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">icarus_nmr.analysis.</span></span><span class="sig-name descname"><span class="pre">Dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/analysis.html#Dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.analysis.Dataset" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="py method">
 <dt class="sig sig-object py" id="icarus_nmr.analysis.Dataset.combine_log_entries">
 <span class="sig-name descname"><span class="pre">combine_log_entries</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw_data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/icarus_nmr/analysis.html#Dataset.combine_log_entries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#icarus_nmr.analysis.Dataset.combine_log_entries" title="Permalink to this definition">¶</a></dt>
@@ -385,7 +386,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="logging.html" class="btn btn-neutral float-left" title="Logging" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="release-history.html" class="btn btn-neutral float-right" title="Release History" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="server-caproto.html" class="btn btn-neutral float-right" title="Channel Access Caproto Server" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
