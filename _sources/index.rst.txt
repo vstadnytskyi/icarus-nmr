@@ -25,5 +25,7 @@ Icarus Pressure Jump for NMR Documentation
 
    server-caproto
 
+   pyepics
+
    release-history
    min_versions
