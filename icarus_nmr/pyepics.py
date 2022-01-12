@@ -122,7 +122,7 @@ class PVToggleButton(wx.Button, PVCtrlMixin):
             g = self.stateColor[self.state][1]
             b = self.stateColor[self.state][2]
             wx.Button.SetBackgroundColour(self,wx.Colour(r, g, b))
-            wx.Button.SetForegroundColour(self,wx.Colour(r, g, b))
+            #wx.Button.SetForegroundColour(self,wx.Colour(r, g, b))
 
     @DelayedEpicsCallback
     def _disableEvent(self, **kw):
