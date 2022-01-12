@@ -174,8 +174,8 @@ class GUI(wx.Frame):
         ###FIGUREs####
         ###########################################################################
 
-        self.labels[b'button1'] = wx.StaticText(self.panel, label= "button1", size = (200,-1))
-        self.labels[b'button1'].SetFont(wx_m_font)
+        self.labels[b'button1'] = wx.StaticText(self.panel, label= "button1 (press to disable)", size = (200,-1))
+        self.labels[b'button1'].SetFont(wx_s_font)
         self.labels[b'button1'].SetBackgroundColour(wx.Colour(240, 240, 240))
         self.fields[b'button1_1'] = epics.wx.PVButton(self.panel, pv=f"{self.server_name}:button1", pushValue = 1, size = (200,-1),label="1")
         self.fields[b'button1_0'] = epics.wx.PVButton(self.panel, pv=f"{self.server_name}:button1", pushValue = 0, size = (200,-1),label="0")
@@ -190,8 +190,8 @@ class GUI(wx.Frame):
         self.labels[b'toggle_button1_old'] = wx.StaticText(self.panel, label= "old_toggle_button1", size = (200,-1))
         self.labels[b'toggle_button1_old'].SetFont(wx_m_font)
         self.labels[b'toggle_button1_old'].SetBackgroundColour(wx.Colour(240, 240, 240))
-        self.fields[b'toggle_button1_old_1'] = epics.wx.PVButton(self.panel, pv=f"{self.server_name}:toggle_button1", pushValue = 1, size = (200,-1),label="1")
-        self.fields[b'toggle_button1_old_0'] = epics.wx.PVButton(self.panel, pv=f"{self.server_name}:toggle_button1", pushValue = 0, size = (200,-1),label="0")
+        self.fields[b'toggle_button1_old_1'] = epics.wx.PVButton(self.panel, pv=f"{self.server_name}:toggle_button1", disablePV = f"{self.server_name}:button1",pushValue = 1, size = (200,-1),label="1")
+        self.fields[b'toggle_button1_old_0'] = epics.wx.PVButton(self.panel, pv=f"{self.server_name}:toggle_button1", disablePV = f"{self.server_name}:button1",pushValue = 0, size = (200,-1),label="0")
         self.fields[b'toggle_button1_old_ind'] = epics.wx.PVText(self.panel, pv=f"{self.server_name}:toggle_button1", size = (200,-1))
 
         self.sizers[b'toggle_button1_old'] = wx.BoxSizer(wx.HORIZONTAL)
@@ -203,7 +203,7 @@ class GUI(wx.Frame):
         self.labels[b'toggle_button1'] = wx.StaticText(self.panel, label= "new_toggle_button1", size = (200,-1))
         self.labels[b'toggle_button1'].SetFont(wx_m_font)
         self.labels[b'toggle_button1'].SetBackgroundColour(wx.Colour(240, 240, 240))
-        self.fields[b'toggle_button1'] = PVToggleButton(self.panel, pv=f"{self.server_name}:toggle_button1", size = (200,-1), actionText = ['Change PV to 1','Change PV to 0'])
+        self.fields[b'toggle_button1'] = PVToggleButton(self.panel, pv=f"{self.server_name}:toggle_button1", disablePV = f"{self.server_name}:button1", size = (200,-1), actionText = ['Change PV to 1','Change PV to 0'])
         self.fields[b'toggle_button1_ind'] = epics.wx.PVText(self.panel, pv=f"{self.server_name}:toggle_button1", size = (200,-1))
 
         self.sizers[b'toggle_button1'] = wx.BoxSizer(wx.HORIZONTAL)

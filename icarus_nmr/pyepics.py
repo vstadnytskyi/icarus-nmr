@@ -102,11 +102,11 @@ class PVToggleButton(wx.Button, PVCtrlMixin):
                                         cb_info=ncback)
         self.maskedEnabled = True
 
-    # def Enable(self, value=None):
-    #     "enable button"
-    #     if value is not None:
-    #         self.maskedEnabled = value
-    #     self._UpdateEnabled()
+    def Enable(self, value=None):
+        "enable button"
+        if value is not None:
+            self.maskedEnabled = value
+        self._UpdateEnabled()
 
     @EpicsFunction
     def _UpdateEnabled(self):
@@ -115,6 +115,10 @@ class PVToggleButton(wx.Button, PVCtrlMixin):
         if self.disablePV is not None and \
            (self.disablePV.get() == self.disableValue):
             enableValue = False
+        if enableValue:
+            wx.Button.Enable(self)
+        else:
+            wx.Button.Disable(self)
         if self.pv is not None:
             self.state = self.pv.get()
             wx.Button.SetLabel(self,self.actionText[self.state])
@@ -122,7 +126,6 @@ class PVToggleButton(wx.Button, PVCtrlMixin):
             g = self.stateColor[self.state][1]
             b = self.stateColor[self.state][2]
             wx.Button.SetBackgroundColour(self,wx.Colour(r, g, b))
-            #wx.Button.SetForegroundColour(self,wx.Colour(r, g, b))
 
     @DelayedEpicsCallback
     def _disableEvent(self, **kw):
