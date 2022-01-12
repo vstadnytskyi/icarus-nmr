@@ -41,7 +41,8 @@ import epics
 import epics.wx
 from logging import debug,warn,info,error
 from pdb import pm
-
+import icarus_nmr
+print(icarus_nmr.__file__)
 from icarus_nmr.pyepics import PVImage, PVToggleButton
 
 import matplotlib

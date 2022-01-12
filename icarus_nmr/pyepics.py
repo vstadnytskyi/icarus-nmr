@@ -76,6 +76,7 @@ class PVToggleButton(wx.Button, PVCtrlMixin):
     def __init__(self, parent, pv=None, pushValues=[0,1],
                  disablePV=None, disableValue=1, stateColor = [(0,255,0),(255,0,0)], actionText = ['default 1','default 0'], **kw):
         """
+        TODO - update
         pv = pv to write back to
         pushValue = value to write when button is pressed
         disablePV = read this PV in order to disable the button
