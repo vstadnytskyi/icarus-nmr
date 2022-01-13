@@ -71,25 +71,28 @@ class PVImage(wx.StaticBitmap, PVMixin):
 
 
 class PVToggleButton(wx.Button, PVCtrlMixin):
-    """ A Toggle Button linked to a PV. The button supports two states/values. When the button is pressed, a certain value is written to the PV.  The color of the button represents its' current state and the test on the button describes action that will happen when the button is pressed
+    """ A Toggle Button linked to a PV. The button supports only boolean PVs. When the button is pressed, a certain value is written to the PV.  The color of the button represents its' current state and the test on the button describes action that will happen when the button is pressed.
+
+    Note: this toggle button works only for boolean PV.
     """
     def __init__(self, parent, pv=None, pushValues=[0,1],
-                 disablePV=None, disableValue=1, stateColor = [(0,255,0),(255,0,0)], actionText = ['default 1','default 0'], **kw):
+                 disablePV=None, disableValue=1, stateColor = [(0,255,0),(255,0,0)], buttonLabels = ['default 1','default 0'], **kw):
         """
-        TODO - update
         pv = pv to write back to
-        pushValue = value to write when button is pressed
+        pushValues = value to write when button is pressed
         disablePV = read this PV in order to disable the button
         disableValue = disable the button if/when the disablePV has this value
+        stateColors = sets background color of the button based on PV's current state
+        buttonLabels = sets label on the button based on PV's current state
         """
         wx.Button.__init__(self, parent, **kw)
         PVCtrlMixin.__init__(self, pv=pv, font="", fg=None, bg=None)
         self.state = 0
-        self.actionText = actionText
-        self.stateColor = stateColor
+        self.buttonLabels = buttonLabels
+        self.stateColors = stateColors
         self.pushValues = pushValues
         self.pushValue = pushValues[self.state]
-        wx.Button.SetLabel(self,self.actionText[self.state])
+        wx.Button.SetLabel(self,self.buttonLabels[self.state])
         self.Bind(wx.EVT_BUTTON, self.OnPress)
         if isinstance(disablePV, six.string_types):
             disablePV = epics.get_pv(disablePV)
@@ -121,7 +124,7 @@ class PVToggleButton(wx.Button, PVCtrlMixin):
             wx.Button.Disable(self)
         if self.pv is not None:
             self.state = self.pv.get()
-            wx.Button.SetLabel(self,self.actionText[self.state])
+            wx.Button.SetLabel(self,self.buttonLabels[self.state])
             r = self.stateColor[self.state][0]
             g = self.stateColor[self.state][1]
             b = self.stateColor[self.state][2]
