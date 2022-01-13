@@ -76,7 +76,7 @@ class PVToggleButton(wx.Button, PVCtrlMixin):
     Note: this toggle button works only for boolean PV.
     """
     def __init__(self, parent, pv=None, pushValues=[0,1],
-                 disablePV=None, disableValue=1, stateColor = [(0,255,0),(255,0,0)], buttonLabels = ['default 1','default 0'], **kw):
+                 disablePV=None, disableValue=1, stateColors = [(0,255,0),(255,0,0)], buttonLabels = ['default 1','default 0'], **kw):
         """
         pv = pv to write back to
         pushValues = value to write when button is pressed
@@ -125,9 +125,9 @@ class PVToggleButton(wx.Button, PVCtrlMixin):
         if self.pv is not None:
             self.state = self.pv.get()
             wx.Button.SetLabel(self,self.buttonLabels[self.state])
-            r = self.stateColor[self.state][0]
-            g = self.stateColor[self.state][1]
-            b = self.stateColor[self.state][2]
+            r = self.stateColors[self.state][0]
+            g = self.stateColors[self.state][1]
+            b = self.stateColors[self.state][2]
             wx.Button.SetBackgroundColour(self,wx.Colour(r, g, b))
 
     @DelayedEpicsCallback
