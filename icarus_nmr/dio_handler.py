@@ -5,6 +5,8 @@ author: Valentyn Stadnytskyi
 dates: June 09 2018 - November 16 2018
 """
 
+from time import time, sleep, ctime
+
 class Handler():
 
     bit_HPpump = 0b1
@@ -43,7 +45,7 @@ class Handler():
         >>> pulse_generator.init()
         """
         from numpy import nan
-        self.trigger_mode = 2 # 0 - manual, 1 - pulsed, 2 - console. Always start with concole
+        self.trigger_mode = 0 # 0 - manual, 1 - pulsed, 2 - console. Always start with concole
 
         self.running = False
 
@@ -155,24 +157,14 @@ class Handler():
         --------
         >>> self.set_bit(bit = 1, value = 1)
         """
-        from time import sleep
-        if bit == 1:
-            _bit = int(self.bit_valve1) # Depressure
-        elif bit == 2:
-            _bit = int(self.bit_valve2) # Pressure
-        elif bit == 3:
-            _bit = int(self.bit_valve3) # Bit 3
-        elif bit == 0:
-            _bit = int(self.bit_HPpump) # High pressure valve
-        elif bit == -1:
-            _bit = int('0000000',2) # Wait
-        else:
-            _bit = int('0000000',2) # Wait if valve selection is not recognized
+        from time import time, sleep, ctime
+        from icarus_nmr.numerical import binary_array_to_int, int_to_binary_array
+        curr_array = int_to_binary_array(current_dio)
+        curr_array[bit] = value
+        new_DIO = binary_array_to_int(curr_array)
         curr_DIO = current_dio
-        new_DIO = curr_DIO-_bit
-
         self.set_dio(new_DIO) #down
-        print({ctime(time())}, 'setting bit %r -> %r -> %r' % (curr_DIO,new_DIO))
+        print({ctime(time())}, 'setting bit %r -> %r' % (curr_DIO,new_DIO))
 
     def pulse_sequence(self,pvname = '',value = '', char_val = ''):
         """

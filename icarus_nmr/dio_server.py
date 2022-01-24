@@ -122,12 +122,26 @@ class Server(PVGroup):
         """
         when the dio PV is changed in the database it submits new value to the core module. All smarts are in the core module
         """
-        echo = False
+        echo = True
         print(f'{ctime(time())}: {"dio putter"}, new value {value}')
-        #self.device.update_dio(value)
+
+        print(f'{ctime(time())} operational mode is {self.operating_mode.value}')
+
+        print(f'{ctime(time())} dio value is {self.dio.value}')
+
         arr = int_to_binary(value)
         if echo: print(f'arr = {arr}')
 
+        modes = ['manual','pulsed','console']
+        current_mode = modes[self.operating_mode.value]
+        if current_mode is 'manual':
+            print(f'current operational mode is {current_mode}')
+        elif current_mode is 'pulsed':
+            print(f'current operational mode is {current_mode}')
+        elif current_mode is 'console':
+            print(f'current operational mode is {current_mode}')
+
+        #Update indicators of digital state. Does not trigger update of buttons.
         bit0 = int(arr[0])
         if echo: print(f'bit0 = {bit0}')
         await self.bit0_indicator.write(str(bit0))
@@ -137,7 +151,7 @@ class Server(PVGroup):
         await self.bit1_indicator.write(str(bit1))
 
         bit2 = int(arr[2] )
-        if echo: print(f'bit2 = {bit2},{arr[2]}')
+        if echo: print(f'bit2 = {bit2}')
         await self.bit2_indicator.write(str(bit2))
 
         bit3 = int(arr[3])
@@ -160,6 +174,9 @@ class Server(PVGroup):
     async def operating_mode(self, instance, value):
         print({ctime(time())},'Received update for the {}, sending new value {}'.format('operating_mode',value))
         self.device.set_trigger_mode(value)
+    @operating_mode.getter
+    async def operating_mode(self, instance):
+        print(f'{ctime(time())} operating mode getter')
 
     @shutdown_state.putter
     async def shutdown_state(self, instance, value):
@@ -169,7 +186,12 @@ class Server(PVGroup):
     @bit0.putter
     async def bit0(self, instance, value):
         print({ctime(time())},'Received update for the {}, sending new value {}'.format('bio0',value))
-        self.device.set_bit0(value)
+        if self.bit0.value != value:
+            print(f'True current bit0 is {self.bit0.value } and new value is {value}')
+            current_dio = self.dio.value
+            self.device.set_bit(current_dio, bit = 0, value = value)
+        else:
+            print(f'False current bit0 is {self.bit0.value } and new value is {value}')
         return value
     @bit0_enable.putter
     async def bit0_enable(self, instance, value):
@@ -179,8 +201,13 @@ class Server(PVGroup):
 
     @bit1.putter
     async def bit1(self, instance, value):
-        print({ctime(time())},'Received update for the {}, sending new value {}'.format('bio1',value))
-        self.device.set_bit1(value)
+        print({ctime(time())},'Received update for the {}, sending new value {}'.format('bio0',value))
+        if self.bit1.value != value:
+            print(f'True current bit0 is {self.bit1.value } and new value is {value}')
+            current_dio = self.dio.value
+            self.device.set_bit(current_dio, bit = 1, value = value)
+        else:
+            print(f'False current bit1 is {self.bit1.value } and new value is {value}')
         return value
     @bit1_enable.putter
     async def bit1_enable(self, instance, value):
@@ -189,8 +216,13 @@ class Server(PVGroup):
         return value
     @bit2.putter
     async def bit2(self, instance, value):
-        print(f'{ctime(time())} Received update for the {"bio2_enable"}, sending new value {value}')
-        self.device.set_bit2(value)
+        print({ctime(time())},'Received update for the {}, sending new value {}'.format('bio2',value))
+        if self.bit2.value != value:
+            print(f'True current bit2 is {self.bit2.value } and new value is {value}')
+            current_dio = self.dio.value
+            self.device.set_bit(current_dio, bit = 2, value = value)
+        else:
+            print(f'False current bit2 is {self.bit2.value } and new value is {value}')
         return value
     @bit2_enable.putter
     async def bit2_enable(self, instance, value):

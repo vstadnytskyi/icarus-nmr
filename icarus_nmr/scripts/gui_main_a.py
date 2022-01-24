@@ -40,7 +40,7 @@ import epics.wx
 from logging import debug,warn,info,error
 from pdb import pm
 
-from icarus_nmr.pyepics import PVImage
+from icarus_nmr.pyepics import PVImage, PVToggleButton
 
 import matplotlib
 if platform.system() == 'Windows':
@@ -327,22 +327,28 @@ class GUI(wx.Frame):
         self.fields[b'shutdown_state'] = epics.wx.PVButton(self.panel, pv=f'{self.dio_server_name}:shutdown_state', pushValue = 1, size = (200,200),label="Shutdown")
 
         self.sizers[b'pump_state'] = wx.BoxSizer(wx.VERTICAL)
-        self.fields[b'pump_state_low'] = epics.wx.PVButton(self.panel, pv=f'{self.dio_server_name}:bit0', pushValue = 0, size = (200,50),label="Pump Low", disablePV=f'{self.dio_server_name}:bit0_enable',disableValue=0)
-        self.fields[b'pump_state_high'] = epics.wx.PVButton(self.panel, pv=f'{self.dio_server_name}:bit0', pushValue = 1, size = (200,50),label="Pump High", disablePV=f'{self.dio_server_name}:bit0_enable',disableValue=0)
-        self.sizers[b'pump_state'].Add(self.fields[b'pump_state_low'],0)
-        self.sizers[b'pump_state'].Add(self.fields[b'pump_state_high'],0)
+        self.fields[b'pump_state'] = PVToggleButton(self.panel, pv=f"{self.dio_server_name}:bit0", disablePV = f"{self.dio_server_name}:bit0_enable", size = (200,-1), buttonLabels = ['Change Pump to High','Change Pump to Low'], stateColors = [(0,255,0),(255,0,0)],disableValue=0)
+        #self.fields[b'pump_state_low'] = epics.wx.PVButton(self.panel, pv=f'{self.dio_server_name}:bit0', pushValue = 0, size = (200,50),label="Pump Low", disablePV=f'{self.dio_server_name}:bit0_enable',disableValue=0)
+        #self.fields[b'pump_state_high'] = epics.wx.PVButton(self.panel, pv=f'{self.dio_server_name}:bit0', pushValue = 1, size = (200,50),label="Pump High", disablePV=f'{self.dio_server_name}:bit0_enable',disableValue=0)
+        #pump_state
+        self.sizers[b'pump_state'].Add(self.fields[b'pump_state'],0)
+        #self.sizers[b'pump_state'].Add(self.fields[b'pump_state_low'],0)
+        #self.sizers[b'pump_state'].Add(self.fields[b'pump_state_high'],0)
 
         self.sizers[b'depre_state'] = wx.BoxSizer(wx.VERTICAL)
-        self.fields[b'depre_state_low'] = epics.wx.PVButton(self.panel, pv=f'{self.dio_server_name}:bit1', pushValue = 0, size = (200,50),label="Depre Low", disablePV=f'{self.dio_server_name}:bit1_enable',disableValue=0)
-        self.fields[b'depre_state_high'] = epics.wx.PVButton(self.panel, pv=f'{self.dio_server_name}:bit1', pushValue = 1, size = (200,50),label="Depre High", disablePV=f'{self.dio_server_name}:bit1_enable',disableValue=0)
-        self.sizers[b'depre_state'].Add(self.fields[b'depre_state_low'],0)
-        self.sizers[b'depre_state'].Add(self.fields[b'depre_state_high'],0)
+        self.fields[b'depre_state'] = PVToggleButton(self.panel, pv=f"{self.dio_server_name}:bit1", disablePV = f"{self.dio_server_name}:bit1_enable", size = (200,-1), buttonLabels = ['Close Depre Valve','Open Depre Valve'], stateColors = [(0,255,0),(255,0,0)],disableValue=0)
+        #self.fields[b'depre_state_low'] = epics.wx.PVButton(self.panel, pv=f'{self.dio_server_name}:bit1', pushValue = 0, size = (200,50),label="Depre Low", disablePV=f'{self.dio_server_name}:bit1_enable',disableValue=0)
+        #self.fields[b'depre_state_high'] = epics.wx.PVButton(self.panel, pv=f'{self.dio_server_name}:bit1', pushValue = 1, size = (200,50),label="Depre High", disablePV=f'{self.dio_server_name}:bit1_enable',disableValue=0)
+        self.sizers[b'depre_state'].Add(self.fields[b'depre_state'],0)
+        #self.sizers[b'depre_state'].Add(self.fields[b'depre_state_high'],0)
+
 
         self.sizers[b'pre_state'] = wx.BoxSizer(wx.VERTICAL)
-        self.fields[b'pre_state_low'] = epics.wx.PVButton(self.panel, pv=f'{self.dio_server_name}:bit2', pushValue = 0, size = (200,50),label="Pre Low", disablePV=f'{self.dio_server_name}:bit2_enable',disableValue=0)
-        self.fields[b'pre_state_high'] = epics.wx.PVButton(self.panel, pv=f'{self.dio_server_name}:bit2', pushValue = 1, size = (200,50),label="Pre High", disablePV=f'{self.dio_server_name}:bit2_enable',disableValue=0)
-        self.sizers[b'pre_state'].Add(self.fields[b'pre_state_low'],0)
-        self.sizers[b'pre_state'].Add(self.fields[b'pre_state_high'],0)
+        self.fields[b'pre_state'] = PVToggleButton(self.panel, pv=f"{self.dio_server_name}:bit2", disablePV = f"{self.dio_server_name}:bit2_enable", size = (200,-1), buttonLabels = ['Close Pre Valve','Open Pre Valve'], stateColors = [(0,255,0),(255,0,0)],disableValue=0)
+        # self.fields[b'pre_state_low'] = epics.wx.PVButton(self.panel, pv=f'{self.dio_server_name}:bit2', pushValue = 0, size = (200,50),label="Pre Low", disablePV=f'{self.dio_server_name}:bit2_enable',disableValue=0)
+        # self.fields[b'pre_state_high'] = epics.wx.PVButton(self.panel, pv=f'{self.dio_server_name}:bit2', pushValue = 1, size = (200,50),label="Pre High", disablePV=f'{self.dio_server_name}:bit2_enable',disableValue=0)
+        self.sizers[b'pre_state'].Add(self.fields[b'pre_state'],0)
+
 
         self.sizers[b'valve_buttons'] = wx.BoxSizer(wx.HORIZONTAL)
         self.sizers[b'valve_buttons'].Add(self.sizers[b'depre_state'],0)
