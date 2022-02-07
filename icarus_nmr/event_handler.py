@@ -59,7 +59,7 @@ from pdb import pm
 prefix = platform.node()+'_'
 EVENT_CODE = {}
 EVENT_CODE['D0_GOES_LOW']=EVENT_CODE_D0_GOES_LOW = 0
-EVENT_CODE_D0_GOES_HIGH = 1
+EVENT_CODE['D0_GOES_HIGH']=EVENT_CODE_D0_GOES_HIGH = 1
 EVENT_CODE_D1_GOES_LOW = 10
 EVENT_CODE_D1_GOES_HIGH = 11
 EVENT_CODE_D2_GOES_LOW = 20
@@ -91,6 +91,28 @@ BIT_LOG = 0b10000
 BIT_5 = 0b100000
 BIT_6 = 0b1000000
 
+#convert integer values on the sensor to psi
+CH0_COEFF = (1/1.33)*(1/150)*79600.0*200*2.0**-15 #target pressure
+CH1_COEFF = (1/50)*200*2.0**-15 #depressurization valve lower sensor
+CH2_COEFF = (1/50)*200*2.0**-15 #depressurization valve upper sensor
+CH3_COEFF = (1/50)*200*2.0**-15 #pressurization valve lower sensor
+CH4_COEFF = (1/50)*200*2.0**-15 #pressurization valve upper sensor
+CH5_COEFF = 2*50000*2.0**-15 #high pressure transducer at the origin'
+CH6_COEFF = 2*50000*2.0**-15 #high pressure transducer at the sample
+CH7_COEFF = 1 #spare
+DIO_COEFF = 42860.0
+
+USER_UNITS = {'kbar': 6.894756709891046e-05, 'atm': 1/14.696, 'psi': 1}
+
+CHANNELS = {}
+CHANNELS[0] = 'target pressure'
+CHANNELS[1] = 'depressurization valve lower sensor'
+CHANNELS[2] = 'depressurization valve upper sensor'
+CHANNELS[3] = 'pressurization valve lower sensor'
+CHANNELS[4] = 'pressurization valve upper sensor'
+CHANNELS[5] = 'high pressure transducer at the origin'
+CHANNELS[6] = 'high pressure transducer at the sample'
+CHANNELS[7] = 'spare'
 
 class Handler(object):
     db = DataBase(root = 'TEMP', name = 'event_detector')
@@ -99,22 +121,22 @@ class Handler(object):
     history_buffer_size  =  1000000 #1000000
     event_buffer_shape=  (100,2)
 
-    timeout_period_time = 30.0
+    timeout_period_time = 60.0
 
-    depressure_before_time =  20.0
-    depressure_after_time = 100.0
-    pressure_before_time = 20.0
-    pressure_after_time = 100.0
+    depressure_before_time =  40.0
+    depressure_after_time = 200.0
+    pressure_before_time = 40.0
+    pressure_after_time = 200.0
 
 
 
     selected_pressure_units = 'kbar'
-    user_units = {'kbar': 6.894756709891046e-05, 'atm': 1/14.696, 'psi': 1}
+    user_units = USER_UNITS
     #self.selected_pressure_units = 'kbar'
-    scale_top_valve1 = (220./50)#(50/6.894756709891046e-05) #(1*6.894756709891046e-05)*(14267/8192) # 200 psi per 10 Volts per 2**15 bits
-    scale_bot_valve1 = (220./50)#(50/6.894756709891046e-05) # 200 psi per 10 Volts per 2**15 bits
-    scale_top_valve2 = (220./50)#(50/6.894756709891046e-05) # 200 psi per 10 Volts per 2**15 bits
-    scale_bot_valve2 = (220./50)#(50/6.894756709891046e-05) # 200 psi per 10 Volts per 2**15 bits
+    scale_top_valve1 = (220./50) # 200 psi per 10 Volts per 2**15 bits
+    scale_bot_valve1 = (220./50) # 200 psi per 10 Volts per 2**15 bits
+    scale_top_valve2 = (220./50) # 200 psi per 10 Volts per 2**15 bits
+    scale_bot_valve2 = (220./50) # 200 psi per 10 Volts per 2**15 bits
 
     coeff_sample_pressure = 100000.0
     coeff_target_pressure = 0.92
@@ -169,7 +191,7 @@ class Handler(object):
         kbar_to_ul_coeff = (0.500/2.5) # 0.500 mL / 2.5kbar
         self.cooling_coefficient = 4000*60*60*bit_to_kbar_coeff*kbar_to_ul_coeff
         # 4000 ticks/second * 60 seconds/min * 60 min/hour * 500 uL / 2.5 kbar
-        self.buffer_shape = (25600,10)#8192000)
+        self.buffer_shape = (2560000,10)#8192000)
 
         self.current_dio = 0
 
@@ -450,10 +472,10 @@ class Handler(object):
         >>> self.reset_to_factory_setting()
         """
         self.ppLogFolder = 'log/'
-        self.depressure_before_time = 5.0
-        self.depressure_after_time = 100.0
-        self.pressure_before_time = 5.0
-        self.pressure_after_time = 300.0
+        self.depressure_before_time = 10.0
+        self.depressure_after_time = 150.0
+        self.pressure_before_time = 10.0
+        self.pressure_after_time = 150.0
         self.coeff_target_pressure = 0.895
         self.coeff_sample_pressure = 100000.0
         self.scaleTopValve1 = 100000.0
@@ -585,7 +607,7 @@ class Handler(object):
         kwargs['linear_packet_pointer'] = linear_packet_pointer
         kwargs['circular_packet_pointer'] = int(linear_packet_pointer%int(buffer.length/buffer.packet_length))
         kwargs['frequency'] = 4000
-        kwargs['timeout_period_time'] = 30
+        kwargs['timeout_period_time'] = 60
         kwargs['last_event_index'] = self.last_event_index
 
         kwargs['periodic_udpate_hz'] = 3
@@ -1440,9 +1462,11 @@ class Handler(object):
             data = copy(self.get_ring_buffer_N(N = 400, pointer = from_point))
 
             target_pressure = scipy.stats.mode(data[:,0])[0][0]
-            value = target_pressure*self.coeff_target_pressure
+            value = target_pressure
         else:
-            value = value*self.coeff_target_pressure
+            value = value
+
+        value = value*self.user_units[self.selected_pressure_units]*self.coeff_target_pressure*CH0_COEFF
         self.io_push({'target_pressure':value})
 
 
@@ -1461,6 +1485,7 @@ class Handler(object):
             value = sample_pressure
         else:
             value = value
+        value = value*CH6_COEFF*self.user_units[self.selected_pressure_units]
         self.io_push(io_dict = {'sample_pressure':value})
 
     def push_depressurize_event(self):
@@ -1518,21 +1543,18 @@ class Handler(object):
                 target = target*0 + stats.mode(dataPlot[0,:]).mode
 
 
-                axes.plot(x,units*self.coeff_sample_pressure*samplePre0*2.0**-15, color = 'red', marker = 'o', markersize = 3 )
-                # if icarus_AL.advance_view_flag:
-                #     axes.plot(x,units*icarus_AL.coeff_sample_pressure*samplePre1*2.0**-15, color = 'orangered', marker = 'o', markersize = 3 )
-                axes.plot(x,units*42860.0*pulse_light,color = 'lightblue')
-                axes.plot(x,units*42860.0*pulse,color = 'g')
-                axes.plot(x,self.scale_top_valve1*depreUpper*2.0**-15, color = 'darkcyan')
-                axes.plot(x,self.scale_bot_valve1*depreLower*2.0**-15, color = 'darkmagenta')
-                axes.plot(x,units*79600.0*target*self.coeff_target_pressure*2.0**-15,color = 'black',linestyle = '--')
-                #axes[0].legend(loc=1,fontsize='x-small')
+                axes.plot(x,units*samplePre0*CH5_COEFF, color = 'red', marker = 'o', markersize = 3 )
+                axes.plot(x,units*DIO_COEFF*pulse_light,color = 'lightblue')
+                axes.plot(x,units*DIO_COEFF*pulse,color = 'g')
+                axes.plot(x,depreUpper*CH2_COEFF, color = 'darkcyan')
+                axes.plot(x,depreLower*CH1_COEFF, color = 'darkmagenta')
+                axes.plot(x,units*CH0_COEFF*target*self.coeff_target_pressure,color = 'black',linestyle = '--')
 
                 axes.set_title("Last Depressurize Event",fontsize=m_font, color = 'g')
                 axes.set_xlabel("Time (ms)",fontsize=m_font)
                 axes.set_ylabel("Pressure ("+self.selected_pressure_units+")",fontsize=m_font)
                 axes.tick_params(axis='y', which='both', labelleft=True, labelright=False, labelsize = m_font)
-
+                axes.set_ylim([0.01,3.01])
                 axes.grid(True)
 
                 figure.tight_layout()
@@ -1621,16 +1643,14 @@ class Handler(object):
                 target = target*0 + stats.mode(dataPlot[0,:]).mode
 
                 units = self.user_units[self.selected_pressure_units]
-                axes.plot(x,units*self.coeff_sample_pressure*samplePre0*2.0**-15, color = 'red', marker = 'o', markersize = 3 ) # EventDetector.scaleValve1
-                # if icarus_AL.advance_view_flag:
-                #     axes.plot(x,units*icarus_AL.coeffSamplePressure*samplePre1*2.0**-15, color = 'orangered', marker = 'o', markersize = 3 ) # EventDetector.scaleValve2
-                axes.plot(x,units*42860.0*pulse_light,color = 'lightgreen')
-                axes.plot(x,units*42860.0*pulse,color = 'blue')
-                axes.plot(x,self.scale_top_valve2*preUpper*2.0**-15, color = 'darkcyan')
-                axes.plot(x,self.scale_bot_valve2*preLower*2.0**-15, color = 'darkmagenta')
+                axes.plot(x,units*samplePre0*CH5_COEFF, color = 'red', marker = 'o', markersize = 3 ) #
+                axes.plot(x,units*DIO_COEFF*pulse_light,color = 'lightgreen')
+                axes.plot(x,units*DIO_COEFF*pulse,color = 'blue')
+                axes.plot(x,CH3_COEFF*preUpper, color = 'darkcyan')
+                axes.plot(x,CH4_COEFF*preLower, color = 'darkmagenta')
                 axes.set_ylabel("Pressure ("+self.selected_pressure_units+")",fontsize=m_font)
                 #self.axes[dic['axis']].tick_params(axis='y', which='left', labelleft=True)
-                axes.plot(x,units*79600.0*target*self.coeff_target_pressure*2.0**-15, color = 'black',linestyle = '--')
+                axes.plot(x,units*CH0_COEFF*target*self.coeff_target_pressure, color = 'black',linestyle = '--')
                 #axes[dic['axis']].legend(loc=1,fontsize='x-small')
                 axes.set_title("Last Pressurize Event",fontsize=m_font, color = 'blue')
                 axes.set_xlabel("Time (ms)",fontsize=m_font)
@@ -1638,6 +1658,7 @@ class Handler(object):
                 axes.tick_params(axis='y', which='both', labelleft=True, labelright=False, labelsize = m_font)
                 #self.axes[dic['axis']].set_yticklabels([-25,0,25,50,75,100,125,150])
                 axes.grid(True)
+                axes.set_ylim([0.01,3.01])
 
                 figure.tight_layout()
                 return figure
@@ -1715,23 +1736,24 @@ class Handler(object):
             from scipy import stats
             figure = Figure(figsize=(7.68,2.16),dpi=100)#figsize=(7,5))
             axes = figure.add_subplot(1,1,1)
-            target = y[0,:]
-            origin = y[5,:]
-            sample = y[6,:]
-            d0 = y[9,:]&0b1
-            d1 = y[9,:]&0b10
-            d2 = y[9,:]&0b100
+            target = y[0,:]*self.user_units[self.selected_pressure_units]*CH0_COEFF*self.coeff_target_pressure
+            origin = y[5,:]*self.user_units[self.selected_pressure_units]*CH5_COEFF
+            sample = y[6,:]*self.user_units[self.selected_pressure_units]*CH6_COEFF
+            d0 = 3*(y[9,:]&0b1) / int(0b1)
+            d1 = 3*(y[9,:]&0b10) / int(0b10)
+            d2 = 3*(y[9,:]&0b100) / int(0b100)
             axes.plot(x,target, color = 'black')
             axes.plot(x,origin, color = 'darkred')
             axes.plot(x,sample, color = 'darkorange')
             axes.plot(x,d0, color = 'red')
             axes.plot(x,d1, color = 'darkgreen')
             axes.plot(x,d2, color = 'darkblue')
-
-            axes.set_title("Last Period",fontsize=m_font, color = 'black')
+            from time import time, ctime
+            axes.set_title(f"Last Period {ctime(time())}",fontsize=m_font, color = 'black')
             axes.set_xlabel("time, (seconds)")
             axes.set_ylabel("pressure (kbar)")
             axes.tick_params(axis='y', which='both', labelleft=True, labelright=False)
+            axes.set_ylim([0.01,3.01])
             axes.grid(True)
             figure.tight_layout()
             return figure
@@ -3092,12 +3114,7 @@ class Handler(object):
 
         N = int(N)
         pointer = int(pointer)
-        #try:
         res = self.daq.get_ring_buffer_N(N, pointer)
-            #res = self.test_ring_buffer()
-        # except:
-        #     res = None
-        #     error(traceback.format_exc())
         return res
 
     def get_daq_freq(self):

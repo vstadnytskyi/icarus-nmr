@@ -203,9 +203,22 @@ class GUI(wx.Frame):
         self.sizers[b'queue_length'].Add(self.labels[b'queue_length'],0)
         self.sizers[b'queue_length'].Add(self.fields[b'queue_length'],0)
 
+        self.labels[b'freq'] = wx.StaticText(self.panel, label= "freq :", size = (200,-1))
+        self.labels[b'freq'].SetFont(wx_l_font)
+        self.labels[b'freq'].SetBackgroundColour(wx.Colour(240, 240, 240))
+        self.fields[b'freq'] = epics.wx.PVText(self.panel, pv=f"{caserver_name}:freq", size = (800,-1))
+        #
+        self.fields[b'freq'].SetFont(wx_l_font)
+        self.fields[b'freq'].SetBackgroundColour(wx.Colour(240, 240, 240))
+        #
+        self.sizers[b'freq'] = wx.BoxSizer(wx.HORIZONTAL)
+        self.sizers[b'freq'].Add(self.labels[b'freq'],0)
+        self.sizers[b'freq'].Add(self.fields[b'freq'],0)
+
         self.sizer_right.Add(self.sizers[b'dio'])
         self.sizer_right.Add(self.sizers[b'packet_shape'])
         self.sizer_right.Add(self.sizers[b'queue_length'])
+        self.sizer_right.Add(self.sizers[b'freq'])
 
 
         self.sizer_main.Add(self.sizer_left,0)

@@ -52,6 +52,7 @@ class Server(PVGroup):
     data = pvproperty(value=zeros(shape = (64*10,)), read_only = True, dtype = int, max_length = 40000000)
     peek_data = pvproperty(value=zeros(shape = (6400*10,)), read_only = True, dtype = int, max_length = 40000000)
     packet_shape = pvproperty(value=arr_shape, read_only = True, dtype = int)
+    calibrate = pvproperty(value=0, read_only = False, dtype = bool)
     LIST = pvproperty(value=[0.0,0.0,0.0,0.0])
 
 
@@ -126,6 +127,16 @@ class Server(PVGroup):
     async def queue_length(self, instance):
         info(f"getter: {'queue length'}: {self.device.queue.length}")
         value = self.device.queue.length
+        return value
+
+    @calibrate.putter
+    async def calibrate(self, instance,value):
+        info(f"getter: {'queue length'}: {self.device.queue.length}")
+        if value:
+            self.device.set_pressure_sensor_offset()
+            self.calibrate.write(0)
+        else:
+            pass
         return value
 
 
